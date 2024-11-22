@@ -1,6 +1,7 @@
 import React from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/navbar';
-import { Link, Route, Routes } from 'react-router-dom';
+import './index.scss'
 
 const App: React.FC = () => {
   return (
