@@ -1,0 +1,18 @@
+.card-wrapper {
+  height: 100%;
+  direction: rtl;
+}
+
+.card-contnet{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap:2%;
+  align-items: flex-start;
+}
+
+.post-img{
+  width: 100%;
+  height: 70%;
+}
+

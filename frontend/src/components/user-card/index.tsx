@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Typography, CardActions, Button } from '@mui/material';
+import Post from '../post';
 
 
 const UserCard: React.FC = () => {
@@ -25,7 +26,7 @@ const UserCard: React.FC = () => {
             </div>
           </div>
           <div className='header-right'>
-            <Button variant="contained" className='edit-button'>Edit profile</Button>
+            <Button variant="contained" className='edit-button'> ערוך פרופיל</Button>
           </div>
         </div>
 
@@ -36,8 +37,13 @@ const UserCard: React.FC = () => {
 
         <div className='posts'>
           <Typography variant="h5" component="div">
-            ערוך פרופיל
+            הפוסטים שלי
           </Typography>
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
+       
         </div>
 
 

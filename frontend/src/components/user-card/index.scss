@@ -1,6 +1,8 @@
 .card-wrapper {
   height: 100%;
   direction: rtl;
+  display: flex;
+
 }
 
 .card-contnet{
@@ -9,6 +11,7 @@
   flex-direction: column;
   gap:2%;
   align-items: flex-start;
+  width: 100%;
 }
 
 .card-header {
@@ -51,10 +54,11 @@
     margin: 0;
   }
 
-  .posts{
-    display: flex;
-    flex-direction: column;
-  }
+}
 
-
+.posts{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap:3%;
 }
