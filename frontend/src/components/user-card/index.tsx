@@ -26,7 +26,7 @@ const UserCard: React.FC = () => {
             </div>
           </div>
           <div className='header-right'>
-            <Button variant="contained" className='edit-button'> ערוך פרופיל</Button>
+           <Button variant="contained" className='edit-button'> ערוך פרופיל</Button> 
           </div>
         </div>
 
