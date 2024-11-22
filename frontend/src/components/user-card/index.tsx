@@ -17,10 +17,10 @@ const UserCard: React.FC = () => {
 
             <div className='titles'>
               <Typography variant="h4" component="div">
-                User name
+                שם משתמש
               </Typography>
               <Typography className='sub-text' variant='h6' gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                @Username
+                @שם משתמש
               </Typography>
             </div>
           </div>
@@ -30,13 +30,13 @@ const UserCard: React.FC = () => {
         </div>
 
         <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          This is the user description please fill this out later on
+          דניאל צבי היה פה דניאל צבי היה פה דניאל צבי היה פה
         </Typography>
 
 
         <div className='posts'>
           <Typography variant="h5" component="div">
-            Posts
+            ערוך פרופיל
           </Typography>
         </div>
 

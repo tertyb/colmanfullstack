@@ -21,6 +21,10 @@ module.exports = {
         use: 'ts-loader',
       },
       {
+        test: /\.(png|jpe?g|gif|svg|jpg)$/i,
+        type: 'asset/resource', // Use 'asset/resource' for outputting as separate files
+      },
+      {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader',],
       },
