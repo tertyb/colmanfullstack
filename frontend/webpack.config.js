@@ -21,8 +21,15 @@ module.exports = {
         use: 'ts-loader',
       },
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         use: ['style-loader', 'css-loader', 'sass-loader',],
+      },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource', // Handles image files as assets
+        generator: {
+          filename: 'assets/images/[name][ext][query]', // Store images in the "assets/images" folder
+        },
       },
     ],
   },
