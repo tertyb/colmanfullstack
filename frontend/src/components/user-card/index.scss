@@ -1,72 +1,60 @@
-.navbar {
+.card-wrapper {
+  height: 100%;
+  
+}
+
+.card-contnet{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap:2%;
+  align-items: flex-start;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+
+  .header-left {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 45px;
-  }
-  
-  .navbar-left {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2e3a59;
-  }
-  
-  .navbar-logo {
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .navbar-center {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .navbar-link {
-    text-decoration: none;
-    font-size: 16px;
-    color: #2e3a59;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-  
-  .navbar-link:hover {
-    color: #5f73f2; /* Hover effect color */
-  }
-  
-  .navbar-right {
-    display: flex;
-    align-items: center;
     gap: 15px;
+
+    .profile-img{
+      border-radius: 50%;
+    }
+
+    .titles {
+      display: flex;
+      flex-direction: column;
+      align-self: flex-end;
+
+
+      .sub-text {
+        margin-bottom: 0;
+      }
+    }
+
   }
-  
-  .navbar-profile {
-    width: 35px;
-    height: 35px;
-    background-color: #d1d9e6;
-    border-radius: 50%;
+
+  .header-right {
+    display: flex;
+
+    .edit-button {
+      align-self: flex-end;
+    }
   }
-  
-  .profile-icon {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    border-radius: 50%;
+
+
+  .text {
+    margin: 0;
   }
-  
-  .sign-out-btn {
-    background-color: #5f73f2;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+
+  .posts{
+    display: flex;
+    flex-direction: column;
   }
-  
-  .sign-out-btn:hover {
-    background-color: #4c63c2; /* Hover effect for button */
-  }
-  
+
+
+}
