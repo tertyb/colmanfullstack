@@ -6,7 +6,7 @@ import Profile from './views/Profile';
 
 const App: React.FC = () => {
   return (
-    <div>
+    <div className='whole-app'>
       <Navbar />
       <div className="content">
           <Routes>

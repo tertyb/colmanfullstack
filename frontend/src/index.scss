@@ -1,7 +1,19 @@
+$nav-bar-height: 45px;
+
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: white;
-    text-align: center;
-  }
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+  text-align: center;
+}
+
+
+.content {
+  height: calc(100% - $nav-bar-height);
+}
+
+.whole-app{
+  height: 100vh;
+}

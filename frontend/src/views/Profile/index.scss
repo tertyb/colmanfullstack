@@ -1,8 +1,14 @@
-.text{
-  color:black;
+.profile-component {
+  color: black;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   width: 100%;
   height: 100%;
+}
+
+.cover-img {
+  width: 100%;
+  height: 25%;
+  background-color: black;
 }
