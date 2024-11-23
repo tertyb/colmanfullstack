@@ -12,7 +12,7 @@ const Profile: React.FC = () => {
                 <img className="cover-img" src={userBack} />
             </div>
             <div className="user-wrapper">
-                <UserCard userName='יוני חטאים' userProfileImage={userProfileImage}></UserCard>
+                <UserCard userName='יוני חטאים' userDescription='שלום קוראים לי דניאל צבי אני מאוד אוהב לשחק כדורגל ולרקוד בלט קלאסי ' userProfileImage={userProfileImage}></UserCard>
             </div>
 
 

@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap:20px;
   width: 100%;
 }
 
@@ -34,10 +35,12 @@
       display: flex;
       flex-direction: column;
       align-self: flex-end;
+      padding-bottom: 20px;
 
 
       .sub-text {
         margin-bottom: 0;
+        align-self: flex-start;
       }
     }
 
@@ -71,6 +74,6 @@
   .posts {
     display: flex;
     flex-direction: column;
-    gap: 3%;
+    gap: 50px;
   }
 }

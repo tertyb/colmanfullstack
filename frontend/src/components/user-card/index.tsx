@@ -10,9 +10,10 @@ import Post from '../post';
 type UserProps = {
   userProfileImage: string;
   userName: string;
+  userDescription: string;
 };
 
-const UserCard: React.FC<UserProps> = ({ userProfileImage, userName }) => {
+const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescription }) => {
   return (
     <Card className='card-wrapper' sx={{ minWidth: 750, boxShadow: 2 }}>
       <CardContent className='card-contnet'>
@@ -26,7 +27,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName }) => {
                 {userName}
               </Typography>
               <Typography className='sub-text' variant='h6' gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                @{userName}
+                @{userName.replace(/\s+/g, "")}
               </Typography>
             </div>
           </div>
@@ -38,7 +39,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName }) => {
 
         <div>
           <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-            דניאל צבי היה פה דניאל צבי היה פה דניאל צבי היה פה
+            {userDescription}
           </Typography>
         </div>
 
