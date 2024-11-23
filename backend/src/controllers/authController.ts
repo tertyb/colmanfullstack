@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { registerUser, loginUser, generateRefreshToken } from '../services/authService';
+import { generateRefreshToken, loginUser, registerUser } from '../services/authService';
 
 export const authRouter = Router();
 
@@ -17,7 +17,7 @@ authRouter.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const token = await loginUser(email, password);
-    const refreshToken = generateRefreshToken(req.body.email);
+    const refreshToken = generateRefreshToken(email);
     res.json({ token, refreshToken });
   } catch (error:any) {
     res.status(400).json({ message: error.message });

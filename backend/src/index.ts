@@ -4,6 +4,7 @@ import { config } from './config/config';
 import dotenv from 'dotenv'
 import { authRouter } from './controllers/authController';
 import connectDB from './config/db';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 const app = express();
 const PORT = config.PORT;
@@ -16,6 +17,7 @@ dotenv.config();
 app.use(express.json());
 app.use(cors());
 
+// app.use(authMiddleware)
 connectDB()
 
 app.get('/', (req: Request, res: Response) => {
@@ -23,6 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', authRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
