@@ -6,14 +6,26 @@
   width: 100%;
   height: 100%;
 
-  .daniel {
+  .img-wrapper {
     width: 100%;
     height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+
+  }
+
+  .cover-img {
+    // object-fit: contain; /* Ensures the image fits within its container */
+
   }
 }
 
 .cover-img {
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: rgb(234, 234, 234);
+
 }

@@ -4,28 +4,50 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Typography, CardActions, Button } from '@mui/material';
-
+import Divider from '@mui/material/Divider';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CommentIcon from '@mui/icons-material/Comment';
 
 type PostProps = {
   text: string;
   imgUrl: string;
-
+  userImage: string;
+  userName: string;
+  date: string;
 };
 
-const Post: React.FC<PostProps> = ({ text, imgUrl }) => {
+const Post: React.FC<PostProps> = ({ text, imgUrl, userImage, userName, date }) => {
   return (
     <Card className='card-wrapper' sx={{ minWidth: 400, minHeight: 400, boxShadow: 3 }}>
-      <CardContent className='card-contnet'>
+      <CardContent className='post-contnet'>
+        <div className='top-bar'>
+          <div className='right-side'>
+            <img className='profile-photo' src={userImage} width={35} height={35} />
+            <div className='sub-info'>
+              <p>{userName}</p>
+              <p className='sub-name'>@{userName.replace(/\s+/g, "")}</p>
+            </div>
+          </div>
+          <p className='date'>{date} </p>
+        </div>
         <h4>{text}</h4>
-        <img className='post-img' src={imgUrl} ></img>
+        <div className="post-img-wrapper">
+          <img className='post-img' src={imgUrl} ></img>
+
+        </div>
+        <Divider className='divider' variant="inset" />
+
         <div className='bottom-row'>
           <div className='left-side'>
-            <Button variant="contained" className='edit-button' > ערוך</Button>
-            <Button variant="contained" className='edit-button' color='error'> מחק</Button>
+            <p>15</p>
+            <CommentIcon></CommentIcon>
+            <p>25</p>
+            <FavoriteBorderIcon></FavoriteBorderIcon>
           </div>
           <div className='right-side'>
-            <p>15</p>
-            <p>25</p>
+            <Button variant="contained" className='edit-button' > ערוך</Button>
+            <Button variant="contained" className='edit-button' color='error'> מחק</Button>
+
           </div>
         </div>
       </CardContent>

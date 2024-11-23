@@ -4,47 +4,53 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Typography, CardActions, Button } from '@mui/material';
-import userBack from '../../assets/userBack.jpg'
+import userpost from '../../assets/userBack.jpg'
 import Post from '../post';
 
+type UserProps = {
+  userProfileImage: string;
+  userName: string;
+};
 
-const UserCard: React.FC = () => {
+const UserCard: React.FC<UserProps> = ({ userProfileImage, userName }) => {
   return (
     <Card className='card-wrapper' sx={{ minWidth: 750, boxShadow: 2 }}>
       <CardContent className='card-contnet'>
         <div className='card-header'>
           <div className='header-left'>
 
-            <img src={userBack} className='profile-img' width={100} height={100}></img>
+            <img src={userProfileImage} className='profile-img' width={135} height={135}></img>
 
             <div className='titles'>
               <Typography variant="h4" component="div">
-                שם משתמש
+                {userName}
               </Typography>
               <Typography className='sub-text' variant='h6' gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                @שם משתמש
+                @{userName}
               </Typography>
             </div>
           </div>
           <div className='header-right'>
-           <Button variant="contained" className='edit-button'> ערוך פרופיל</Button> 
+            <Button variant="contained" className='edit-button'> ערוך פרופיל</Button>
           </div>
         </div>
 
-        <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          דניאל צבי היה פה דניאל צבי היה פה דניאל צבי היה פה
-        </Typography>
 
+        <div>
+          <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+            דניאל צבי היה פה דניאל צבי היה פה דניאל צבי היה פה
+          </Typography>
+        </div>
 
         <div className='posts'>
           <Typography variant="h5" component="div">
             הפוסטים שלי
           </Typography>
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl='fff'></Post>
-       
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+         
         </div>
 
 
