@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { Typography, CardActions, Button } from '@mui/material';
+import userBack from '../../assets/userBack.jpg'
 import Post from '../post';
 
 
@@ -14,7 +15,7 @@ const UserCard: React.FC = () => {
         <div className='card-header'>
           <div className='header-left'>
 
-            <img src='/assets/userBack.jpg' className='profile-img' width={100} height={100}></img>
+            <img src={userBack} className='profile-img' width={100} height={100}></img>
 
             <div className='titles'>
               <Typography variant="h4" component="div">
