@@ -42,15 +42,16 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName }) => {
           </Typography>
         </div>
 
-        <div className='posts'>
-          <Typography variant="h5" component="div">
+        <div className='posts-tab'>
+          <Typography className='myposts' variant="h5" >
             הפוסטים שלי
           </Typography>
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-          <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-         
+          <div className='posts'>
+            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
+            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+          </div>
         </div>
 
 

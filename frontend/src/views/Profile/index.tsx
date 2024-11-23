@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss'; // Import the CSS styles for the navbar
 import { Link } from 'react-router-dom';
-import userBack from '../../assets/giphy.gif'
+import userBack from '../../assets/deserted-beach-travel-1920x720.jpg'
 import UserCard from '../../components/user-card';
 import userProfileImage from '../../assets/daniel.png'
 const Profile: React.FC = () => {
