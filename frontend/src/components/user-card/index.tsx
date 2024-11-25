@@ -3,9 +3,11 @@ import './index.scss'; // Import the CSS styles for the navbar
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Typography, CardActions, Button } from '@mui/material';
+import { Typography, CardActions, Button, Divider } from '@mui/material';
 import userpost from '../../assets/userBack.jpg'
 import Post from '../post';
+import { Modal } from '@mui/base/Modal';
+import EditProfileModal from '../edit-profile-modal';
 
 type UserProps = {
   userProfileImage: string;
@@ -14,6 +16,12 @@ type UserProps = {
 };
 
 const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescription }) => {
+
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+
+
   return (
     <Card className='card-wrapper' sx={{ minWidth: 750, boxShadow: 2 }}>
       <CardContent className='card-contnet'>
@@ -32,10 +40,11 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescrip
             </div>
           </div>
           <div className='header-right'>
-            <Button variant="contained" className='edit-button'> ערוך פרופיל</Button>
+            <Button variant="contained" className='edit-button' onClick={handleOpen}> Edit Profile</Button>
           </div>
-        </div>
 
+
+        </div>
 
         <div>
           <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
@@ -45,15 +54,19 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescrip
 
         <div className='posts-tab'>
           <Typography className='myposts' variant="h5" >
-            הפוסטים שלי
+            My Posts
           </Typography>
           <div className='posts'>
-            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
-            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-            <Post text="איזה כיף היום מצאתי דרך להנות מהשטות הזאת" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
+            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
           </div>
         </div>
+
+        <EditProfileModal open={open} setOpen={setOpen}>
+
+        </EditProfileModal>
 
 
       </CardContent>

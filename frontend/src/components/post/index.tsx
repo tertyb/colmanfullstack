@@ -45,8 +45,8 @@ const Post: React.FC<PostProps> = ({ text, imgUrl, userImage, userName, date }) 
             <FavoriteBorderIcon></FavoriteBorderIcon>
           </div>
           <div className='right-side'>
-            <Button variant="contained" className='edit-button' > ערוך</Button>
-            <Button variant="outlined" className='edit-button' color='error'> מחק</Button>
+            <Button variant="contained" className='edit-button' > Edit</Button>
+            <Button variant="outlined" className='edit-button' color='error'> Delete</Button>
 
           </div>
         </div>
