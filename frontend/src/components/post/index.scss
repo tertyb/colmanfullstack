@@ -1,0 +1,98 @@
+.card-wrapper {
+  height: 100%;
+
+  width: 100%;
+}
+
+.post-contnet {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2%;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.profile-photo {
+  border-radius: 50%;
+  border: 1px solid black;
+  justify-self: flex-start;
+}
+
+.top-bar {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+
+  .sub-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px
+  }
+
+  .right-side {
+    display: flex;
+
+    gap:4px
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .sub-name {
+    color: grey;
+    opacity: 0.9;
+  }
+
+  .date {
+    color: grey;
+    opacity: 0.9;
+    padding-top: 2%;
+  }
+}
+
+.divider {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.post-img-wrapper {
+  width: 100%;
+  height: 60%;
+  background-color: rgb(243, 244, 246, var(--tw-bg-opacity, 1));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-img {
+  width: 100%;
+  height: 100%;
+  // object-fit: cover;
+  /* Ensures the image fits within its container */
+
+}
+
+.bottom-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 1.5%;
+
+
+  .left-side {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .right-side {
+    display: flex;
+    gap: 5px;
+  }
+}
