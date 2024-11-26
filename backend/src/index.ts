@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import { authRouter } from './controllers/authController';
 import connectDB from './config/db';
 import { authMiddleware } from './middlewares/authMiddleware';
+import { userRouter } from './controllers/user.controller';
 
 const app = express();
 const PORT = config.PORT;
@@ -24,7 +25,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript with Express!');
 });
 
-app.use('/api/auth', authRouter);
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/user', userRouter);
 
 
 app.listen(PORT, () => {
