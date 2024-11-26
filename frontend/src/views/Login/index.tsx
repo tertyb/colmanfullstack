@@ -1,30 +1,11 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from '../../assets/images/google.png';
+import { enterModeOptions, enterModeText, fetchByType } from "../../consts/login";
 import { useUser } from "../../contexts/userContext";
 import { EneterModes } from "../../enums/login";
-import { IEnterModeOption } from "../../interfaces/login";
-import { getLogin, register } from "../../services/userService";
 import { EnterMode } from "./EnterMode";
 import './index.scss';
-import { IUser } from "../../interfaces/user";
-
-
-const enterModeText: Record<EneterModes, string> = {
-    [EneterModes.LOGIN]: 'התחברות',
-    [EneterModes.REGISTER]: 'הרשמה',
-}
-
-const enterModeOptions: IEnterModeOption[] = [
-    {
-        key: EneterModes.LOGIN,
-        title: enterModeText[EneterModes.LOGIN]
-    },
-    {
-        key: EneterModes.REGISTER,
-        title: enterModeText[EneterModes.REGISTER]
-    }
-]
 
 interface IProp {
     enterMode: EneterModes;
@@ -91,11 +72,6 @@ const LoginContainer: React.FC = () => {
     }, [navigate, setUserData, activeFetchByType]);
 
     return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onSubmit={onSubmit} />
-}
-
-const fetchByType: Record<EneterModes, (username: string, password: string) => Promise<IUser | undefined>> = {
-    [EneterModes.LOGIN]: getLogin,
-    [EneterModes.REGISTER]: register
 }
 
 export const LoginScreen: React.FC = () => {
