@@ -6,6 +6,8 @@ import { useUser } from "../../contexts/userContext";
 import { EneterModes } from "../../enums/login";
 import { EnterMode } from "./EnterMode";
 import './index.scss';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 interface IProp {
     enterMode: EneterModes;
@@ -20,7 +22,7 @@ export const LoginCard: React.FC<IProp> = ({ onSubmit, enterMode, setEnterMode }
 
     const onLogin = useCallback(async () => {
         await onSubmit(username, password)
-    }, [username, password])
+    }, [username, password, onSubmit])
 
 
     return <div className="login-card">

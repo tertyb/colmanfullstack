@@ -2,6 +2,7 @@ import axios from 'axios';
 import useSWR from 'swr'; // Replace with your Axios instance setup
 import { IUser } from '../interfaces/user';
 import { AxiosInstence } from './axios/AxiosInstance';
+import { showToast } from '../consts/toast';
 
 export interface ILoginResponse {
   token: string;
@@ -41,21 +42,23 @@ const registerUser = async (username: string, password: string) => {
 export const getLogin = async (username: string, password: string) => {
   try {
     await getAuthentication(username, password);
-    return await fetchUserData();
+    const user = await fetchUserData();
+    showToast('login successfully', "success")
+    return user;
   } catch (error) {
-    alert('שגיאה בניסיון ההתחברות');
-    //add here alertify
+    showToast('failed to login', "error")
+
   }
 }
 
 export const register = async (username: string, password: string) => {
   try {
     await registerUser(username, password);
-    // console.log('daniel')
-    return await fetchUserData();
+    const user = await fetchUserData();
+    showToast('register successfully', "success");
+    return user
   } catch (error) {
-    alert('שגיאה בניסיון ההתחברות');
-    //add here alertify
+    showToast('failed to register', "error")
   }
 }
 

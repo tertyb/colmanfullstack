@@ -5,7 +5,7 @@ import dotenv from 'dotenv'
 import { authRouter } from './controllers/authController';
 import connectDB from './config/db';
 import { authMiddleware } from './middlewares/authMiddleware';
-import { userRouter } from './controllers/user.controller';
+import { userRouter } from './controllers/userController';
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');

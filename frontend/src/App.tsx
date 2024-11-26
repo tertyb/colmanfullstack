@@ -5,6 +5,7 @@ import './index.scss'
 import Profile from './views/Profile';
 import { LoginScreen } from './views/Login';
 import { LoginWrapper } from './components/loginWrapper';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const App: React.FC = () => {
           <Routes>
           <Route path="/login" element={<LoginScreen/>} />
           </Routes>
+          <ToastContainer position="bottom-left" />
         </div>
     </div>
   )
