@@ -1,16 +1,14 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import UserModel from '../models/user';
+import UserModel from '../models/user.model';
 import { config } from '../config/config';
 import { IAuthTokens } from '../interfaces/auth';
 
 export const registerUser = async (username: string, password: string): Promise<IAuthTokens> => {
-  console.log('first')
   const existingUser = await UserModel.findOne({ username });
   if (existingUser) throw new Error('User already exists');
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log('second')
   const newUser = new UserModel({ username, password: hashedPassword, image: '' });
   await newUser.save();
   return generateAuthKeys(newUser.username, newUser._id);

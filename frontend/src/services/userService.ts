@@ -10,7 +10,7 @@ export interface ILoginResponse {
 }
 
 const fetchUserData = async () => {
-  const res = await AxiosInstence.get<IUser>('/user/userData');
+  const res = await AxiosInstence.get<IUser>('/user/data');
   return res.data;
 }
 

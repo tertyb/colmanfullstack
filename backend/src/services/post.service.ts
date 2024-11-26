@@ -3,6 +3,6 @@ import jwt from 'jsonwebtoken';
 import UserModel from '../models/user.model';
 import { config } from '../config/config';
 
-export const userInfo = async (userName: string) => await UserModel.findOne({ userName })
+export const userPosts = async (userName: string) => await UserModel.findOne({ userName })
 
 
