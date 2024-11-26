@@ -2,13 +2,14 @@ $nav-bar-height: 45px;
 
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, 'Heebo',sans-serif;
   margin: 0;
   padding: 0;
   color: white;
   text-align: center;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
   height: 100%;
+  color: black;
 }
 
 
@@ -16,6 +17,6 @@ body {
   height: calc(100% - $nav-bar-height);
 }
 
-.whole-app{
+.whole-app {
   height: 100vh;
 }
