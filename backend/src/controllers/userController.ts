@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import express from 'express';
 import { getUserData } from '../services/authService';
+import { userPosts } from '../services/user.service';
 
 export const userRouter = Router();
 
@@ -15,15 +16,17 @@ userRouter.get('/data', async (req: Request, res: Response) => {
   }
 });
 
-userRouter.get('/posts', async (req: Request, res: Response) => {
+userRouter.get('/:userid/posts', async (req: Request, res: Response) => {
   try {
-    if (req.params.username) {
-      const username = req.query.username;
-    } else {
-      throw new Error('User name not provided');
-    }
+    if (req?.params?.userid) {
+      const userid = req.params.userid;
+      const posts = await userPosts(userid);
+      
+      res.json({ posts });
 
-    res.json({ text: 'f' });
+    } else {
+      throw new Error('userid not provided')
+    }
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }

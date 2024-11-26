@@ -6,9 +6,9 @@ export interface IComment extends Document {
   date: Date;
 }
 
-export const CommentSchema = new Schema<string>({
-  userId: { type: String, required: true, unique: true },
-  text: { type: String, required: true, unique: true },
+export const CommentSchema = new Schema<IComment>({
+  userId: { type: String, required: true },
+  text: { type: String, required: true },
   date: { type: Date, required: false }
 });
 
