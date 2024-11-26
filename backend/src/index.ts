@@ -5,6 +5,10 @@ import dotenv from 'dotenv'
 import { authRouter } from './controllers/authController';
 import connectDB from './config/db';
 import { authMiddleware } from './middlewares/authMiddleware';
+import { userRouter } from './controllers/userController';
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const session = require('express-session');
 
 const app = express();
 const PORT = config.PORT;
@@ -14,10 +18,9 @@ app.use(express.json());
 dotenv.config();
 
 // Middleware
-app.use(express.json());
 app.use(cors());
 
-// app.use(authMiddleware)
+app.use(authMiddleware);
 connectDB()
 
 app.get('/', (req: Request, res: Response) => {
@@ -25,6 +28,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 
 app.listen(PORT, () => {
