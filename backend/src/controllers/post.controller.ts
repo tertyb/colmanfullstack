@@ -34,7 +34,7 @@ postRouter.post('/:userid/:postid/comment', async (req: Request, res: Response) 
       const userId = req.params.userid;
       const postid = req.params.postid;
 
-      const { text } = req.body.commentInformation;
+      const { text } = req.body;
       const updatePostStatus = await commentOnPost(userId, postid, text);
 
       res.json({ updatePostStatus });
@@ -54,7 +54,7 @@ postRouter.post('/:userid/:postid/like', async (req: Request, res: Response) => 
     if (req?.params?.userid && req?.params?.postid) {
       const userId = req?.params?.userid;
       const postid = req.params.postid;
-      const { text } = req.body.commentInformation;
+      const { text } = req.body;
 
       const updatePostStatus = await likePost(userId, postid);
 
