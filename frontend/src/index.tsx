@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import '@fontsource/heebo';
 import App from './App';
+import { UserProvider } from './contexts/userContext';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App></App>
+  <UserProvider>
+    <App />
+  </UserProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );
