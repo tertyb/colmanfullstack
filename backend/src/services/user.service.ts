@@ -6,7 +6,23 @@ import PostModel from '../models/post.model';
 
 export const userInfo = async (userName: string) => await UserModel.findOne({ userName });
 
-export const userPosts = async (userId: string) =>  await PostModel.find({ userId })
+export const userPosts = async (userId: string) => await PostModel.find({ userId })
+
+export const updateUser = async (userId: string, updateData: { username?: string, image?: string }) => {
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    userId,
+    { $set: updateData },
+    { new: true, runValidators: true }
+  );
+
+  if (!updatedUser) {
+    throw new Error('User not found');
+  }
+
+  return updatedUser;
+}
+
 
 
 

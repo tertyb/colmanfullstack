@@ -6,6 +6,6 @@ export const exractUserIdFromToken = async (req: Request) => {
 
     const user = (req as express.Request & { user?: any }).user
     const userData = await getUserData(user.userId);
-    return userData.id ;
+    return userData.id;
 
 }

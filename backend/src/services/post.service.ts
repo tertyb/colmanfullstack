@@ -8,15 +8,14 @@ export const createPost = async (userId: string, text: string, image: string) =>
     const createdPost = await newPost.save().then(res => {
         return 'created Post sucssfully';
     }, (err) => {
-        console.log(err)
-        return 'could not create Post';
+        throw new Error('could not create Post');
     });
 
     return createdPost;
 }
 
 export const allPosts = async () => await PostModel.find()
-   
+
 
 export const commentOnPost = async (userId: string, postId: string, text: string,) => {
     const now = new Date();
@@ -24,14 +23,14 @@ export const commentOnPost = async (userId: string, postId: string, text: string
 
     const updatedPost = await PostModel.findByIdAndUpdate(
         postId,
-        { $push: { comments: comment } }, 
-        { new: true, runValidators: true } 
+        { $push: { comments: comment } },
+        { new: true, runValidators: true }
     ).exec();
 
     if (updatedPost) {
         return 'commented on Post sucssfully';
     } else {
-        return 'could not comment on Post';
+        throw new Error('could not comment on Post');
     }
 }
 
@@ -39,30 +38,57 @@ export const commentOnPost = async (userId: string, postId: string, text: string
 export const likePost = async (userId: string, postId: string) => {
     const updatedPost = await PostModel.findByIdAndUpdate(
         postId,
-        { $addToSet: { likes: userId } }, 
-        { new: true, runValidators: true } 
+        { $addToSet: { likes: userId } },
+        { new: true, runValidators: true }
     ).exec();
 
     if (updatedPost) {
         return 'liked Post sucssfully';
     } else {
-        return 'could not like Post';
+        throw new Error('could not like Post');
     }
 }
 
 export const unlikePost = async (userId: string, postId: string) => {
     const updatedPost = await PostModel.findByIdAndUpdate(
         postId,
-        { $pull: { likes: userId } }, 
-        { new: true, runValidators: true } 
+        { $pull: { likes: userId } },
+        { new: true, runValidators: true }
     ).exec();
 
     if (updatedPost) {
         return 'unliked Post sucssfully';
     } else {
-        return 'could not unlike Post';
+        throw new Error('could not unlike Post');
     }
 }
+
+export const postOwner = async (postId: string) => {
+    const postInfo = await PostModel.findOne({ _id: postId });
+    if (postInfo) {
+        return postInfo?.userId;
+    } else {
+        throw new Error('post owner not found')
+    }
+}
+
+export const updatePost = async (postId: string, updateData: { text?: string, image?: string }) => {
+    const updatedPost = await PostModel.findByIdAndUpdate(
+        postId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedPost) {
+        throw new Error('Post not found');
+    }
+
+    return updatedPost;
+}
+
+
+
+
 
 
 
