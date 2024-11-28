@@ -24,9 +24,6 @@ app.use(cors());
 app.use(authMiddleware);
 connectDB()
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript with Express!');
-});
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
@@ -34,5 +31,5 @@ app.use('/api/post', postRouter);
 
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port: ${PORT}`);
 });

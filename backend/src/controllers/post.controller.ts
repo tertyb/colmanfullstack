@@ -1,20 +1,22 @@
 import { Request, Response, Router } from 'express';
 import express from 'express';
 import { getUserData } from '../services/authService';
-import { commentOnPost, createPost, likePost } from '../services/post.service';
+import { commentOnPost, createPost, likePost, unlikePost } from '../services/post.service';
+import { validateUserJwt } from '../utils/user.util';
 
 export const postRouter = Router();
 
-
-/**
- * 
- *  need to valide that userid is the real user id (do it from jwt)
- */
-
 postRouter.post('/:userid/create', async (req: Request, res: Response) => {
   try {
+
     if (req?.params?.userid) {
       const userId = req.params.userid;
+
+      const validUserPreformingAction = await validateUserJwt(req, userId);
+      if (!validUserPreformingAction) {
+        throw new Error(`another user tried preforming an action behalf of ${userId}`);
+      }
+
       const { text, image } = req.body;
       const createPostStatus = await createPost(userId, text, image);
 
@@ -28,11 +30,16 @@ postRouter.post('/:userid/create', async (req: Request, res: Response) => {
   }
 });
 
-postRouter.post('/:userid/:postid/comment', async (req: Request, res: Response) => {
+postRouter.post('/:postid/user/:userid/comment', async (req: Request, res: Response) => {
   try {
     if (req?.params?.userid && req?.params?.postid) {
       const userId = req.params.userid;
       const postid = req.params.postid;
+
+      const validUserPreformingAction = await validateUserJwt(req, userId);
+      if (!validUserPreformingAction) {
+        throw new Error(`another user tried preforming an action behalf of ${userId}`);
+      }
 
       const { text } = req.body;
       const updatePostStatus = await commentOnPost(userId, postid, text);
@@ -48,13 +55,17 @@ postRouter.post('/:userid/:postid/comment', async (req: Request, res: Response) 
 });
 
 
-postRouter.post('/:userid/:postid/like', async (req: Request, res: Response) => {
+postRouter.post('/:postid/user/:userid/like', async (req: Request, res: Response) => {
   try {
 
     if (req?.params?.userid && req?.params?.postid) {
       const userId = req?.params?.userid;
       const postid = req.params.postid;
-      const { text } = req.body;
+
+      const validUserPreformingAction = await validateUserJwt(req, userId);
+      if (!validUserPreformingAction) {
+        throw new Error(`another user tried preforming an action behalf of ${userId}`);
+      }
 
       const updatePostStatus = await likePost(userId, postid);
 
@@ -69,16 +80,19 @@ postRouter.post('/:userid/:postid/like', async (req: Request, res: Response) => 
 
 });
 
-postRouter.post('/:userid/:postid/unlike', async (req: Request, res: Response) => {
+postRouter.post('/:postid/user/:userid/unlike', async (req: Request, res: Response) => {
   try {
 
     if (req?.params?.userid && req?.params?.postid) {
       const userId = req?.params?.userid;
       const postid = req.params.postid;
-      const { text } = req.body.commentInformation;
 
-      // change to unlike
-      const updatePostStatus = await likePost(userId, postid);
+      const validUserPreformingAction = await validateUserJwt(req, userId);
+      if (!validUserPreformingAction) {
+        throw new Error(`another user tried preforming an action behalf of ${userId}`);
+      }
+      
+      const updatePostStatus = await unlikePost(userId, postid);
 
       res.json({ updatePostStatus });
     } else {
@@ -90,6 +104,7 @@ postRouter.post('/:userid/:postid/unlike', async (req: Request, res: Response) =
   }
 
 });
+
 
 
 

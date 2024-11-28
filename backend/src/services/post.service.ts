@@ -26,27 +26,40 @@ export const commentOnPost = async (userId: string, postId: string, text: string
     ).exec();
 
     if (updatedPost) {
-        return 'created Post sucssfully';
+        return 'commented on Post sucssfully';
     } else {
-        return 'could not create Post';
+        return 'could not comment on Post';
     }
 }
 
 export const likePost = async (userId: string, postId: string) => {
-    const now = new Date();
-
     const updatedPost = await PostModel.findByIdAndUpdate(
         postId,
-        { $push: { likes: userId } }, 
+        { $addToSet: { likes: userId } }, 
         { new: true, runValidators: true } 
     ).exec();
 
     if (updatedPost) {
-        return 'created Post sucssfully';
+        return 'liked Post sucssfully';
     } else {
-        return 'could not create Post';
+        return 'could not like Post';
     }
 }
+
+export const unlikePost = async (userId: string, postId: string) => {
+    const updatedPost = await PostModel.findByIdAndUpdate(
+        postId,
+        { $pull: { likes: userId } }, 
+        { new: true, runValidators: true } 
+    ).exec();
+
+    if (updatedPost) {
+        return 'unliked Post sucssfully';
+    } else {
+        return 'could not unlike Post';
+    }
+}
+
 
 
 

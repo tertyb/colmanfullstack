@@ -13,8 +13,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
 
   try {
     const userData = jwt.verify(token, config.JWT_SECRET);
-    console.log('verified',JSON.stringify(userData) );
-     
+    console.log(token);
     (req as Express.Request & { user?: any }).user = userData;
     return next();
   } catch (error) {

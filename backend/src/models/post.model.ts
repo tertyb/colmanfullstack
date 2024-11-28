@@ -15,7 +15,16 @@ const PostSchema = new Schema<IPost>({
   text: { type: String, required: true },
   date: { type: Date, required: true },
   image: { type: String, required: false },
-  likes: { type: [String], required: false },
+  likes: {
+    type: [String],
+    required: false,
+    validate: {
+      validator:  (likes) => {
+        return Array.isArray(likes) && likes.length === new Set(likes).size;
+      },
+      message: "Likes array must have unique values.",
+    },
+  },
   comments: { type: [CommentSchema], required: false },
 });
 
