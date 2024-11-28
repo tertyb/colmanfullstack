@@ -15,6 +15,9 @@ export const createPost = async (userId: string, text: string, image: string) =>
     return createdPost;
 }
 
+export const allPosts = async () => await PostModel.find()
+   
+
 export const commentOnPost = async (userId: string, postId: string, text: string,) => {
     const now = new Date();
     const comment = { userId, text, date: now };
@@ -31,6 +34,7 @@ export const commentOnPost = async (userId: string, postId: string, text: string
         return 'could not comment on Post';
     }
 }
+
 
 export const likePost = async (userId: string, postId: string) => {
     const updatedPost = await PostModel.findByIdAndUpdate(
