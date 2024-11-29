@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
+import { removeAuthTokens, updateTokens } from "../../utils/functions/localstorage";
 
 // Create an Axios instance
 export const AxiosInstence = axios.create({
@@ -31,18 +32,14 @@ AxiosInstence.interceptors.response.use(
                 });
 
                 // Update tokens
-                localStorage.setItem("accessToken", data.token);
-                localStorage.setItem("refreshToken", data.refreshToken);
+                updateTokens(data);
 
                 // Retry original request
                 originalRequest.headers.Authorization = `Bearer ${data.token}`;
                 return AxiosInstence(originalRequest);
             } catch (refreshError) {
                 // Handle refresh token failure (e.g., log out user)
-                console.log("Refresh token failed:", refreshError);
-
-                localStorage.removeItem('accessToken');
-                localStorage.removeItem('refreshToken');
+                removeAuthTokens()
                 redirect('/login');
                 throw refreshError;
             }

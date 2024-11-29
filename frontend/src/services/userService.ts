@@ -3,6 +3,7 @@ import useSWR from 'swr'; // Replace with your Axios instance setup
 import { showToast } from '../consts/toast';
 import { IGenericResponse, IUser, IUserResponse } from '../interfaces/user';
 import { AxiosInstence } from './axios/AxiosInstance';
+import { updateTokens } from '../utils/functions/localstorage';
 
 export interface ILoginResponse {
   token: string;
@@ -25,24 +26,22 @@ export const useGetUserData = (userid: string | null) =>
 
 export const loginUser = async (username: string, password: string) => {
 
-  const res = await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login', {
+  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login', {
     username,
     password
-  });
-  localStorage.setItem('accessToken', res.data.token);
-  localStorage.setItem('refreshToken', res.data.refreshToken);
-  console.log('auth - ', JSON.stringify(res.data.token))
+  })).data;
+
+  updateTokens(data)
 };
 
 export const registerUser = async (username: string, password: string) => {
 
-  const res = await axios.post<ILoginResponse>('http://localhost:5000/api/auth/register', {
+  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/register', {
     username,
     password
-  });
-  localStorage.setItem('accessToken', res.data.token);
-  localStorage.setItem('refreshToken', res.data.refreshToken);
-  console.log('auth - ', JSON.stringify(res.data.token))
+  })).data;
+  
+  updateTokens(data);
 };
 
 export const getLogin = async (username: string, password: string) => {
