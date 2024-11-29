@@ -1,17 +1,17 @@
 import { EneterModes } from "../enums/login";
 import { IEnterModeOption } from "../interfaces/login";
 import { IUser } from "../interfaces/user";
-import { getLogin, register } from "../services/userService";
+import { getLogin, loginUser, registerUser } from "../services/userService";
 
-export const fetchByType: Record<EneterModes, (username: string, password: string) => Promise<IUser | undefined>> = {
-    [EneterModes.LOGIN]: getLogin,
-    [EneterModes.REGISTER]: register
+export const fetchByType: Record<EneterModes, (username: string, password: string) => Promise<void>> = {
+    [EneterModes.LOGIN]: loginUser,
+    [EneterModes.REGISTER]: registerUser
 }
 
 
 export const enterModeText: Record<EneterModes, string> = {
-    [EneterModes.LOGIN]: 'התחברות',
-    [EneterModes.REGISTER]: 'הרשמה',
+    [EneterModes.LOGIN]: 'login',
+    [EneterModes.REGISTER]: 'register',
 }
 
 export const enterModeOptions: IEnterModeOption[] = [

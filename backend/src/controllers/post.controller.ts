@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import express from 'express';
 import { getUserData } from '../services/authService';
-import { allPosts, commentOnPost, createPost, likePost, postOwner, unlikePost, updatePost } from '../services/post.service';
+import { allPosts, commentOnPost, createPost, deletePost, likePost, postOwner, unlikePost, updatePost } from '../services/post.service';
 import { exractUserIdFromToken } from '../utils/user.util';
 
 export const postRouter = Router();
@@ -146,10 +146,9 @@ postRouter.post('/:postid/like', async (req: Request, res: Response) => {
       const userId = await exractUserIdFromToken(req);
 
 
-      const { text } = req.body;
       const updatePostStatus = await likePost(userId, postid);
 
-      res.json({ updatePostStatus });
+      res.json({ message: updatePostStatus });
 
     } else {
       throw new Error('postid not provided')
@@ -191,7 +190,7 @@ postRouter.post('/:postid/unlike', async (req: Request, res: Response) => {
       const { text } = req.body;
       const updatePostStatus = await unlikePost(userId, postid);
 
-      res.json({ updatePostStatus });
+      res.json({ message: updatePostStatus });
 
     } else {
       throw new Error('postid not provided')
@@ -255,7 +254,7 @@ postRouter.put('/:postid/update', async (req: Request, res: Response) => {
       if (text) updateData.text = text;
       if (image) updateData.image = image;
 
-      await updatePost(userId, updateData);
+      await updatePost(req?.params?.postid, updateData);
 
       const message = " 'Post updated successfully'";
       res.json({ message });
@@ -266,6 +265,33 @@ postRouter.put('/:postid/update', async (req: Request, res: Response) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+
+postRouter.delete('/:postid', async (req: Request, res: Response) => {
+  try {
+    if (req?.params?.postid) {
+
+      const postid = req.params.postid;
+
+      const userId = await exractUserIdFromToken(req);
+      const postOwnerId = await postOwner(req?.params?.postid);
+
+      if (postOwnerId !== userId) {
+        throw new Error('the user is not the post owner, did not update')
+      }
+
+      const message = await deletePost(postid);
+
+      res.json({ message });
+
+    } else {
+      throw new Error('postid not provided')
+    }
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 
 
 

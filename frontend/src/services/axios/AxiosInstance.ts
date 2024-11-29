@@ -26,20 +26,24 @@ AxiosInstence.interceptors.response.use(
 
             const refreshToken = localStorage.getItem("refreshToken");
             try {
-                const { data } = await axios.post("http://localhost:5000/auth/refresh", {
-                    token: refreshToken,
+                const { data } = await axios.post("http://localhost:5000/api/auth/refresh", {
+                    refreshToken,
                 });
 
                 // Update tokens
-                localStorage.setItem("accessToken", data.accessToken);
+                localStorage.setItem("accessToken", data.token);
                 localStorage.setItem("refreshToken", data.refreshToken);
 
                 // Retry original request
-                originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-                // return AxiosInstence(originalRequest);
+                originalRequest.headers.Authorization = `Bearer ${data.token}`;
+                return AxiosInstence(originalRequest);
             } catch (refreshError) {
                 // Handle refresh token failure (e.g., log out user)
-                console.error("Refresh token failed:", refreshError);
+                console.log("Refresh token failed:", refreshError);
+
+                localStorage.removeItem('accessToken');
+                localStorage.removeItem('refreshToken');
+                redirect('/login');
                 throw refreshError;
             }
         }
@@ -48,6 +52,11 @@ AxiosInstence.interceptors.response.use(
     }
 );
 
+
+const redirect = (url: string) => {
+    window.location.replace(url);
+    window.location.reload();
+}
 // SWR fetcher using Axios
 const fetcher = (url: string) => AxiosInstence.get(url).then((res) => res.data);
 

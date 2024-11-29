@@ -8,6 +8,7 @@ import { EnterMode } from "./EnterMode";
 import './index.scss';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { showToast } from "../../consts/toast";
 
 interface IProp {
     enterMode: EneterModes;
@@ -18,7 +19,7 @@ interface IProp {
 export const LoginCard: React.FC<IProp> = ({ onSubmit, enterMode, setEnterMode }: IProp) => {
     const [username, setusername] = useState('');
     const [password, setPassword] = useState('');
-      
+
 
     const onLogin = useCallback(async () => {
         await onSubmit(username, password)
@@ -66,12 +67,18 @@ const LoginContainer: React.FC = () => {
     const activeFetchByType = useMemo(() => fetchByType[enterMode], [enterMode])
 
     const onSubmit = useCallback(async (username: string, password: string) => {
-        const userData = await activeFetchByType(username, password);
-        if (!!userData) {
-            setUserData(userData);
+
+        try {
+            await activeFetchByType(username, password);
             navigate('/');
+            showToast(`successfully ${enterModeText[enterMode]}`, "success")
+
         }
-    }, [navigate, setUserData, activeFetchByType]);
+        catch (error) {
+            showToast(`failed to ${enterModeText[enterMode]}`, "error")
+        }
+    }
+        , [navigate, setUserData, activeFetchByType, enterMode]);
 
     return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onSubmit={onSubmit} />
 }

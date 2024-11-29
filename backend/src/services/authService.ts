@@ -15,7 +15,7 @@ export const registerUser = async (username: string, password: string): Promise<
 
 };
 
-export const loginUser = async (username: string, password: string):Promise<IAuthTokens> => {
+export const loginUser = async (username: string, password: string): Promise<IAuthTokens> => {
   const user = await UserModel.findOne({ username });
   if (!user) throw new Error('User not found');
 
@@ -31,9 +31,28 @@ export const getUserData = async (id: string) => {
   return user
 };
 
+export const getUserDataByUserName = async (username: string) => {
+  const user = await UserModel.findOne({ username });
+  if (!user) throw new Error('User not found');
+  return user
+};
+
 const generateAuthKeys = (username: string, userId: any): IAuthTokens => {
   const token = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION });
   const refreshToken = jwt.sign({ username }, config.JWT_SECRET, { expiresIn: '7d' });
 
   return { token, refreshToken }
-} 
+}
+
+export const refreshUserToken = async (refreshToken: string) => {
+  let userData: any
+  try {
+    userData = jwt.verify(refreshToken, config.JWT_SECRET);
+  } catch (error) {
+    throw new Error('invalid refresh token')
+  }
+  console.log(userData);
+
+  const user = await getUserDataByUserName(userData.username);
+  return generateAuthKeys(user.username, user._id)
+}

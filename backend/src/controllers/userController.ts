@@ -98,7 +98,8 @@ userRouter.put('/update', async (req: Request, res: Response) => {
     if (!username && !image) {
       throw new Error('no username or image provided');
     }
-
+    //pass the userid by url param
+    //check if updated username already exist
     const updateData: { username?: string, image?: string } = {};
     if (username) updateData.username = username;
     if (image) updateData.image = image;

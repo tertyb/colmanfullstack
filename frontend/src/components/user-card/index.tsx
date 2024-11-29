@@ -1,26 +1,32 @@
-import React from 'react';
-import './index.scss'; // Import the CSS styles for the navbar
-import { Link } from 'react-router-dom';
+import { Button, CircularProgress, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Typography, CardActions, Button, Divider } from '@mui/material';
-import userpost from '../../assets/userBack.jpg'
-import Post from '../post';
-import { Modal } from '@mui/base/Modal';
+import React, { useCallback, useState } from 'react';
+import userpost from '../../assets/userBack.jpg';
+import { IPost } from '../../interfaces/post';
 import EditProfileModal from '../edit-profile-modal';
+import Post from '../post';
+import './index.scss'; // Import the CSS styles for the navbar
+import { useGetUserPosts } from '../../services/postService';
 
 type UserProps = {
   userProfileImage: string;
-  userName: string;
+  username: string;
   userDescription: string;
+  userid: string;
 };
 
-const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescription }) => {
+const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescription, userid }) => {
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const { data, isLoading, mutate } = useGetUserPosts(userid);
+ 
+  const toggleEditPopUp = useCallback(() => setIsEditOpen((prevState) => !prevState), [setIsEditOpen])
+  
+  const onChangePost = useCallback(() => {
+    mutate();
+  }, [mutate])
 
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-
+  if (isLoading) return <CircularProgress />
 
   return (
     <Card className='card-wrapper' sx={{ minWidth: 750, boxShadow: 2 }}>
@@ -32,17 +38,16 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescrip
 
             <div className='titles'>
               <Typography variant="h4" component="div">
-                {userName}
+                {username}
               </Typography>
               <Typography className='sub-text' variant='h6' gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-                @{userName.replace(/\s+/g, "")}
+                @{username.replace(/\s+/g, "")}
               </Typography>
             </div>
           </div>
           <div className='header-right'>
-            <Button variant="contained" className='edit-button' onClick={handleOpen}> Edit Profile</Button>
+            <Button variant="contained" className='edit-button' onClick={toggleEditPopUp}> Edit Profile</Button>
           </div>
-
 
         </div>
 
@@ -57,14 +62,13 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, userName, userDescrip
             My Posts
           </Typography>
           <div className='posts'>
-            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date="10/20/2024" />
-            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userpost} userImage={userProfileImage} userName={userName} date='10/20/2024' />
-            <Post text="Yesterday i traveld to pataya it was so fun" imgUrl={userProfileImage} userImage={userProfileImage} userName={userName} date='10/20/2024' />
+            {
+              data?.map((post: IPost) => <Post postId={post._id} text={post.text} imgUrl={userpost} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments} ></Post>)
+            }
           </div>
         </div>
 
-        <EditProfileModal open={open} setOpen={setOpen}>
+        <EditProfileModal userid={userid} defaultValues={{ username, userDescription }} isOpen={isEditOpen} toggleIsOpen={toggleEditPopUp}>
 
         </EditProfileModal>
 

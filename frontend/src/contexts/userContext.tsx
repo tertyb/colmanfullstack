@@ -19,6 +19,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback(() => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
     setUser(undefined);
   },[setUser]);
 

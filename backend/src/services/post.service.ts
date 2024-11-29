@@ -1,5 +1,7 @@
+import { text } from 'stream/consumers';
 import { IComment } from '../models/comment.model';
 import PostModel from '../models/post.model';
+import { DeleteResult } from 'mongoose';
 
 export const createPost = async (userId: string, text: string, image: string) => {
     const now = new Date();
@@ -73,17 +75,31 @@ export const postOwner = async (postId: string) => {
 }
 
 export const updatePost = async (postId: string, updateData: { text?: string, image?: string }) => {
+
+    console.log(updateData.text, updateData.image)
     const updatedPost = await PostModel.findByIdAndUpdate(
         postId,
         { $set: updateData },
         { new: true, runValidators: true }
     );
-
+    console.log('dnaile', updatedPost)
     if (!updatedPost) {
         throw new Error('Post not found');
     }
 
     return updatedPost;
+}
+
+export const deletePost = async (postId: string) => {
+
+    const result: DeleteResult = await PostModel.deleteOne(
+        { _id: postId }
+    );
+    if (result.deletedCount == 0) {
+        throw new Error('Post not found');
+    }
+
+    return 'delete Post sucssfully';
 }
 
 

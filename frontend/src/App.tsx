@@ -15,7 +15,7 @@ const App: React.FC = () => {
         <LoginWrapper>
          <>
           <Routes>
-            <Route path="/" element={<></>} />
+            <Route path="/" element={<Profile/>} />
             <Route path="/profile" element={<Profile/>} />
             {/* Add other routes here */}
           </Routes>

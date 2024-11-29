@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { loginUser, registerUser } from '../services/authService';
+import { loginUser, refreshUserToken, registerUser } from '../services/authService';
 import { IAuthTokens } from '../interfaces/auth';
 const passport = require('passport')
 
@@ -77,6 +77,18 @@ authRouter.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+
+
+
+authRouter.post('/refresh', async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+  try {
+    const authTokens: IAuthTokens = await refreshUserToken(refreshToken);
+    res.json(authTokens);
+  } catch (error:any) {
+    res.status(400).json({ message: error.message });
+  }
+});
 // authRouter.get('/google', async (req: Request, res: Response) => {
 //   // try {
 //       passport.authenticate('google', { scope: ['profile', 'email'] })
