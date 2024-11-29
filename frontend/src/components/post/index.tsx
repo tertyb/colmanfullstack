@@ -13,6 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditPostModal from '../edit-post-model';
 import { useUser } from '../../contexts/userContext';
 import classNames from 'classnames';
+import { CommentsView } from '../comments-view';
 
 type PostProps = {
   postId: string
@@ -28,7 +29,9 @@ type PostProps = {
 
 const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, date, likes, comments, onPostChange }) => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState<boolean>(false);
+  const [isCommentViewOpen, setIsCommentViewOpen] = useState<boolean>(false);
   const [showAnimation, setShowAnimation] = useState(false);
+
   const { user } = useUser()
   const isLiked = useMemo(() => user?.username && likes.includes(user?._id), [user, likes]);
 
@@ -44,7 +47,8 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
   const formatedDate = useMemo(() => new Date(date).toLocaleDateString(), [date]);
-  const toggleEditPopUp = useCallback(() => setIsEditPopupOpen((prevState) => !prevState), [setIsEditPopupOpen])
+  const toggleEditPopUp = useCallback(() => setIsEditPopupOpen((prevState) => !prevState), [setIsEditPopupOpen]);
+  const toggleCommentsPopUp = useCallback(() => setIsCommentViewOpen((prevState) => !prevState), [setIsCommentViewOpen]);
 
   const onEdit = useCallback(async (updatedPost: Partial<IPost>) => {
     await editPost(postId, updatedPost);
@@ -59,7 +63,8 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
 
   return (
     <Card className='card-wrapper' sx={{ minWidth: 400, minHeight: 400, boxShadow: 3 }}>
-      <CardContent className='post-contnet'>
+      <CardContent className='post-contnet-container'>
+        <div className="post-contnet">
         <div className='top-bar'>
           <div className='right-side'>
             <img className='profile-photo' src={userImage} width={35} height={35} />
@@ -80,7 +85,7 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
         <div className='bottom-row'>
           <div className='left-side'>
             <p>{comments.length}</p>
-            <span><CommentIcon/></span>
+            <span onClick={toggleCommentsPopUp}><CommentIcon/></span>
             <p>{likes.length}</p>
             <span onClick={onClickLike}><FavoriteIcon className={classNames({'liked-icon':isLiked})} /></span>
           </div>
@@ -90,8 +95,11 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
 
           </div>
         </div>
+        <CommentsView isOpen={isCommentViewOpen} onSubmitComments={onPostChange} comments={comments} toggleIsOpen={toggleCommentsPopUp}/>
         <EditPostModal onSubmit={onEdit} isOpen={isEditPopupOpen} setIsOpen={setIsEditPopupOpen} defaultValues={{ text, image: imgUrl }} />
-      </CardContent>
+      
+        </div>
+        </CardContent>
     </Card>
   );
 };

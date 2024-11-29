@@ -63,7 +63,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
           </Typography>
           <div className='posts'>
             {
-              data?.map((post: IPost) => <Post postId={post._id} text={post.text} imgUrl={userpost} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments} ></Post>)
+              data?.map((post: IPost) => <Post key={post._id} postId={post._id} text={post.text} imgUrl={userpost} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments} ></Post>)
             }
           </div>
         </div>
