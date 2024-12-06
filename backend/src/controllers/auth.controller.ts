@@ -77,68 +77,10 @@ export class AuthController extends BaseController<IUser, AuthService> {
 
 export const authController = new AuthController();
 
-/**
- * @swagger
- * /auth/register:
- *   post:
- *     description: registrer user
- *     parameters:
- *       - name: username
- *         in: body
- *         description: The user name
- *         required: true
- *         schema:
- *           type: string
- *           example: ilayhagever   
- *       - name: email
- *         in: body
- *         description: The user email
- *         required: true
- *         schema:
- *           type: string
- *           example: daniel@gmail.com
- *       - name: password
- *         in: body
- *         description: The user password
- *         required: true
- *         schema:
- *           type: string
- *           example: 123456   
- *     responses:
- *       201:
- *         description: user created
- *       400:
- *         description: problem creating user 
- */
 
 
 
-/**
- * @swagger
- * /auth/login:
- *   post:
- *     description: user login
- *     parameters:
- *       - name: username
- *         in: body
- *         description: The user name
- *         required: true
- *         schema:
- *           type: string
- *           example: ilayhagever   
- *       - name: password
- *         in: body
- *         description: The user password
- *         required: true
- *         schema:
- *           type: string
- *           example: 123456   
- *     responses:
- *       200:
- *         description: sucsses login
- *       400:
- *         description: problem logging user 
- */
+
 
 
 
