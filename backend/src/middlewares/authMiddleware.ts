@@ -4,7 +4,7 @@ import { config } from '../config/config';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): any  => {
   console.log('req.originalUrl', req.originalUrl);
-  if(req.originalUrl.includes('api/auth')) {
+  if(req.originalUrl.includes('api/auth') || req.originalUrl.includes('api/user/create')) {
     return next();
   } 
   console.log('passed');
@@ -12,8 +12,8 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
   if (!token) return res.status(401).json({ message: 'No token provided' });
 
   try {
-    const userData = jwt.verify(token, config.JWT_SECRET);
-    (req as Express.Request & { user?: any }).user = userData;
+    const userData = jwt.verify(token, config.JWT_SECRET) as {userId: string};
+    (req as Express.Request & { user?: {userId: string} }).user = userData;
     return next();
   } catch (error) {
     return res.status(401).json({ message: 'Invalid token' });

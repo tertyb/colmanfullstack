@@ -1,11 +1,8 @@
 import { Request, Response, Router } from 'express';
 import express from 'express';
-import { getUserData } from '../services/authService';
 
-export const exractUserIdFromToken = async (req: Request) => {
-
-    const user = (req as express.Request & { user?: any }).user
-    const userData = await getUserData(user.userId);
-    return userData.id;
-
+export const exractUserIdFromToken = (req: Request) => {
+    const user: {userId: string} | undefined = (req as express.Request & { user?: {userId: string} }).user
+    if(!user?.userId) throw new Error('authentication error')
+    return user.userId;
 }

@@ -1,9 +1,47 @@
 import { Request, Response, Router } from 'express';
-import { loginUser, refreshUserToken, registerUser } from '../services/authService';
 import { IAuthTokens } from '../interfaces/auth';
+import { BaseController } from './base.controller';
+import { IUser } from '../models/user.model';
+import { AuthService } from '../services/auth.service';
 const passport = require('passport')
 
-export const authRouter = Router();
+export class AuthController extends BaseController<IUser, AuthService> {
+  constructor() {
+    super(new AuthService());
+  }
+
+  async register(req: Request, res: Response) {
+    const { username, password, email} = req.body;
+    try {
+      const authTokens: IAuthTokens = await this.service.registerUser({username, password, email});
+      res.status(201).json(authTokens);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  async login(req: Request, res: Response) {
+    const { username, password} = req.body;
+    try {
+      const authTokens: IAuthTokens = await this.service.loginUser(username, password);
+      res.status(201).json(authTokens);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  async refresh(req: Request, res: Response) {
+    const { refreshToken } = req.body;
+    try {
+      const authTokens: IAuthTokens = await this.service.refreshUserToken(refreshToken);
+      res.json(authTokens);
+    } catch (error:any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+}
+
+export const authController = new AuthController();
 
 /**
  * @swagger
@@ -18,6 +56,13 @@ export const authRouter = Router();
  *         schema:
  *           type: string
  *           example: ilayhagever   
+ *       - name: email
+ *         in: body
+ *         description: The user email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: daniel@gmail.com
  *       - name: password
  *         in: body
  *         description: The user password
@@ -31,15 +76,8 @@ export const authRouter = Router();
  *       400:
  *         description: problem creating user 
  */
-authRouter.post('/register', async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  try {
-    const authTokens: IAuthTokens = await registerUser(username, password);
-    res.status(201).json(authTokens);
-  } catch (error: any) {
-    res.status(400).json({ message: error.message });
-  }
-});
+
+
 
 /**
  * @swagger
@@ -67,28 +105,10 @@ authRouter.post('/register', async (req: Request, res: Response) => {
  *       400:
  *         description: problem logging user 
  */
-authRouter.post('/login', async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  try {
-    const authTokens: IAuthTokens = await loginUser(username, password);
-    res.json(authTokens);
-  } catch (error:any) {
-    res.status(400).json({ message: error.message });
-  }
-});
 
 
 
 
-authRouter.post('/refresh', async (req: Request, res: Response) => {
-  const { refreshToken } = req.body;
-  try {
-    const authTokens: IAuthTokens = await refreshUserToken(refreshToken);
-    res.json(authTokens);
-  } catch (error:any) {
-    res.status(400).json({ message: error.message });
-  }
-});
 // authRouter.get('/google', async (req: Request, res: Response) => {
 //   // try {
 //       passport.authenticate('google', { scope: ['profile', 'email'] })

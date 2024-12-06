@@ -1,14 +1,15 @@
-import express, { Request, Response } from 'express';
-import cors from 'cors'
-import { config } from './config/config';
-import dotenv from 'dotenv'
-import { authRouter } from './controllers/authController';
-import connectDB from './config/db';
-import { authMiddleware } from './middlewares/authMiddleware';
-import { userRouter } from './controllers/userController';
-import { postRouter } from './controllers/post.controller';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { config } from './config/config';
+import connectDB from './config/db';
+import { authMiddleware } from './middlewares/authMiddleware';
+import { commentRouter } from './routes/comment.route';
+import { userRouter } from './routes/user.route';
+import { authRouter } from './routes/auth.route';
+import { postRouter } from './routes/post.route';
 
 
 const passport = require('passport');
@@ -26,10 +27,11 @@ dotenv.config();
 // Middleware
 app.use(cors());
 
-app.use('/api/',authMiddleware);
+app.use('/api',authMiddleware);
 
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
+app.use('/api/comment', commentRouter);
 app.use('/api/post', postRouter);
 
 connectDB()
