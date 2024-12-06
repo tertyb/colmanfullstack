@@ -13,8 +13,12 @@ export class AuthController extends BaseController<IUser, AuthService> {
   async register(req: Request, res: Response) {
     const { username, password, email} = req.body;
     try {
-      const authTokens: IAuthTokens = await this.service.registerUser({username, password, email});
-      res.status(201).json(authTokens);
+      if(!username || !password || !email) {
+        throw new Error('no username or password or email provided');
+      }
+
+      const userData = await this.service.registerUser({username, password, email});
+      res.status(201).json(userData);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
@@ -23,6 +27,10 @@ export class AuthController extends BaseController<IUser, AuthService> {
   async login(req: Request, res: Response) {
     const { username, password} = req.body;
     try {
+      if(!username || !password) {
+        throw new Error('no username or password provided');
+      }
+
       const authTokens: IAuthTokens = await this.service.loginUser(username, password);
       res.status(201).json(authTokens);
     } catch (error: any) {
@@ -30,14 +38,40 @@ export class AuthController extends BaseController<IUser, AuthService> {
     }
   }
 
-  async refresh(req: Request, res: Response) {
-    const { refreshToken } = req.body;
-    try {
-      const authTokens: IAuthTokens = await this.service.refreshUserToken(refreshToken);
-      res.json(authTokens);
-    } catch (error:any) {
-      res.status(400).json({ message: error.message });
+    async logout (req: Request, res: Response) {
+
+    const authHeaders = req.headers['authorization'];
+    const token = authHeaders && authHeaders.split(' ')[1];
+
+    if (!token) {
+      res.status(401).json({ message: 'no token provided' });
+    } else {
+      try {
+     await this.service.logout(token);
+        res.status(200).send();
+      } catch (error:any) {
+        res.status(403).json({ message: error.message });
+      }  
     }
+
+};
+
+  async refresh(req: Request, res: Response) {
+    const authHeaders = req.headers['authorization'];
+    const token = authHeaders && authHeaders.split(' ')[1];
+
+    if (!token) {
+      res.status(401).json({ message: 'no token provided' });
+    } else {
+      try {
+        const authTokens: IAuthTokens  = await this.service.refreshUserToken(token);
+        res.status(201).json(authTokens);
+      } catch (error:any) {
+        res.status(400).json({ message: error.message });
+      }  
+    }
+    
+    
   }
 }
 

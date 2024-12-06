@@ -38,6 +38,11 @@ export class BaseService<T> {
         return (await this.model.findOne(filter).lean<T>().exec()) as T;
     }
 
+    async getModelByFilter(filter: RootFilterQuery<T> = {}) {
+
+        return (await this.model.findOne(filter)) as T;
+    }
+
     async deleteById(id: string) {
         if (!mongoose.isValidObjectId(id)) throw new Error('invalid id');
 

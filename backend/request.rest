@@ -14,17 +14,19 @@ POST http://localhost:5000/api/auth/login
 content-type: application/json
 
 {
-    "username": "daniel22",
-    "password": "daniel"
+    "username": "daniel2234",
+    "password": "daniel34"
 }
 
 ###
 POST http://localhost:5000/api/auth/refresh
 content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1MTA0NTUsImV4cCI6MTczMzU0NjQ1NX0.jO3FokENigSM6IsaagxKrDMwNd8IhuoJr5fXZtMpwus
 
-{
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhbmllbCIsImlhdCI6MTczMzQ4MDQzNCwiZXhwIjoxNzM0MDg1MjM0fQ.9ZKepE1-Y_XW_3nT8EYEBxHPd4YeRgq5PVz5TJlulIo"
-}
+###
+POST http://localhost:5000/api/auth/logout
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1MTA0MjEsImV4cCI6MTczMzU0NjQyMX0.R_5_kpCnla0ICZtc9M2VW-nGXqE3XzSsQa9RXAeeHF4
 
 
 ###
