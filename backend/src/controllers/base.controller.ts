@@ -65,7 +65,7 @@ export class BaseController<T, Service extends BaseService<T>> {
 
       const { id } = req.body;
       const userId = exractUserIdFromToken(req);
-      if (!(await this.service.validateUserId(id, userId, this.userIdFieldName))) throw new Error ('not allowed to delete this entity')
+      if (!(await this.service.validateUserId(id, userId, this.userIdFieldName))) throw new Error ('not allowed to edit this entity')
 
       const message: string = await this.service.update(req.body, id);
       res.json({ message })
