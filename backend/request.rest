@@ -65,17 +65,17 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyZ
 ###
 POST http://localhost:5000/api/post/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyZWYwOTEwZmI0MDQ5ZTU2NzgwNzIiLCJpYXQiOjE3MzM0ODgzOTMsImV4cCI6MTczMzQ5MTk5M30.uytVeQD8xawjosofDXqIRTCDEKIjLp-H-SsKC1hGzHg
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyY2U3YjlhNzgzMGU2ZDQ1NzM1MTEiLCJpYXQiOjE3MzM0ODk4ODUsImV4cCI6MTczMzQ5MzQ4NX0.rxeLxWAJQqIW4yjTHUGmcvh8fP9UF2o0eMVJKXij3YY
 
 {
-    "text": "daniel123",
+    "text": "daniel123-ceck",
     "image": "did.png"
 }
 
 ###
-DELETE  http://localhost:5000/api/post/6752ed0db0de8f1eebd9a540
+DELETE  http://localhost:5000/api/post/6752f7a9c552b48bd9710dd2
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyZWYwOTEwZmI0MDQ5ZTU2NzgwNzIiLCJpYXQiOjE3MzM0ODgzOTMsImV4cCI6MTczMzQ5MTk5M30.uytVeQD8xawjosofDXqIRTCDEKIjLp-H-SsKC1hGzHg
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyY2U3YjlhNzgzMGU2ZDQ1NzM1MTEiLCJpYXQiOjE3MzM0ODk4ODUsImV4cCI6MTczMzQ5MzQ4NX0.rxeLxWAJQqIW4yjTHUGmcvh8fP9UF2o0eMVJKXij3YY
 
 ###
 POST  http://localhost:5000/api/post/6752d630ce58dbdd0e809602/like
@@ -112,7 +112,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyY
 
 {
     "text": "daniel123-updated",
-    "postId": "6752d7a8c1306bd9c20bf39b"
+    "postId": "6752f7a9c552b48bd9710dd2"
 }
 
 
