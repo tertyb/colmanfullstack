@@ -1,6 +1,7 @@
 
 import { createContext, useCallback, useContext, useState } from 'react';
 import {IUser} from '../interfaces/user'
+import { removeAuthTokens } from '../utils/functions/localstorage';
 
 interface UserContextProps {
     user: IUser | undefined;
@@ -18,7 +19,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   },[setUser])
 
   const logout = useCallback(() => {
-    localStorage.removeItem('accessToken');
+    removeAuthTokens()
+
     setUser(undefined);
   },[setUser]);
 

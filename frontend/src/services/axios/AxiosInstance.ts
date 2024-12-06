@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
+import { removeAuthTokens, updateTokens } from "../../utils/functions/localstorage";
 
 // Create an Axios instance
 export const AxiosInstence = axios.create({
@@ -26,20 +27,20 @@ AxiosInstence.interceptors.response.use(
 
             const refreshToken = localStorage.getItem("refreshToken");
             try {
-                const { data } = await axios.post("http://localhost:5000/auth/refresh", {
-                    token: refreshToken,
+                const { data } = await axios.post("http://localhost:5000/api/auth/refresh", {
+                    refreshToken,
                 });
 
                 // Update tokens
-                localStorage.setItem("accessToken", data.accessToken);
-                localStorage.setItem("refreshToken", data.refreshToken);
+                updateTokens(data);
 
                 // Retry original request
-                originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
-                // return AxiosInstence(originalRequest);
+                originalRequest.headers.Authorization = `Bearer ${data.token}`;
+                return AxiosInstence(originalRequest);
             } catch (refreshError) {
                 // Handle refresh token failure (e.g., log out user)
-                console.error("Refresh token failed:", refreshError);
+                removeAuthTokens()
+                redirect('/login');
                 throw refreshError;
             }
         }
@@ -48,6 +49,11 @@ AxiosInstence.interceptors.response.use(
     }
 );
 
+
+const redirect = (url: string) => {
+    window.location.replace(url);
+    window.location.reload();
+}
 // SWR fetcher using Axios
 const fetcher = (url: string) => AxiosInstence.get(url).then((res) => res.data);
 

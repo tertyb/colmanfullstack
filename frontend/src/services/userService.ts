@@ -1,65 +1,79 @@
 import axios from 'axios';
 import useSWR from 'swr'; // Replace with your Axios instance setup
-import { IUser } from '../interfaces/user';
-import { AxiosInstence } from './axios/AxiosInstance';
 import { showToast } from '../consts/toast';
+import { IGenericResponse, IUser, IUserResponse } from '../interfaces/user';
+import { AxiosInstence } from './axios/AxiosInstance';
+import { updateTokens } from '../utils/functions/localstorage';
 
 export interface ILoginResponse {
   token: string;
   refreshToken: string;
 }
 
+export const userDataKey = 'user-data'
+
 const fetchUserData = async () => {
-  const res = await AxiosInstence.get<IUser>('/user/userData');
-  return res.data;
+  const res = await AxiosInstence.get<IUserResponse>('/user/data');
+  return res.data.userData;
 }
 
-export const useGetAutomaticUserData = (token: string | null) =>
+export const useGetUserData = (userid: string | null) =>
   useSWR<IUser>(
-    token ? ['UserData', token] : null,
+    userid ? `user-data` : null,
     fetchUserData
   );
 
-const getAuthentication = async (username: string, password: string) => {
 
-  const res = await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login', {
+export const loginUser = async (username: string, password: string) => {
+
+  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login', {
     username,
     password
-  });
-  localStorage.setItem('accessToken', res.data.token);
-  console.log('auth - ', JSON.stringify(res.data.token))
+  })).data;
+
+  updateTokens(data)
 };
 
-const registerUser = async (username: string, password: string) => {
+export const registerUser = async (username: string, password: string) => {
 
-  const res = await axios.post<ILoginResponse>('http://localhost:5000/api/auth/register', {
+  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/register', {
     username,
     password
-  });
-  localStorage.setItem('accessToken', res.data.token);
-  console.log('auth - ', JSON.stringify(res.data.token))
+  })).data;
+  
+  updateTokens(data);
 };
+
 export const getLogin = async (username: string, password: string) => {
   try {
-    await getAuthentication(username, password);
-    const user = await fetchUserData();
-    showToast('login successfully', "success")
-    return user;
-  } catch (error) {
-    showToast('failed to login', "error")
+    await loginUser(username, password);
+    showToast('login successfully', "success");
 
+    return true;
+  } catch (error) {
+    showToast('failed to login', "error");
+    return 
   }
 }
 
-export const register = async (username: string, password: string) => {
+export const getRegister = async (username: string, password: string) => {
   try {
     await registerUser(username, password);
-    const user = await fetchUserData();
     showToast('register successfully', "success");
-    return user
+
   } catch (error) {
     showToast('failed to register', "error")
   }
 }
 
+export const editProfile = async (userId: string, editedProfile: Partial<IUser>) => {
+  try {
+      const responseStatus = (await AxiosInstence.put<IGenericResponse>(`user/update`, {
+          ...editedProfile,
+      })).data
+      showToast(responseStatus.message, "success")
+    } catch (error) {
+      showToast('failed to edit post', "error")
+  }
+}
 

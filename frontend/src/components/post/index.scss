@@ -4,13 +4,19 @@
   width: 100%;
 }
 
-.post-contnet {
+.post-contnet-container {
   height: 100%;
+  width: 100%;
+
+  .post-contnet {
+    height: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 2%;
   align-items: flex-start;
   width: 100%;
+  }
 }
 
 .profile-photo {
@@ -60,12 +66,28 @@
 }
 
 .post-img-wrapper {
+  position: relative;
   width: 100%;
   height: 60%;
   background-color: rgb(243, 244, 246, var(--tw-bg-opacity, 1));
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.like-animation {
+  position: absolute;
+  // top: 50%;
+  // left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 100px;
+  color: red;
+  animation: heart-pop 1s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+
+  .like-icon {
+    font-size: 120px;
+    color: 'red';
+  }
 }
 
 .post-img {
@@ -89,6 +111,10 @@
     gap: 5px;
     justify-content: center;
     align-items: center;
+
+    .liked-icon {
+      color: red;
+    }
   }
 
   .right-side {
@@ -96,3 +122,4 @@
     gap: 5px;
   }
 }
+

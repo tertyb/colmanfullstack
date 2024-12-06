@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import './index.scss'; // Import the CSS styles for the navbar
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { Typography, CardActions, Button } from '@mui/material';
+import { editProfile, userDataKey } from '../../services/userService';
+import { mutate } from 'swr';
 
 
 
 type EditProfileModalProps = {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isOpen: boolean;
+  toggleIsOpen: () => void;
+  defaultValues: { username: string, userDescription: string };
+  userid: string
 };
 
 const style = {
@@ -26,17 +30,28 @@ const style = {
 };
 
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ open, setOpen }) => {
+const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpen, defaultValues, userid }) => {
+  const descInputRef = useRef(null);
+  const usernameInputRef = useRef<HTMLInputElement>(null);
+  const onSubmit = useCallback(async () => {
+    const updatedName = usernameInputRef.current?.value ? usernameInputRef.current.value : defaultValues.username;
+    const updatedProfile = {
+      username: updatedName,
+      image: 'editProfie.png'
+    }
+    await editProfile(userid, updatedProfile);
+    mutate(userDataKey);
+    toggleIsOpen();
+  }, [userid])
 
-  const handleClose = () => setOpen(false);
 
   return (
     <div>
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={isOpen}
+        onClose={toggleIsOpen}
       >
         <Box sx={style}>
           <div className='box-content'>
@@ -44,8 +59,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ open, setOpen }) =>
               <h3> Edit  profile</h3>
               <p className='sub-comment'> Make changes to your profile here.</p>
             </div>
-            <TextField className='TextField' id="outlined-basic" label="User Name" variant="outlined" />
-            <TextField className='TextField' multiline={true} rows={3} id="outlined-basic" label="Description" variant="outlined" />
+            <TextField inputRef={usernameInputRef} defaultValue={defaultValues.username} className='TextField' id="outlined-basic" label="User Name" variant="outlined" />
+            <TextField inputRef={descInputRef} defaultValue={defaultValues.userDescription} className='TextField' multiline={true} rows={3} id="outlined-basic" label="Description" variant="outlined" />
             <input
               accept="image/*"
 
@@ -61,7 +76,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ open, setOpen }) =>
             </label>
 
             <div className='footer'>
-              <Button variant="contained" component="span" >
+              <Button onClick={onSubmit} variant="contained" component="span" >
                 Save Changes
               </Button>
             </div>
