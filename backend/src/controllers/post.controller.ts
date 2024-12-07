@@ -42,7 +42,7 @@ export class PostController extends BaseController<IPost, PostService> {
     try {
 
       const posts = await this.service.getAll();
-      res.json({ posts });
+      res.json(posts);
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });
