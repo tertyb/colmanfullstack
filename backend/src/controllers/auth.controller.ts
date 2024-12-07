@@ -32,7 +32,7 @@ export class AuthController extends BaseController<IUser, AuthService> {
       }
 
       const authTokens: IAuthTokens = await this.service.loginUser(username, password);
-      res.status(201).json(authTokens);
+      res.status(200).json(authTokens);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }

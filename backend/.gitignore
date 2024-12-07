@@ -1,6 +1,8 @@
 # Node modules
 node_modules/
 
+coverage
+
 # TypeScript compiled files
 dist/
 *.tsbuildinfo

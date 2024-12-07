@@ -47,8 +47,6 @@ export const userRouter = Router();
  */
 userRouter.get('/:userid/posts', userController.getUserPosts.bind(userController));
 
-
-
 /**
  * @swagger
  * /user/data:
