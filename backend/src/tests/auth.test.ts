@@ -9,8 +9,10 @@ var app: Application;
 const username = 'test';
 const email = 'test@mail.com';
 const userPassword = '123456';
-let accessToken;
-let refreshToken;
+let accessToken: string;
+let refreshToken: string;
+
+jest.setTimeout(30000);
 
 beforeAll(async () => {
     app = await appPromise;
@@ -59,4 +61,44 @@ describe("Login", () => {
         expect(refreshToken).not.toEqual(null);
     });
 });
+
+describe("refresh token request", () => {
+    test('should respond with tokens', async () => {
+        const response = await request(app).post('/api/auth/refresh')
+            .set({ authorization: 'Bearer ' + refreshToken });
+        expect(response.statusCode).toEqual(200);
+
+        const newAccessToken = response.body.accessToken;
+        const newRefreshToken = response.body.refreshToken;
+
+        expect(newAccessToken).not.toEqual(null);
+        expect(newRefreshToken).not.toEqual(null);
+    });
+});
+
+describe("Logout", () => {
+    test('User logout', async () => {
+        const response = await request(app).post('/api/auth/logout')
+            .set({ authorization: 'Bearer ' + refreshToken });
+        expect(response.statusCode).toEqual(200);
+
+        const userafterLogout = await UserModel.findOne({ username });
+
+
+        expect(userafterLogout?.tokens).not.toContain(refreshToken);
+    });
+});
+
+
+describe("Timeout access", () => {
+    test('it should not provide the information', async () => {
+        await new Promise(r => setTimeout(r, 20000));
+        const response = await request(app).get('/api/post/all')
+            .set({ authorization: 'Bearer ' + accessToken });
+        expect(response.statusCode).not.toEqual(200);
+    });
+});
+
+
+
 

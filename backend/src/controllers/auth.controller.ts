@@ -65,7 +65,7 @@ export class AuthController extends BaseController<IUser, AuthService> {
     } else {
       try {
         const authTokens: IAuthTokens  = await this.service.refreshUserToken(token);
-        res.status(201).json(authTokens);
+        res.status(200).json(authTokens);
       } catch (error:any) {
         res.status(400).json({ message: error.message });
       }  

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.64% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/56</span>
+                <span class='fraction'>40/56</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/50</span>
+                <span class='fraction'>40/50</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -213,38 +213,38 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -259,10 +259,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import bcrypt from 'bcryptjs';
@@ -313,39 +313,39 @@ export class AuthService extends BaseService&lt;IUser&gt; {
     return { accessToken: accessToken, refreshToken: refreshToken };
   }
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >logout(</span>token: string) {
-    const userId = &lt;TokenInfo&gt;<span class="cstat-no" title="statement not covered" >jwt.verify(token, config.REFRESH_SECRET)</span>
-    const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user == null) <span class="cstat-no" title="statement not covered" >throw new Error('invalid request');</span></span>
+  async logout(token: string) {
+    const userId = &lt;TokenInfo&gt;jwt.verify(token, config.REFRESH_SECRET)
+    const user = await UserModel.findById(userId);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (user == null) <span class="cstat-no" title="statement not covered" >throw new Error('invalid request');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.tokens.includes(token)) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.tokens.includes(token)) {
 <span class="cstat-no" title="statement not covered" >      user.tokens = []; </span>// Invalidate all user tokens
 <span class="cstat-no" title="statement not covered" >      await user.save();</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('invalid request');</span>
     }
-<span class="cstat-no" title="statement not covered" >    user.tokens.splice(user.tokens.indexOf(token), 1);</span>
-<span class="cstat-no" title="statement not covered" >    await user.save();</span>
+    user.tokens.splice(user.tokens.indexOf(token), 1);
+    await user.save();
   }
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >refreshUserToken(</span>token: string) {
+  async refreshUserToken(token: string) {
 &nbsp;
-    const userId = &lt;TokenInfo&gt;<span class="cstat-no" title="statement not covered" >jwt.verify(token, config.REFRESH_SECRET)</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userId) <span class="cstat-no" title="statement not covered" >throw new Error('invalid token')</span></span>
+    const userId = &lt;TokenInfo&gt;jwt.verify(token, config.REFRESH_SECRET)
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userId) <span class="cstat-no" title="statement not covered" >throw new Error('invalid token')</span>
 &nbsp;
-    const user = <span class="cstat-no" title="statement not covered" >await UserModel.findById(userId);</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (user == null) <span class="cstat-no" title="statement not covered" >throw new Error('invalid request');</span></span>
+    const user = await UserModel.findById(userId);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (user == null) <span class="cstat-no" title="statement not covered" >throw new Error('invalid request');</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.tokens.includes(token)) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!user.tokens.includes(token)) {
 <span class="cstat-no" title="statement not covered" >      user.tokens = []; </span>// invalidate all user tokens
 <span class="cstat-no" title="statement not covered" >      await user.save();</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('invalid request');</span>
     }
 &nbsp;
-    const { accessToken, refreshToken } = <span class="cstat-no" title="statement not covered" >this.generateAuthKeys(user._id);</span>
+    const { accessToken, refreshToken } = this.generateAuthKeys(user._id);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    user.tokens[user.tokens.indexOf(token)] = refreshToken;</span>
-<span class="cstat-no" title="statement not covered" >    await user.save();</span>
-<span class="cstat-no" title="statement not covered" >    return { accessToken: accessToken, refreshToken: refreshToken };</span>
+    user.tokens[user.tokens.indexOf(token)] = refreshToken;
+    await user.save();
+    return { accessToken: accessToken, refreshToken: refreshToken };
   }
 &nbsp;
   async <span class="fstat-no" title="function not covered" >getUserDataByUserName(</span>username: string) {
@@ -373,7 +373,7 @@ export class AuthService extends BaseService&lt;IUser&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-07T14:50:36.970Z
+                at 2024-12-07T19:44:33.994Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

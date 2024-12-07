@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.44% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/36</span>
+                <span class='fraction'>28/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/15</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">44.44% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/36</span>
+                <span class='fraction'>28/36</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -209,32 +209,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -311,17 +311,17 @@ export class AuthController extends BaseController&lt;IUser, AuthService&gt; {
     }
   }
 &nbsp;
-    async <span class="fstat-no" title="function not covered" >logout </span>(req: Request, res: Response) {
+    async logout (req: Request, res: Response) {
 &nbsp;
-    const authHeaders = <span class="cstat-no" title="statement not covered" >req.headers['authorization'];</span>
-    const token = <span class="cstat-no" title="statement not covered" >authHeaders &amp;&amp; authHeaders.split(' ')[1];</span>
+    const authHeaders = req.headers['authorization'];
+    const token = authHeaders &amp;&amp; authHeaders.split(' ')[1];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!token) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!token) {
 <span class="cstat-no" title="statement not covered" >      res.status(401).json({ message: 'no token provided' });</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      try {</span>
-<span class="cstat-no" title="statement not covered" >     await this.service.logout(token);</span>
-<span class="cstat-no" title="statement not covered" >        res.status(200).send();</span>
+      try {
+     await this.service.logout(token);
+        res.status(200).send();
       } catch (error:any) {
 <span class="cstat-no" title="statement not covered" >        res.status(403).json({ message: error.message });</span>
       }  
@@ -329,16 +329,16 @@ export class AuthController extends BaseController&lt;IUser, AuthService&gt; {
 &nbsp;
 };
 &nbsp;
-  async <span class="fstat-no" title="function not covered" >refresh(</span>req: Request, res: Response) {
-    const authHeaders = <span class="cstat-no" title="statement not covered" >req.headers['authorization'];</span>
-    const token = <span class="cstat-no" title="statement not covered" >authHeaders &amp;&amp; authHeaders.split(' ')[1];</span>
+  async refresh(req: Request, res: Response) {
+    const authHeaders = req.headers['authorization'];
+    const token = authHeaders &amp;&amp; authHeaders.split(' ')[1];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!token) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!token) {
 <span class="cstat-no" title="statement not covered" >      res.status(401).json({ message: 'no token provided' });</span>
     } else {
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const authTokens: IAuthTokens  = <span class="cstat-no" title="statement not covered" >await this.service.refreshUserToken(token);</span>
-<span class="cstat-no" title="statement not covered" >        res.status(201).json(authTokens);</span>
+      try {
+        const authTokens: IAuthTokens  = await this.service.refreshUserToken(token);
+        res.status(200).json(authTokens);
       } catch (error:any) {
 <span class="cstat-no" title="statement not covered" >        res.status(400).json({ message: error.message });</span>
       }  
@@ -382,7 +382,7 @@ export const authController = new AuthController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-07T14:50:36.970Z
+                at 2024-12-07T19:44:33.994Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
