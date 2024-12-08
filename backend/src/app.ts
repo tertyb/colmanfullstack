@@ -11,7 +11,7 @@ import { authRouter } from './routes/auth.route';
 import { postRouter } from './routes/post.route';
 import express, { Application } from 'express';
 
-const appPromise: Promise<Application> = new Promise((resolve, reject) => {
+const appPromise: Promise<Application> = new Promise( async (resolve, reject) => {
 
     const app = express();
 
@@ -34,7 +34,7 @@ const appPromise: Promise<Application> = new Promise((resolve, reject) => {
     app.use('/api/comment', commentRouter);
     app.use('/api/post', postRouter);
 
-    connectDB()
+    await connectDB()
 
     const swaggerOptions: swaggerJSDoc.Options = {
         definition: {

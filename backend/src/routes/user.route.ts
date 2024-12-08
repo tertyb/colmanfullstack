@@ -54,34 +54,32 @@ userRouter.get('/:userid/posts', userController.getUserPosts.bind(userController
  *     description: fetch user data
  *     responses:
  *       200:
- *         description: sucsses fetching all posts
+ *         description: sucsses fetching user data
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items: 
- *                 type: object
- *                 properties:
- *                   _id:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 67543ee35ed1086ec36400c6
+ *                 password:
+ *                   type: string
+ *                   example: $2a$10$Gkh.cvbF9SV0EZqMo.URU.Fzn4y15NkheCuRM4fyqxf5xT50PWqCC
+ *                 username:
+ *                   type: string
+ *                   example: testuser
+ *                 email:
+ *                   type: string
+ *                   example: testuser@gmail.com
+ *                 image:
+ *                   type: string
+ *                   example: img.png
+ *                 tokens:
+ *                   type: array
+ *                   items:
  *                     type: string
- *                     example: 67543ee35ed1086ec36400c6
- *                   password:
- *                     type: string
- *                     example: $2a$10$Gkh.cvbF9SV0EZqMo.URU.Fzn4y15NkheCuRM4fyqxf5xT50PWqCC
- *                   username:
- *                     type: string
- *                     example: testuser
- *                   email:
- *                     type: string
- *                     example: testuser@gmail.com
- *                   image:
- *                     type: string
- *                     example: img.png
- *                   tokens:
- *                     type: array
- *                     items:
- *                       type: string
- *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1NzQxMDYsImV4cCI6MTczMzYxMDEwNn0.I5dR3pdSSadHUGhflKa4GG8-fqDGo_O7_i5sWPEY0Tg"
+ *                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1NzQxMDYsImV4cCI6MTczMzYxMDEwNn0.I5dR3pdSSadHUGhflKa4GG8-fqDGo_O7_i5sWPEY0Tg"
  *       400:
  *         description: problem fetching all posts 
  */

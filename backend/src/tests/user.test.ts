@@ -1,61 +1,106 @@
-// import appPromise from '../app'
-// import mongoose from 'mongoose';
-// import request from "supertest";
-// import { Application } from 'express';
-// import UserModel from '../models/user.model';
-// var app: Application;
+import appPromise from '../app'
+import mongoose from 'mongoose';
+import request from "supertest";
+import { Application } from 'express';
+import UserModel from '../models/user.model';
+import PostModel from '../models/post.model';
 
-// const username = 'test';
-// const email = 'test@mail.com';
-// const userPassword = '123456';
-// let accessToken;
-// let refreshToken;
+var app: Application;
 
-// beforeAll(async () => {
-//     app = await appPromise;
-//     await UserModel.deleteOne({ username });
-// });
+const username = 'testUser1';
+const userPassword = '123456';
+const email = 'test@email.com';
+let postText = "test text"
+let postImg = "img.png"
+let userUpdatedImg = "img2.png"
+let newUserId: string;
+let accessToken: string;
 
-// afterAll(async () => {
-//     await UserModel.deleteOne({ username });
-//     mongoose.connection.close();
-// });
+beforeAll(async () => {
+    app = await appPromise;
+    await UserModel.deleteMany();
+    await PostModel.deleteMany();
+    const userResponse = await request(app)
+        .post("/api/auth/register")
+        .send({
+            'username': username,
+            'email': email,
+            'password': userPassword
+        });
+    newUserId = userResponse.body._id;
+
+    await loginUser();
+    await request(app)
+        .post('/api/post/create')
+        .set({ authorization: 'Bearer ' + accessToken }).send({
+            "text": postText,
+            "image": postImg
+        });
+});
+
+const loginUser = async () => {
+    const response = await request(app).post('/api/auth/login').send({
+        username: username,
+        password: userPassword,
+    });
+    accessToken = response.body.accessToken;
+}
+
+beforeEach(async () => {
+    await loginUser();
+});
+
+afterAll(async () => {
+    await Promise.all([
+        PostModel.deleteMany(),
+        UserModel.deleteMany(),
+        mongoose.connection.close()
+    ])
+});
 
 
-// describe("Register", () => {
-//     test("Add new user", async () => {
-//         const response = await request(app)
-//             .post("/api/auth/register")
-//             .send({
-//                 'username': username,
-//                 'email': email,
-//                 'password': userPassword
-//             });
-//         expect(response.statusCode).toEqual(201);
-//     });
-// });
+describe("User Tests", () => {
 
-// describe("Restrict access without Auth /", () => {
-//     test("It should respond with error", async () => {
-//         const response = await request(app).get("/api/post/all");
-//         expect(response.statusCode).not.toEqual(200);
-//     });
-// });
 
-// describe("Login", () => {
-//     test("Login user", async () => {
-//         const response = await request(app).post("/api/auth/login").send({
-//             username: username,
-//             password: userPassword
-//         });
+    test("update a user ", async () => {
+        const response = await request(app)
+            .put(`/api/user/update`)
+            .set({ authorization: 'Bearer ' + accessToken }).send({
+                "image": userUpdatedImg
+            });
 
-//         expect(response.statusCode).toEqual(200);
+        expect(response.statusCode).toEqual(200);
+        expect(response.body.image).toEqual(userUpdatedImg);
+    });
 
-//         accessToken = response.body.accessToken;
-//         refreshToken = response.body.refreshToken;
+    test("user data", async () => {
+        const response = await request(app)
+            .get(`/api/user/data`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
 
-//         expect(accessToken).not.toEqual(null);
-//         expect(refreshToken).not.toEqual(null);
-//     });
-// });
+        expect(response.statusCode).toEqual(200);
+        expect(response.body.username).toEqual(username);
+        expect(response.body.email).toEqual(email);
+    });
+
+    test("user posts", async () => {
+        const response = await request(app)
+            .get(`/api/user/${newUserId}/posts`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
+
+        expect(response.statusCode).toEqual(200);
+        expect(response.body.length).toEqual(1);
+    });
+
+    test("Delete a User", async () => {
+        const response = await request(app)
+            .delete(`/api/user/${newUserId}`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
+        expect(response.statusCode).toEqual(200);
+        const user = await UserModel.findOne({ username });
+        expect(user).toEqual(null);
+    });
+
+
+});
 

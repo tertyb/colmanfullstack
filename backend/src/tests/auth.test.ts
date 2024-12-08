@@ -16,16 +16,18 @@ jest.setTimeout(30000);
 
 beforeAll(async () => {
     app = await appPromise;
-    await UserModel.deleteOne({ username });
+    await UserModel.deleteMany();
 });
 
 afterAll(async () => {
-    await UserModel.deleteOne({ username });
-    mongoose.connection.close();
+    await Promise.all([
+        UserModel.deleteMany(),
+        mongoose.connection.close()
+    ])
 });
 
 
-describe("Register", () => {
+describe("Auth tests", () => {
     test("Add new user", async () => {
         const response = await request(app)
             .post("/api/auth/register")
@@ -36,16 +38,16 @@ describe("Register", () => {
             });
         expect(response.statusCode).toEqual(201);
     });
-});
 
-describe("Restrict access without Auth /", () => {
+
+
     test("It should respond with error", async () => {
         const response = await request(app).get("/api/post/all");
         expect(response.statusCode).not.toEqual(200);
     });
-});
 
-describe("Login", () => {
+
+
     test("Login user", async () => {
         const response = await request(app).post("/api/auth/login").send({
             username: username,
@@ -60,9 +62,9 @@ describe("Login", () => {
         expect(accessToken).not.toEqual(null);
         expect(refreshToken).not.toEqual(null);
     });
-});
 
-describe("refresh token request", () => {
+
+
     test('should respond with tokens', async () => {
         const response = await request(app).post('/api/auth/refresh')
             .set({ authorization: 'Bearer ' + refreshToken });
@@ -74,29 +76,25 @@ describe("refresh token request", () => {
         expect(newAccessToken).not.toEqual(null);
         expect(newRefreshToken).not.toEqual(null);
     });
-});
 
-describe("Logout", () => {
+
     test('User logout', async () => {
         const response = await request(app).post('/api/auth/logout')
             .set({ authorization: 'Bearer ' + refreshToken });
         expect(response.statusCode).toEqual(200);
 
         const userafterLogout = await UserModel.findOne({ username });
-
-
         expect(userafterLogout?.tokens).not.toContain(refreshToken);
     });
-});
 
 
-describe("Timeout access", () => {
     test('it should not provide the information', async () => {
         await new Promise(r => setTimeout(r, 20000));
         const response = await request(app).get('/api/post/all')
             .set({ authorization: 'Bearer ' + accessToken });
         expect(response.statusCode).not.toEqual(200);
     });
+
 });
 
 

@@ -64,7 +64,7 @@ export class UserController extends BaseController<IUser, UserService> {
 
       const message = await this.service.update(updateData, userId);
 
-      res.json({ message });
+      res.json( message );
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });

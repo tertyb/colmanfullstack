@@ -53,7 +53,7 @@ export class BaseController<T, Service extends BaseService<T>> {
       const userId = exractUserIdFromToken(req);
       if (!(await this.service.validateUserId(id, userId, this.userIdFieldName))) throw new Error ('not allowed to delete this entity')
       const isDeleted: boolean = await this.service.deleteById(id);
-      res.json({ isDeleted })
+      res.json( isDeleted )
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });
@@ -67,8 +67,8 @@ export class BaseController<T, Service extends BaseService<T>> {
       const userId = exractUserIdFromToken(req);
       if (!(await this.service.validateUserId(id, userId, this.userIdFieldName))) throw new Error ('not allowed to edit this entity')
 
-      const message: string = await this.service.update(req.body, id);
-      res.json({ message })
+      const message = await this.service.update(req.body, id);
+      res.json( message )
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });

@@ -28,7 +28,7 @@ export class PostController extends BaseController<IPost, PostService> {
 
         const updatePostStatus = await this.service.changeLikeMode(userId, postid, isLiked);
 
-        res.json({ message: updatePostStatus });
+        res.json(updatePostStatus);
 
       } else {
         throw new Error('postid not provided')
