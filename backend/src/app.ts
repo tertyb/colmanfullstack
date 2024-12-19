@@ -1,15 +1,15 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
+import express, { Application } from 'express';
+import mongoose from 'mongoose';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
-import connectDB from './config/db';
 import { authMiddleware } from './middlewares/authMiddleware';
-import { commentRouter } from './routes/comment.route';
-import { userRouter } from './routes/user.route';
 import { authRouter } from './routes/auth.route';
+import { commentRouter } from './routes/comment.route';
 import { postRouter } from './routes/post.route';
-import express, { Application } from 'express';
+import { userRouter } from './routes/user.route';
 
 const appPromise: Promise<Application> = new Promise( async (resolve, reject) => {
 
@@ -18,7 +18,7 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
     app.use(express.json());
 
     if (process.env.NODE_ENV == 'test') {
-        dotenv.config({ path: '../.testenv' })
+        dotenv.config({ path: '../.test.env' })
     } else {
         dotenv.config()
     }
@@ -34,8 +34,14 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
     app.use('/api/comment', commentRouter);
     app.use('/api/post', postRouter);
 
-    await connectDB()
-
+    try {
+        await mongoose.connect(config.MONGO_URI as string);
+        console.log('MongoDB connected');
+      } catch (err) {
+        console.error('MongoDB connection failed:', err);
+        process.exit(1);
+      }
+      mongoose.set('bufferCommands', false);
     const swaggerOptions: swaggerJSDoc.Options = {
         definition: {
             openapi: '3.0.0',

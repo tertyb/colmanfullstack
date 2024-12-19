@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import request from "supertest";
 import { Application } from 'express';
 import UserModel from '../models/user.model';
+import PostModel from '../models/post.model';
+import CommentModel from '../models/comment.model';
 
 var app: Application;
 
@@ -21,8 +23,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
     await Promise.all([
+        PostModel.deleteMany(),
         UserModel.deleteMany(),
-        mongoose.connection.close()
+        CommentModel.deleteMany(),
     ])
 });
 
@@ -39,7 +42,15 @@ describe("Auth tests", () => {
         expect(response.statusCode).toEqual(201);
     });
 
-
+    test("missing fields for Add new user", async () => {
+        const response = await request(app)
+            .post("/api/auth/register")
+            .send({
+                'email': email,
+                'password': userPassword
+            });
+        expect(response.statusCode).toEqual(400);
+    });
 
     test("It should respond with error", async () => {
         const response = await request(app).get("/api/post/all");
@@ -63,7 +74,30 @@ describe("Auth tests", () => {
         expect(refreshToken).not.toEqual(null);
     });
 
+    test("Login user with wrong password", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            username: username,
+            password: `1${userPassword}`
+        });
 
+        expect(response.statusCode).toEqual(400);
+    });
+
+    test("Login user with wrong username", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            username: `${username}`
+        });
+
+        expect(response.statusCode).toEqual(400);
+    });
+
+    test("failed Login user", async () => {
+        const response = await request(app).post("/api/auth/login").send({
+            password: userPassword
+        });
+
+        expect(response.statusCode).toEqual(400);
+    });
 
     test('should respond with tokens', async () => {
         const response = await request(app).post('/api/auth/refresh')
@@ -77,6 +111,15 @@ describe("Auth tests", () => {
         expect(newRefreshToken).not.toEqual(null);
     });
 
+    test('missing refresh token for refresh', async () => {
+        const response = await request(app).post('/api/auth/refresh');
+        expect(response.statusCode).toEqual(401);
+    });
+
+    test('failed refresh token', async () => {
+        const response = await request(app).post('/api/auth/refresh').set({ authorization: 'Bearer ' + 'refreshToken' });
+        expect(response.statusCode).toEqual(400);
+    });
 
     test('User logout', async () => {
         const response = await request(app).post('/api/auth/logout')
@@ -85,6 +128,16 @@ describe("Auth tests", () => {
 
         const userafterLogout = await UserModel.findOne({ username });
         expect(userafterLogout?.tokens).not.toContain(refreshToken);
+    });
+
+    test('misssing user token for User logout', async () => {
+        const response = await request(app).post('/api/auth/logout');
+        expect(response.statusCode).toEqual(401);
+    });
+
+    test('failed User logout', async () => {
+        const response = await request(app).post('/api/auth/logout').set({ authorization: 'Bearer ' + `token` });
+        expect(response.statusCode).toEqual(403);
     });
 
 

@@ -62,7 +62,6 @@ afterAll(async () => {
         PostModel.deleteMany(),
         UserModel.deleteMany(),
         CommentModel.deleteMany(),
-        mongoose.connection.close()
     ])
 });
 
@@ -82,6 +81,14 @@ describe("Comment Tests", () => {
         commentId = response.body._id;
     });
 
+    test("empty data for create a comment ", async () => {
+        const response = await request(app)
+            .post(`/api/comment/create`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
+
+        expect(response.statusCode).toEqual(400);
+    });
+
     test("get a comment ", async () => {
         const response = await request(app)
             .get(`/api/comment/${commentId}`)
@@ -89,6 +96,14 @@ describe("Comment Tests", () => {
 
         expect(response.statusCode).toEqual(200);
         expect(response.body.text).toEqual(testComments[0].text);
+    });
+
+    test("no id provided while get a comment ", async () => {
+        const response = await request(app)
+            .get(`/api/comment/null`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
+
+        expect(response.statusCode).toEqual(400);
     });
 
     test("get all post comments ", async () => {
@@ -123,6 +138,14 @@ describe("Comment Tests", () => {
         const comment = await CommentModel.findOne({ _id: commentId });
         expect(comment).toEqual(null);
     });
+
+    test("Delete a Comment while no id provided", async () => {
+        const response = await request(app)
+            .delete(`/api/comment/null`)
+            .set({ authorization: 'Bearer ' + accessToken }).send();
+        expect(response.statusCode).toEqual(400);
+    });
+    
 
     test("get all post comments 2", async () => {
         const response = await request(app)

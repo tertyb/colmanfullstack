@@ -1,9 +1,8 @@
-import appPromise from '../app'
-import mongoose from 'mongoose';
-import request from "supertest";
 import { Application } from 'express';
-import UserModel from '../models/user.model';
+import request from "supertest";
+import appPromise from '../app';
 import PostModel from '../models/post.model';
+import UserModel from '../models/user.model';
 
 var app: Application;
 
@@ -47,7 +46,7 @@ afterAll(async () => {
     await Promise.all([
         PostModel.deleteMany(),
         UserModel.deleteMany(),
-        mongoose.connection.close()
+        PostModel.deleteMany()
     ])
 });
 
@@ -118,7 +117,6 @@ describe("Posts Tests", () => {
                 "id": newPostId,
                 "image": postUpdatedImg
             });
-
         expect(response.statusCode).toEqual(200);
         expect(response.body.image).toEqual(postUpdatedImg);
     });
@@ -140,10 +138,6 @@ describe("Posts Tests", () => {
         expect(response.statusCode).toBe(200);
         expect(response.body.length).toBe(0);
     });
-
-
-
-
 
 });
 

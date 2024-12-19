@@ -23,7 +23,7 @@ export class UserService extends BaseService<IUser> {
   }
 
   async createUser(user: IBaseUser) {
-     await this.saveUser(user);
+     await this.saveUser({...user, tokens: []});
       return 'create entity sucssfully'
   }
 

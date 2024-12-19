@@ -32,11 +32,6 @@ export class BaseService<T> {
         return (await this.model.find(filter).lean<T>().exec()) as T[];
     }
 
-    async getOneByFilter(filter: RootFilterQuery<T> = {}) {
-
-        return (await this.model.findOne(filter).lean<T>().exec()) as T;
-    }
-
     async getModelByFilter(filter: RootFilterQuery<T> = {}) {
 
         return (await this.model.findOne(filter)) as T;

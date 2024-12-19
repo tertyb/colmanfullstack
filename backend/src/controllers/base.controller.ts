@@ -23,16 +23,6 @@ export class BaseController<T, Service extends BaseService<T>> {
     }
   };
 
-  async getAll(req: Request, res: Response) {
-    try {
-      const entites: T[] = await this.service.getAll();
-      res.json(entites)
-
-    } catch (error: any) {
-      res.status(400).json({ message: error.message });
-    }
-  };
-
   async getById(req: Request, res: Response) {
     try {
       if (!req?.params?.id) throw new Error('no id provided')
