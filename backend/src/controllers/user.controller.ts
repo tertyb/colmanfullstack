@@ -49,6 +49,17 @@ export class UserController extends BaseController<IUser, UserService> {
     }
   }
 
+  async userDetials(req: Request, res: Response) {
+    try {
+
+      const userData = await this.service.getById(req.params.id);
+
+      res.json( userData );
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
   async updateUser(req: Request, res: Response) {
     try {
       const userId = exractUserIdFromToken(req);

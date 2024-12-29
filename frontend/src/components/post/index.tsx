@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import classNames from 'classnames';
 import React, { useCallback, useMemo, useState } from 'react';
-
+import { useNavigate } from "react-router-dom";
 import { useUser } from '../../contexts/userContext';
 import { CommentModel, IPost } from '../../interfaces/post';
 import { deletePost, editPost, likePost, unlikePost } from '../../services/postService';
@@ -18,6 +18,7 @@ import { ProfilePhoto } from '../profile-photo';
 import { UpsertPost } from '../upsert-post';
 import { PostPhoto } from '../post-photo';
 import { formatDate } from '../../utils/functions/date';
+import { useProfile } from '../../contexts/profileContext';
 
 type PostProps = {
   postId: string
@@ -25,6 +26,7 @@ type PostProps = {
   imgUrl: string;
   userImage?: string;
   userName: string;
+  userId: string;
   date: string;
   likes: string[];
   comments: CommentModel[];
@@ -32,13 +34,14 @@ type PostProps = {
   isOwner: boolean
 };
 
-const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, date, likes, comments, onPostChange, isOwner }) => {
+const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, userName, date, likes, comments, onPostChange, isOwner }) => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState<boolean>(false);
   const [isCommentViewOpen, setIsCommentViewOpen] = useState<boolean>(false);
   const [showAnimation, setShowAnimation] = useState(false);
-
+  const navigate = useNavigate();
   const { user } = useUser()
   const isLiked = useMemo(() => user?.username && likes.includes(user?._id), [user, likes]);
+  const { setProfileData, userProfile } = useProfile();
 
   const onClickLike = useCallback(async () => {
     const postChangeLikeMode = isLiked ? unlikePost : likePost;
@@ -51,7 +54,14 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
     }
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
-  const formatedDate = useMemo(() => formatDate( new Date(date)), [date]);
+  const userPhotoClick = useCallback(async () => {
+    setProfileData(userId)
+    navigate('/profile')
+  }, [setShowAnimation, isLiked, postId, onPostChange])
+
+
+
+  const formatedDate = useMemo(() => formatDate(new Date(date)), [date]);
   const toggleEditPopUp = useCallback(() => setIsEditPopupOpen((prevState) => !prevState), [setIsEditPopupOpen]);
   const toggleCommentsPopUp = useCallback(() => setIsCommentViewOpen((prevState) => !prevState), [setIsCommentViewOpen]);
 
@@ -67,11 +77,11 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
 
   return (
     <Card className='card-wrapper' sx={{ minWidth: 400, minHeight: 400, boxShadow: 3 }}>
-      <CardContent style={{paddingBottom: '16px', boxSizing: 'border-box'}} className='post-contnet-container'>
+      <CardContent style={{ paddingBottom: '16px', boxSizing: 'border-box' }} className='post-contnet-container'>
         <div className="post-contnet">
           <div className='top-bar'>
             <div className='right-side'>
-              <ProfilePhoto userImage={userImage} width={35} height={35} />
+              <ProfilePhoto classnames='profile' onClick={userPhotoClick} userImage={userImage} width={35} height={35} />
               <div className='sub-info'>
                 <p>{userName}</p>
                 <p className='sub-name'>@{userName.replace(/\s+/g, "")}</p>
@@ -95,16 +105,16 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
             </div>
             {
               isOwner && <div className='right-side'>
-              <EditIcon onClick={toggleEditPopUp}  className='button edit-button' />
-              <DeleteIcon onClick={onDelete} className='button edit-button' />
+                <EditIcon onClick={toggleEditPopUp} className='button edit-button' />
+                <DeleteIcon onClick={onDelete} className='button edit-button' />
 
-            </div>
+              </div>
             }
-            
+
           </div>
           <CommentsView postId={postId} isOpen={isCommentViewOpen} onSubmitComments={onPostChange} comments={comments} toggleIsOpen={toggleCommentsPopUp} />
           {/* <EditPostModal onSubmit={onEdit} isOpen={isEditPopupOpen} setIsOpen={setIsEditPopupOpen} defaultValues={{ text, image: imgUrl }} /> */}
-          <UpsertPost postId={postId} onSave={onEdit} post={{text, image: imgUrl}}  toggleIsOpen={toggleEditPopUp} isOpen={isEditPopupOpen} />
+          <UpsertPost postId={postId} onSave={onEdit} post={{ text, image: imgUrl }} toggleIsOpen={toggleEditPopUp} isOpen={isEditPopupOpen} />
         </div>
       </CardContent>
     </Card>

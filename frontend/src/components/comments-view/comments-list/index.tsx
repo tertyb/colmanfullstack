@@ -1,10 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { CommentModel } from "../../../interfaces/post";
 import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
 import { formatDate } from "../../../utils/functions/date";
 import { baseURL } from "../../../services/axios/AxiosInstance";
-
+import { useProfile } from "../../../contexts/profileContext";
+import { useNavigate } from "react-router-dom";
 
 interface IProp {
     comments: CommentModel[];
@@ -14,7 +15,7 @@ export const CommentsList: React.FC<IProp> = ({ comments }: IProp) => {
     return <div className="comments-container">
         {comments.length > 0 ? (
             comments.map((comment, index) => (
-                <CommentRow key={index} comment={comment}/>
+                <CommentRow key={index} comment={comment} />
             ))
         ) : (
             <p className="no-comments">No comments yet. Be the first!</p>
@@ -27,14 +28,21 @@ interface ICommentRowProp {
 }
 const CommentRow: React.FC<ICommentRowProp> = ({ comment }: ICommentRowProp) => {
     const formatedDate = useMemo(() => formatDate(new Date(comment.date)), [comment])
+    const navigate = useNavigate();
+    const { setProfileData, userProfile } = useProfile();
+
+    const userPhotoClick = async () => {
+        setProfileData(comment.userId)
+        navigate('/profile')
+    }
 
     return <div className="comment">
         <div className="comment-data-with-profile">
-        <ProfilePhoto width={20} height={20} userImage={comment.image}/>
-        <div className="comment-info">
-            <span className="username">@{comment.username}</span>
-            <span className="text">{comment.text}</span>
-        </div>
+            <ProfilePhoto classnames="comment-profile-photo" onClick={userPhotoClick} width={20} height={20} userImage={comment.image} />
+            <div className="comment-info">
+                <span className="username">@{comment.username}</span>
+                <span className="text">{comment.text}</span>
+            </div>
         </div>
 
         <span>{formatedDate}</span>

@@ -10,14 +10,16 @@ export const feedPostKey =  `feed-posts`;
 
 export const useGetUserPosts = (userid?: string) =>
     useSWR<IPost[]>(
-        userid ? userPostKey : null,
+        userid ? `/user/${userid}/posts` : null, 
         async () => {
             const res = await AxiosInstence.get<IPost[]>(`/user/${userid}/posts`);
             return res.data;
-        }, {
-        refreshInterval: 1000 * 10,
-    }
+        },
+        {
+            refreshInterval: 1000 * 10, 
+        }
     );
+
 
     export const useGetFeedPosts = () =>
         useSWR<IPostWithUser[]>(
