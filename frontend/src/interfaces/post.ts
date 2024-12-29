@@ -18,6 +18,7 @@ export interface IPost extends IPostMainData {
   }
 
   export interface CommentModel {
+    userId:string
     username: string;
     text: string;
     date: string;

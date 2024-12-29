@@ -9,8 +9,9 @@ interface IProp {
     userid: string;
     userProfileImage?: string;
     username: string;
+    isOwner: boolean;
 }
-export const UserPosts: React.FC<IProp> = ({ userid, userProfileImage, username }: IProp) => {
+export const UserPosts: React.FC<IProp> = ({ userid, userProfileImage, username,isOwner }: IProp) => {
 
     const { data, isLoading, mutate } = useGetUserPosts(userid);
     const onChangePost = useCallback(() => {
@@ -19,7 +20,7 @@ export const UserPosts: React.FC<IProp> = ({ userid, userProfileImage, username 
 
     if (isLoading) return <></>
     return (<div className='posts'>
-        {data?.map((post: IPost) => <Post isOwner ={post.userId === userid} key={post._id} postId={post._id} text={post.text} imgUrl={post.image} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments}></Post>)}
+        {data?.map((post: IPost) => <Post isOwner ={isOwner} key={post._id} postId={post._id} text={post.text} imgUrl={post.image} userId={userid} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments}></Post>)}
     </div>
     )
 } 

@@ -8,17 +8,24 @@ interface IProp {
     height: number;
     userImage?: string;
     classnames?: string;
-    ObjectUrl?: boolean
+    ObjectUrl?: boolean;
+    onClick?: () => void;
 }
 
-export const ProfilePhoto: React.FC<IProp> = ({ width, height, userImage, classnames, ObjectUrl = false }: IProp) => {
+export const ProfilePhoto: React.FC<IProp> = ({ width, height, userImage, classnames, ObjectUrl = false, onClick }: IProp) => {
     const imageSrc = useMemo(() => {
         if (!userImage) return defaultUser;
         if (ObjectUrl) return userImage;
         return `${baseURL}/uploads/${userImage}`
     }, [ObjectUrl, userImage])
+
+    const handleClick = () => {
+        if (onClick) {
+            onClick(); // Call the passed onClick function
+        }
+    };
     
-    return <div className={`profile-photo-container ${classnames}`}>
+    return <div className={`profile-photo-container ${classnames}`}  onClick={handleClick}>
         <img className='profile-photo' src={imageSrc} width={width} height={height} />
     </div>
 }
