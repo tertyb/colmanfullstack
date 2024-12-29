@@ -60,7 +60,7 @@ export class PostController extends BaseController<IPost, PostService> {
       if (!id || !text || !(file || fileMetadata)) throw new Error('one of the fields not provided')
       const updateData: {
         text: string, image: string
-      } = { text, image: file?.filename || file };
+      } = { text, image: fileMetadata?.filename || file };
 
       const message = await this.service.update(updateData, id);
       res.json(message)
