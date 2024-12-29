@@ -5,14 +5,16 @@ import UserCard from '../../components/user-card';
 import { useUser } from '../../contexts/userContext';
 import './index.scss'; // Import the CSS styles for the navbar
 import { userPostKey } from '../../services/postService';
-import { useProfile } from '../../contexts/profileContext';
+
 import { useGetUserDataById } from '../../services/userService'; // Import the hook
+import { useLocation } from 'react-router-dom';
 
 const Profile: React.FC = () => {
-    const { userProfile } = useProfile();
 
-    // Use the custom hook to fetch user data by id
-    const { data, error, isLoading } = useGetUserDataById(userProfile || null);
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const { data, error, isLoading } = useGetUserDataById( queryParams.get('id') || null);
 
     if (isLoading) {
         return <div>Loading...</div>;

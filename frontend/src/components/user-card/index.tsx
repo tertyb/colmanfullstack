@@ -8,7 +8,7 @@ import './index.scss'; // Import the CSS styles for the navbar
 import { baseURL } from '../../services/axios/AxiosInstance';
 import { ProfilePhoto } from '../profile-photo';
 import { useUser } from '../../contexts/userContext';
-import { useProfile } from '../../contexts/profileContext';
+
 
 type UserProps = {
   userProfileImage?: string;
@@ -20,10 +20,10 @@ type UserProps = {
 const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescription, userid }) => {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
-  const { setProfileData, userProfile } = useProfile();
+
   const { setUserData, user } = useUser();
 
-  const displayEdit = () => userProfile === user?._id
+  const displayEdit = () => userid === user?._id
 
 
   const toggleEditPopUp = useCallback(() => setIsEditOpen((prevState) => !prevState), [setIsEditOpen])

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/userContext";
 import { useGetUserData } from "../../services/userService";
 import { CircularProgress } from "@mui/material";
-import { useProfile } from "../../contexts/profileContext";
+
 
 interface IProp {
     children: React.ReactNode;
@@ -12,7 +12,6 @@ interface IProp {
 export const LoginWrapper: React.FC<IProp> = ({ children }: IProp) => {
     const authtoken = localStorage.getItem('accessToken')
     const { setUserData, user } = useUser();
-    const { setProfileData, userProfile } = useProfile();
     const { data, isLoading } = useGetUserData(authtoken ? authtoken : null);
     const navigate = useNavigate();
 

@@ -18,7 +18,7 @@ import { ProfilePhoto } from '../profile-photo';
 import { UpsertPost } from '../upsert-post';
 import { PostPhoto } from '../post-photo';
 import { formatDate } from '../../utils/functions/date';
-import { useProfile } from '../../contexts/profileContext';
+
 
 type PostProps = {
   postId: string
@@ -41,7 +41,6 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
   const navigate = useNavigate();
   const { user } = useUser()
   const isLiked = useMemo(() => user?.username && likes.includes(user?._id), [user, likes]);
-  const { setProfileData, userProfile } = useProfile();
 
   const onClickLike = useCallback(async () => {
     const postChangeLikeMode = isLiked ? unlikePost : likePost;
@@ -55,8 +54,12 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
   const userPhotoClick = useCallback(async () => {
-    setProfileData(userId)
-    navigate('/profile')
+
+    const params = new URLSearchParams();
+    params.set('id', userId); // 
+
+    navigate(`/profile?${params.toString()}`);
+
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
 

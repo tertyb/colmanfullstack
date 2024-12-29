@@ -4,7 +4,6 @@ import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
 import { formatDate } from "../../../utils/functions/date";
 import { baseURL } from "../../../services/axios/AxiosInstance";
-import { useProfile } from "../../../contexts/profileContext";
 import { useNavigate } from "react-router-dom";
 
 interface IProp {
@@ -29,11 +28,13 @@ interface ICommentRowProp {
 const CommentRow: React.FC<ICommentRowProp> = ({ comment }: ICommentRowProp) => {
     const formatedDate = useMemo(() => formatDate(new Date(comment.date)), [comment])
     const navigate = useNavigate();
-    const { setProfileData, userProfile } = useProfile();
 
     const userPhotoClick = async () => {
-        setProfileData(comment.userId)
-        navigate('/profile')
+
+        const params = new URLSearchParams();
+        params.set('id', comment.userId); // 
+  
+        navigate(`/profile?${params.toString()}`);
     }
 
     return <div className="comment">
