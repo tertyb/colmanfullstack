@@ -152,10 +152,6 @@ export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, set
         </div>
 
         <div className="footer">
-            {/* <div className="google-button">
-                <img src={logo} alt="Google" />
-                <span >Sign in with Google</span>
-            </div> */}
             <GoogleLogin width={370} onSuccess={onGoogleSignIn} onError={googleErrorMessage} />
         </div>
     </div>
