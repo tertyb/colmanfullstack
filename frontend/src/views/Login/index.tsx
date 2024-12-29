@@ -6,11 +6,12 @@ import { enterModeOptions, enterModeText } from "../../consts/login";
 import { showToast } from "../../consts/toast";
 import { useUser } from "../../contexts/userContext";
 import { EneterModes } from "../../enums/login";
-import { loginUser, registerUser } from "../../services/userService";
+import { googleSignin, loginUser, registerUser } from "../../services/userService";
 import { EnterMode } from "./EnterMode";
 import './index.scss';
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 
 type FormInputs = {
     username: string;
@@ -23,9 +24,10 @@ interface IProp {
     setEnterMode: React.Dispatch<React.SetStateAction<EneterModes>>;
     onRegister: (email: string, username: string, password: string) => Promise<void>;
     onLogin: (username: string, password: string) => Promise<void>;
+    onGoogleSignIn: (credentialResponse: CredentialResponse) => Promise<void>;
 }
 
-export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, setEnterMode }: IProp) => {
+export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, setEnterMode, onGoogleSignIn }: IProp) => {
 
     const isRegisterMode = useMemo(() => enterMode === EneterModes.REGISTER, [enterMode])
 
@@ -36,6 +38,10 @@ export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, set
     } = useForm<FormInputs>({
         mode: 'onChange'
     });
+
+    const googleErrorMessage = useCallback(() => {
+        showToast('failed to sign in with goole', 'error')
+    }, []);
 
     const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
         if (enterMode == EneterModes.REGISTER) {
@@ -146,10 +152,11 @@ export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, set
         </div>
 
         <div className="footer">
-            <div className="google-button">
+            {/* <div className="google-button">
                 <img src={logo} alt="Google" />
                 <span >Sign in with Google</span>
-            </div>
+            </div> */}
+            <GoogleLogin width={370} onSuccess={onGoogleSignIn} onError={googleErrorMessage} />
         </div>
     </div>
 }
@@ -159,14 +166,6 @@ const LoginContainer: React.FC = () => {
     const [enterMode, setEnterMode] = useState<EneterModes>(EneterModes.LOGIN);
 
     const navigate = useNavigate();
-
-    const onLogin = useCallback(async (username: string, password: string) => {
-        await onSubmit(loginUser, username, password)
-    }, [loginUser]);
-
-    const onRegister = useCallback(async (email: string, username: string, password: string) => {
-        await onSubmit(registerUser, email, username, password)
-    }, [loginUser])
 
     const onSubmit = useCallback(async (enterModeFunction: Function, ...args: any[]) => {
 
@@ -182,7 +181,20 @@ const LoginContainer: React.FC = () => {
     }
         , [navigate, setUserData, enterMode]);
 
-    return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onLogin={onLogin} onRegister={onRegister} />
+
+    const onLogin = useCallback(async (username: string, password: string) => {
+        await onSubmit(loginUser, username, password)
+    }, [loginUser, onSubmit]);
+
+    const onRegister = useCallback(async (email: string, username: string, password: string) => {
+        await onSubmit(registerUser, email, username, password)
+    }, [loginUser, onSubmit]);
+
+    const onGoogleSignIn = useCallback(async (credentialResponse: CredentialResponse) => {
+        await onSubmit(googleSignin, credentialResponse.credential)
+    }, [onSubmit]);
+
+    return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onLogin={onLogin} onRegister={onRegister} onGoogleSignIn={onGoogleSignIn} />
 }
 
 export const LoginScreen: React.FC = () => {

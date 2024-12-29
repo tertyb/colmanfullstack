@@ -7,6 +7,8 @@ export const config: IConfig = {
     REFRESH_SECRET : process.env.REFRESH_SECRET  || 'refresh_secret',
     JWT_EXPIRATION : process.env.JWT_EXPIRATION || '1h',
     MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/socialnet2',
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
+    GOOGLE_CLIENT_SECRECT: process.env.GOOGLE_CLIENT_SECRECT || '',
     PORT: parseInt(process.env.PORT || '5000'),
 }
 interface IConfig {
@@ -14,5 +16,7 @@ interface IConfig {
     REFRESH_SECRET: string;
     JWT_EXPIRATION: string; 
     MONGO_URI: string;
-    PORT: number 
+    PORT: number;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRECT: string; 
 }

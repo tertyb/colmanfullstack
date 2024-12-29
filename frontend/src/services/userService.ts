@@ -37,7 +37,7 @@ export const loginUser = async (username: string, password: string) => {
     password
   })).data;
 
-  updateTokens(data)
+  updateTokens(data);
 };
 
 export const registerUser = async (email: string, username: string, password: string) => {
@@ -88,3 +88,13 @@ export const editProfile = async (userId: string, editedProfile: FormData) => {
   }
 }
 
+
+export const googleSignin = async (credential?: string) => {
+
+  const tokens = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login/google', {
+    credential,
+  })).data;
+
+  updateTokens(tokens)
+  console.log('after server valid',tokens);
+};
