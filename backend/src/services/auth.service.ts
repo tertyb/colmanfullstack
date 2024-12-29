@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import UserModel, { IBaseUser, IUser } from '../models/user.model';
 import { config } from '../config/config';
 import { IAuthTokens } from '../interfaces/auth';
+import UserModel, { IUser } from '../models/user.model';
+import TokenInfo from '../types/token';
 import { BaseService } from './base.service';
 import { UserService } from './user.service';
-import TokenInfo from '../types/token';
 
 
 export class AuthService extends BaseService<IUser> {
@@ -89,8 +89,34 @@ export class AuthService extends BaseService<IUser> {
 
   generateAuthKeys(userId: any): IAuthTokens {
     const accessToken = jwt.sign({ _id: userId }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION });
-    const refreshToken = jwt.sign({ _id: userId }, config.REFRESH_SECRET, { expiresIn: config.JWT_EXPIRATION });
+    const refreshToken = jwt.sign({ _id: userId }, config.REFRESH_SECRET, { expiresIn: '7d' });
 
     return { accessToken, refreshToken }
   }
+
+  async googleSignIn (credential: any) {
+    let user = await this.userService.getModelByFilter({email: credential.email});
+    if(!user) {
+      const userData: {
+        password: string;
+        username: string;
+        email: string;
+      } = {email: credential.email, username: credential.name, password: `${credential.name} - googleSignin`} 
+      user = await this.registerUser(userData);
+    }
+
+    const { accessToken, refreshToken } = this.generateAuthKeys(user._id);
+
+    if (user.tokens === null) {
+      user.tokens = [refreshToken]
+    }
+    else {
+      user.tokens.push(refreshToken)
+    }
+    
+    await user.save();
+
+    return { accessToken: accessToken, refreshToken: refreshToken };
+  }
+
 }

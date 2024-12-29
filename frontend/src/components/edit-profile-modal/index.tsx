@@ -1,19 +1,27 @@
-import React, { useCallback, useRef } from 'react';
-import './index.scss'; // Import the CSS styles for the navbar
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { TextField } from '@mui/material';
-import { Typography, CardActions, Button } from '@mui/material';
-import { editProfile, userDataKey } from '../../services/userService';
+import React, { useCallback, useMemo } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { mutate } from 'swr';
+import { editProfile, userDataKey } from '../../services/userService';
+import { ProfilePhoto } from '../profile-photo';
+import './index.scss'; // Import the CSS styles for the navbar
 
 
 
 type EditProfileModalProps = {
   isOpen: boolean;
   toggleIsOpen: () => void;
-  defaultValues: { username: string, userDescription: string };
-  userid: string
+  defaultValues: { username: string, description?: string, file?: string  };
+  userid: string;
+};
+
+type FormInputs = {
+  username: string;
+  description?: string;
+  file: File | string | undefined 
 };
 
 const style = {
@@ -31,19 +39,40 @@ const style = {
 
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpen, defaultValues, userid }) => {
-  const descInputRef = useRef(null);
-  const usernameInputRef = useRef<HTMLInputElement>(null);
-  const onSubmit = useCallback(async () => {
-    const updatedName = usernameInputRef.current?.value ? usernameInputRef.current.value : defaultValues.username;
-    const updatedProfile = {
-      username: updatedName,
-      image: 'editProfie.png'
-    }
-    await editProfile(userid, updatedProfile);
+
+  const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
+
+    const formData = new FormData();
+    formData.append("username", data.username);
+    if(data.description) formData.append("description", data.description);
+    formData.append("file", data.file ?? "");
+
+    await editProfile(userid, formData);
     mutate(userDataKey);
     toggleIsOpen();
   }, [userid])
 
+  const {
+    control, // Used to control Material-UI inputs
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors, isValid, isDirty },
+  } = useForm<FormInputs>({
+    defaultValues,
+    mode: 'onChange'
+  });
+
+  const updatedFile = useMemo(() =>  watch("file"), [watch("file")] );
+  const isFile = useMemo(() => updatedFile instanceof File ,[updatedFile])
+  const stringFile = useMemo(() => typeof updatedFile === 'string' ? updatedFile : isFile ? URL.createObjectURL(updatedFile!) : undefined ,[updatedFile, isFile])
+  const setFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | undefined = e.target.files ? e.target.files[0] : undefined
+    setValue('file', file , {shouldDirty: true}) 
+  }, [setValue])
+
+ 
 
   return (
     <div>
@@ -53,30 +82,56 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpe
         open={isOpen}
         onClose={toggleIsOpen}
       >
-        <Box sx={style}>
+
+        
+        <Box sx={style} onSubmit={handleSubmit(onSubmit)} component="form">
           <div className='box-content'>
             <div className='headLines'>
               <h3> Edit  profile</h3>
               <p className='sub-comment'> Make changes to your profile here.</p>
             </div>
-            <TextField inputRef={usernameInputRef} defaultValue={defaultValues.username} className='TextField' id="outlined-basic" label="User Name" variant="outlined" />
-            <TextField inputRef={descInputRef} defaultValue={defaultValues.userDescription} className='TextField' multiline={true} rows={3} id="outlined-basic" label="Description" variant="outlined" />
-            <input
+            
+            <div className="image-input">
+            
+            <label className='imageUploadLabel' htmlFor="raised-button-file">
+                <ProfilePhoto classnames='pointer' ObjectUrl={isFile} userImage={stringFile} width={90} height={90} />
+                <input
               accept="image/*"
-
+              {...register("file")}
               style={{ display: 'none' }}
               id="raised-button-file"
               multiple
               type="file"
+              onChange={setFile}  
             />
-            <label className='imageUploadLabel' htmlFor="raised-button-file">
-              <h4 className='imageUpload'>
-                image upload
-              </h4>
             </label>
+            <DeleteIcon onClick={() => setValue('file', undefined, { shouldDirty: true })}  className='delete-button' />
+            </div>
+            
 
+            <Controller
+              name="username"
+              control={control}
+              rules={{ required: "username is required" }}
+              render={({ field }) => (
+
+                <TextField {...field} error={!!errors.username} helperText={errors.username?.message}  className='TextField' id="outlined-basic" label="User Name" variant="outlined" />
+
+              )}
+            />
+
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+
+                <TextField  {...field} error={!!errors.description} helperText={errors.description?.message}  className='TextField' multiline={true} rows={3} id="outlined-basic" label="Description" variant="outlined" />
+
+              )}
+            />
+            
             <div className='footer'>
-              <Button onClick={onSubmit} variant="contained" component="span" >
+              <Button type='submit' disabled={!isValid || !isDirty} variant="contained">
                 Save Changes
               </Button>
             </div>

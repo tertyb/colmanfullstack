@@ -3,7 +3,11 @@ import { IAuthTokens } from '../interfaces/auth';
 import { BaseController } from './base.controller';
 import { IUser } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
-const passport = require('passport')
+import { config } from '../config/config';
+const { OAuth2Client } = require('google-auth-library');
+
+// Create an OAuth2Client instance
+const client = new OAuth2Client();
 
 export class AuthController extends BaseController<IUser, AuthService> {
   constructor() {
@@ -70,9 +74,28 @@ export class AuthController extends BaseController<IUser, AuthService> {
         res.status(400).json({ message: error.message });
       }  
     }
-    
-    
-  }
+  };
+
+  async googleSignin(req: Request, res: Response) {
+    const {credential} = req.body;
+    try {
+      if(!credential) {
+        throw new Error('no credential provided');
+      }
+
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: config.GOOGLE_CLIENT_ID, // Replace with your Google Client ID
+      });
+
+      const payload = ticket.getPayload();
+      const authTokens: IAuthTokens = await this.service.googleSignIn(payload)
+      
+      res.status(200).json(authTokens);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 export const authController = new AuthController();

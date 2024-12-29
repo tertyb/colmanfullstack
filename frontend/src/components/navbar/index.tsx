@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../../contexts/userContext';
 
 const Navbar: React.FC = () => {
-  const {logout} = useUser();
+  const {logoutUser} = useUser();
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
         <Link to="/profile" className="navbar-link">Profile</Link>
       </div>
       <div className="navbar-right">    
-        <button onClick={logout} className="btn sign-out-btn">Sign Out</button>
+        <button onClick={logoutUser} className="btn sign-out-btn">Sign Out</button>
       </div>
     </nav>
   );

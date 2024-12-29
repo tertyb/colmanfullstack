@@ -1,12 +1,10 @@
 
 export interface IUser {
     _id: string;
+    email: string;
     username: string;
-    description?: string
-  }
-
-  export interface IUserResponse {
-    userData: IUser;
+    description?: string;
+    image?: string;
   }
 
   export interface IGenericResponse {

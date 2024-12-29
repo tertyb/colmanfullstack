@@ -5,7 +5,7 @@ import { exractUserIdFromToken } from "../utils/user.util";
 
 export class BaseController<T, Service extends BaseService<T>> {
   protected service: Service;
-  private userIdFieldName: keyof T;
+  protected userIdFieldName: keyof T;
   constructor(service: Service, userIdFieldName = 'userId' as keyof T) {
     this.service = service;
     this.userIdFieldName = userIdFieldName

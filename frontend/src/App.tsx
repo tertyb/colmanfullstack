@@ -1,33 +1,43 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
-import Navbar from './components/navbar';
-import './index.scss'
-import Profile from './views/Profile';
-import { LoginScreen } from './views/Login';
-import { LoginWrapper } from './components/loginWrapper';
+import { Outlet, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { Feed } from './components/feed';
+import { LoginWrapper } from './components/loginWrapper';
+import Navbar from './components/navbar';
+import './index.scss';
+import { LoginScreen } from './views/Login';
+import Profile from './views/Profile';
 
 const App: React.FC = () => {
   return (
     <div className='whole-app'>
-      <Navbar />
-      <div className="content">
+
         <LoginWrapper>
-         <>
-          <Routes>
-            <Route path="/" element={<Profile/>} />
-            <Route path="/profile" element={<Profile/>} />
-            {/* Add other routes here */}
-          </Routes>
+          <>
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Feed />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+              {/* Add other routes here */}
+            </Routes>
           </>
-          </LoginWrapper>
-          <Routes>
-          <Route path="/login" element={<LoginScreen/>} />
-          </Routes>
-          <ToastContainer position="bottom-left" />
-        </div>
+        </LoginWrapper>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+        </Routes>
+        <ToastContainer position="bottom-left" />
     </div>
   )
 };
+
+const MainLayout: React.FC = () => (
+  <>
+    <Navbar />
+    <div className="content">
+      <Outlet />
+    </div>
+  </>
+);
 
 export default App;

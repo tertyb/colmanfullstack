@@ -41,13 +41,53 @@ export class PostController extends BaseController<IPost, PostService> {
   async allPosts(req: Request, res: Response) {
     try {
 
-      const posts = await this.service.getAll();
+      const posts = await this.service.getAllPosts();
       res.json(posts);
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
   }
+
+  override async update(req: Request, res: Response) {
+    try {
+
+      const { id, text, file } = req.body;
+      const userId = exractUserIdFromToken(req);
+      if (!(await this.service.validateUserId(id, userId, this.userIdFieldName))) throw new Error('not allowed to edit this entity')
+
+      const fileMetadata = req.file;
+      if (!id || !text || !(file || fileMetadata)) throw new Error('one of the fields not provided')
+      const updateData: {
+        text: string, image: string
+      } = { text, image: file?.filename || file };
+
+      const message = await this.service.update(updateData, id);
+      res.json(message)
+
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
+  override async create(req: Request, res: Response) {
+    try {
+
+      const { text } = req.body;
+      const userId = exractUserIdFromToken(req);
+      const file = req.file;
+      if (!text || !file) throw new Error('one of the fields not provided');
+
+      const newPost: {
+        text: string, image: string
+      } = { text, image: file.filename };
+      const message = await this.service.createWithStatus(newPost, userId);
+      res.json(message)
+
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 export const postController = new PostController();

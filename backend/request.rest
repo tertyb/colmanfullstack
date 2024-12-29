@@ -34,8 +34,8 @@ GET http://localhost:5000/api/user/data
 authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1NzQxMDYsImV4cCI6MTczMzYxMDEwNn0.0qlILcv0hKNG99zhojjINBxVDCNGS7ZK5--QBHW2M3I
 
 ###
-GET http://localhost:5000/api/user/6752ce7b9a7830e6d4573511/posts
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyZWYwOTEwZmI0MDQ5ZTU2NzgwNzIiLCJpYXQiOjE3MzM0ODgzOTMsImV4cCI6MTczMzQ5MTk5M30.uytVeQD8xawjosofDXqIRTCDEKIjLp-H-SsKC1hGzHg
+GET http://localhost:5000/api/user/676e9b27ff81114500e61db8/posts
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN2ZmODExMTQ1MDBlNjFkYjgiLCJpYXQiOjE3MzUzMDU5MDgsImV4cCI6MTczNTMwOTUwOH0.OoOgsTbyKYYOuc_YYosFpNlVZRL3hbK3EDsLLI_Nv4E
 
 ###
 PUT http://localhost:5000/api/user/update
@@ -67,7 +67,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyZ
 ###
 POST http://localhost:5000/api/post/create
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1NzQxMDYsImV4cCI6MTczMzYxMDEwNn0.0qlILcv0hKNG99zhojjINBxVDCNGS7ZK5--QBHW2M3I
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN2ZmODExMTQ1MDBlNjFkYjgiLCJpYXQiOjE3MzUzMDE5MjcsImV4cCI6MTczNTMwNTUyN30.fnZAT6G49RlAgqT2YcsK3zpD6Zo3LW5QIkp6PwhL40I
 
 {
     "text": "daniel123-ceck",
@@ -92,7 +92,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyY
 ###
 GET  http://localhost:5000/api/post/all
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzUzNDUwY2M3NDc2OWI1NTZlNDdkNjMiLCJpYXQiOjE3MzM1NzQxMDYsImV4cCI6MTczMzYxMDEwNn0.0qlILcv0hKNG99zhojjINBxVDCNGS7ZK5--QBHW2M3I
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN2ZmODExMTQ1MDBlNjFkYjgiLCJpYXQiOjE3MzU0MTI5OTIsImV4cCI6MTczNTQxNjU5Mn0.1i-gSsALwyzQKgwkTJew-6J-1WXBG45_Z-oj-sprQvg
 
 
 ###

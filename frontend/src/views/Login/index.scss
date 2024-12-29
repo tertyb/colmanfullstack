@@ -22,6 +22,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: height 0.3s ease-in-out;
 
           .header {
             display: flex;
@@ -42,21 +43,8 @@
           .card-data {
             flex-direction: column;
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
 
-            input {
-                padding: 10px;
-                margin-bottom: 15px;
-                border: 1px solid #cccccc;
-                font-size: 14px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                outline: none;
-
-                :focus {
-                 border-color: #6c63ff;    
-            }
-            }
             .enter-button {
                 padding: 12px;
                 background: #000000;
@@ -73,8 +61,11 @@
             }
 
           } 
-          .footer .google-button {
+          .footer {
+            width: 100%;          
+          .google-button {
             display: flex;
+            padding: 5px;
             align-items: center;
             justify-content: center;
             border: 1px solid #ddd;
@@ -87,6 +78,6 @@
               .google-button img {
                 width: 40px;
               }
-        }
+        } }
     } 
 } 

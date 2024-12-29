@@ -1,35 +1,57 @@
 import useSWR from "swr";
-import { IPost, IUserPostsResponse } from "../interfaces/post";
-import { AxiosInstence } from "./axios/AxiosInstance";
 import { showToast } from "../consts/toast";
+import { IPost, IPostWithUser } from "../interfaces/post";
 import { IGenericResponse } from "../interfaces/user";
+import { AxiosInstence } from "./axios/AxiosInstance";
+
+export const userPostKey =  `user-posts`;
+export const feedPostKey =  `feed-posts`;
+
 
 export const useGetUserPosts = (userid?: string) =>
     useSWR<IPost[]>(
-        userid ? `posts-${userid}` : null,
+        userid ? userPostKey : null,
         async () => {
-            const res = await AxiosInstence.get<IUserPostsResponse>(`/user/${userid}/posts`);
-            return res.data.posts;
+            const res = await AxiosInstence.get<IPost[]>(`/user/${userid}/posts`);
+            return res.data;
         }, {
         refreshInterval: 1000 * 10,
     }
     );
 
-export const editPost = async (postId: string, editedPost: Partial<IPost>) => {
+    export const useGetFeedPosts = () =>
+        useSWR<IPostWithUser[]>(
+            feedPostKey,
+            async () => {
+                const res = await AxiosInstence.get<IPostWithUser[]>(`/post/all`);
+                return res.data;
+            }, {
+            refreshInterval: 1000 * 10,
+        }
+        );
+
+export const editPost = async (editedPost: FormData) => {
     try {
-        const responseStatus = (await AxiosInstence.put<IGenericResponse>(`post/${postId}/update`, {
-            ...editedPost,
-        })).data
-        showToast(responseStatus.message, "success");
+        (await AxiosInstence.put<IGenericResponse>(`post/update`, editedPost))
+        showToast('successfully update post', "success");
       } catch (error) {
         showToast('failed to edit post', "error")
     }
 }
 
+export const createPost = async (newPost: FormData) => {
+    try {
+        (await AxiosInstence.post<IGenericResponse>(`post/create`, newPost));
+        showToast('successfully create post', "success");
+      } catch (error) {
+        showToast('failed to create post', "error")
+    }
+}
+
 export const deletePost = async (postId: string) => {
     try {
-        const responseStatus = (await AxiosInstence.delete<IGenericResponse>(`post/${postId}`)).data
-        showToast(responseStatus.message, "success");
+        (await AxiosInstence.delete<IGenericResponse>(`post/${postId}`)).data
+        showToast('successfully delete post', "success");
       } catch (error) {
         showToast('failed to delete post', "error")
     }

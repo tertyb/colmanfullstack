@@ -91,6 +91,9 @@ authRouter.post('/register',authController.register.bind(authController));
 
 authRouter.post('/login',authController.login.bind(authController));
 
+
+authRouter.post('/login/google',authController.googleSignin.bind(authController));
+
 /**
  * @swagger
  * /auth/logout:
@@ -144,4 +147,6 @@ authRouter.post('/logout',authController.logout.bind(authController));
  *         description: problem refreshing tokens 
  */
 authRouter.post('/refresh',authController.refresh.bind(authController));
+
+
 

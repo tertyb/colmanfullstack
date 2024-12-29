@@ -1,9 +1,10 @@
 import React from 'react';
-import userProfileImage from '../../assets/daniel.png';
 import userBack from '../../assets/deserted-beach-travel-1920x720.jpg';
+import { CreatePost } from '../../components/create-post';
 import UserCard from '../../components/user-card';
 import { useUser } from '../../contexts/userContext';
 import './index.scss'; // Import the CSS styles for the navbar
+import { userPostKey } from '../../services/postService';
 const Profile: React.FC = () => {
     const {user} = useUser();
     console.log('daniel123', user)
@@ -15,9 +16,9 @@ const Profile: React.FC = () => {
                 <img className="cover-img" src={userBack} />
             </div>
             <div className="user-wrapper">
-               { user?.username && <UserCard userid={user._id} username={user!.username} userDescription='Hello my name is mo babma i love dancing, what to come to my tent?' userProfileImage={userProfileImage}></UserCard>}
+               { user?.username && <UserCard userid={user._id} username={user!.username} userDescription={user.description} userProfileImage={user.image }></UserCard>}
             </div>
-
+            <CreatePost keyToRefetch={userPostKey}/>
 
         </div>
     );

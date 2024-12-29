@@ -1,11 +1,18 @@
 import { ILoginResponse } from "../../services/userService";
 
+export const accessTokenName = 'accessToken';
+export const refreshTokenName = 'refreshToken';
+
 export const updateTokens = (authTokens: ILoginResponse) => {
-  localStorage.setItem('accessToken', authTokens.token);
-  localStorage.setItem('refreshToken', authTokens.refreshToken);
+  localStorage.setItem(accessTokenName, authTokens.accessToken);
+  localStorage.setItem(refreshTokenName, authTokens.refreshToken);
 }
 
 export const removeAuthTokens = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.removeItem(accessTokenName);
+    localStorage.removeItem(refreshTokenName);
+}
+
+export const getAuthTokenByName = (tokenName: string) => {
+  return localStorage.getItem(tokenName);
 }

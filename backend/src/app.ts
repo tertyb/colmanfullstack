@@ -10,6 +10,9 @@ import { authRouter } from './routes/auth.route';
 import { commentRouter } from './routes/comment.route';
 import { postRouter } from './routes/post.route';
 import { userRouter } from './routes/user.route';
+import path from "path";
+import { uploadMiddleware } from './config/multer';
+
 
 const appPromise: Promise<Application> = new Promise( async (resolve, reject) => {
 
@@ -24,6 +27,8 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
     }
 
 
+    app.use("/uploads", express.static(path.join(__dirname, "config/uploads")));
+    app.use(uploadMiddleware);
     // Middleware
     app.use(cors());
 

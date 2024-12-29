@@ -2,8 +2,8 @@ import React, { useMemo } from "react";
 import { CommentModel } from "../../../interfaces/post";
 import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
-import userProfileImage from '../../../assets/daniel.png';
 import { formatDate } from "../../../utils/functions/date";
+import { baseURL } from "../../../services/axios/AxiosInstance";
 
 
 interface IProp {
@@ -30,9 +30,9 @@ const CommentRow: React.FC<ICommentRowProp> = ({ comment }: ICommentRowProp) => 
 
     return <div className="comment">
         <div className="comment-data-with-profile">
-        <ProfilePhoto width={20} height={20} userImage={userProfileImage}/>
+        <ProfilePhoto width={20} height={20} userImage={comment.image}/>
         <div className="comment-info">
-            <span className="username">@for-now-daniel</span>
+            <span className="username">@{comment.username}</span>
             <span className="text">{comment.text}</span>
         </div>
         </div>

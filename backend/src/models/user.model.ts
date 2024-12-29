@@ -8,7 +8,8 @@ export interface IBaseUser {
   password: string;
   username: string;
   email: string;
-  tokens: string[]
+  tokens: string[];
+  description?: string;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -16,7 +17,8 @@ const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   image: { type: String, required: false },
-  tokens: { type: [String], required: false }
+  tokens: { type: [String], required: false },
+  description: { type: String, required: false }
 });
 
 const UserModel = mongoose.model<IUser>('User', UserSchema);
