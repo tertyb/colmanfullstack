@@ -15,7 +15,6 @@
   .headLines {
     display: flex;
     flex-direction: column;
-    gap: 5px;
     align-items: flex-start;
   }
 
@@ -35,8 +34,24 @@
   width: 100%;
 }
 
-.imageUploadLabel{
+.image-input{
   width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .imageUploadLabel {
+    width: fit-content;
+  }
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .delete-button {
+    height: 20px;
+    align-self: end;
+    cursor: pointer;
+  }
 }
 
 .footer {

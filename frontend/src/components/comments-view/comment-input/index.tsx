@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from "react";
 import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
-import userProfileImage from '../../../assets/daniel.png';
 
 interface IProp {
-    onSubmit: (newComment: string) => void;
+    onSubmit: (newComment: string) => Promise<void>;
+    userImage?: string
 }
 
-export const CommentInput: React.FC<IProp> = ({onSubmit}: IProp) => {
+export const CommentInput: React.FC<IProp> = ({onSubmit, userImage}: IProp) => {
     const [newComment, setNewComment] = useState<string>("");
 
     const handleAddComment= useCallback(() => {
@@ -18,7 +18,7 @@ export const CommentInput: React.FC<IProp> = ({onSubmit}: IProp) => {
     },[setNewComment, newComment, onSubmit])
 
     return <div className="comment-input-container">
-        <ProfilePhoto width={25} height={25} userImage={userProfileImage} />
+        <ProfilePhoto width={25} height={25} userImage={userImage} />
          <input
           type="text"
           placeholder="Add a comment..."

@@ -89,7 +89,7 @@ export class AuthService extends BaseService<IUser> {
 
   generateAuthKeys(userId: any): IAuthTokens {
     const accessToken = jwt.sign({ _id: userId }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION });
-    const refreshToken = jwt.sign({ _id: userId }, config.REFRESH_SECRET, { expiresIn: config.JWT_EXPIRATION });
+    const refreshToken = jwt.sign({ _id: userId }, config.REFRESH_SECRET, { expiresIn: '7d' });
 
     return { accessToken, refreshToken }
   }

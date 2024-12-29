@@ -5,7 +5,7 @@ dotenv.config();
 export const config: IConfig = {
     JWT_SECRET : process.env.JWT_SECRET || 'secret',
     REFRESH_SECRET : process.env.REFRESH_SECRET  || 'refresh_secret',
-    JWT_EXPIRATION : process.env.JWT_EXPIRATION || '10s',
+    JWT_EXPIRATION : process.env.JWT_EXPIRATION || '1h',
     MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/socialnet2',
     PORT: parseInt(process.env.PORT || '5000'),
 }

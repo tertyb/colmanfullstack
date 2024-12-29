@@ -12,6 +12,7 @@ type EditPostModalProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   defaultValues: { text: string, image: string };
   onSubmit: (updatedPost: Partial<IPost>) => Promise<void>
+  postId: string;
 };
 
 const style = {
@@ -28,7 +29,7 @@ const style = {
 };
 
 
-const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, setIsOpen, defaultValues, onSubmit }) => {
+const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, setIsOpen, defaultValues, onSubmit, postId }) => {
   const descInputRef = useRef<HTMLInputElement>(null);
   const onEdit = useCallback(async () => {
     const updatedDesc = descInputRef.current?.value ? descInputRef.current.value : defaultValues.text;
@@ -45,6 +46,7 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ isOpen, setIsOpen, defaul
     <div>
       <Modal
         aria-labelledby="unstyled-modal-title"
+        style={{border: 'none'}}
         aria-describedby="unstyled-modal-description"
         open={isOpen}
         onClose={handleClose}

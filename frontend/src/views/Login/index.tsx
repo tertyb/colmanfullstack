@@ -1,29 +1,50 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import logo from '../../assets/images/google.png';
-import { enterModeOptions, enterModeText, fetchByType } from "../../consts/login";
+import { enterModeOptions, enterModeText } from "../../consts/login";
+import { showToast } from "../../consts/toast";
 import { useUser } from "../../contexts/userContext";
 import { EneterModes } from "../../enums/login";
+import { loginUser, registerUser } from "../../services/userService";
 import { EnterMode } from "./EnterMode";
 import './index.scss';
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-import { showToast } from "../../consts/toast";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Box, Button, TextField, Typography } from "@mui/material";
+
+type FormInputs = {
+    username: string;
+    password: string;
+    email: string
+}
 
 interface IProp {
     enterMode: EneterModes;
     setEnterMode: React.Dispatch<React.SetStateAction<EneterModes>>;
-    onSubmit: (username: string, password: string) => Promise<void>;
+    onRegister: (email: string, username: string, password: string) => Promise<void>;
+    onLogin: (username: string, password: string) => Promise<void>;
 }
 
-export const LoginCard: React.FC<IProp> = ({ onSubmit, enterMode, setEnterMode }: IProp) => {
-    const [username, setusername] = useState('');
-    const [password, setPassword] = useState('');
+export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, setEnterMode }: IProp) => {
 
+    const isRegisterMode = useMemo(() => enterMode === EneterModes.REGISTER, [enterMode])
 
-    const onLogin = useCallback(async () => {
-        await onSubmit(username, password)
-    }, [username, password, onSubmit])
+    const {
+        control,
+        handleSubmit,
+        formState: { errors, isDirty, isValid },
+    } = useForm<FormInputs>({
+        mode: 'onChange'
+    });
+
+    const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
+        if (enterMode == EneterModes.REGISTER) {
+            await onRegister(data!.email, data.username, data.password)
+        }
+        else {
+            await onLogin(data.username, data.password)
+        }
+    }, [enterMode, onRegister, onLogin])
 
 
     return <div className="login-card">
@@ -35,19 +56,93 @@ export const LoginCard: React.FC<IProp> = ({ onSubmit, enterMode, setEnterMode }
 
         <div className="card-data">
             <EnterMode selected={enterMode} options={enterModeOptions} onSelect={setEnterMode} />
-            <input
-                type="username"
-                placeholder="username"
-                value={username}
-                onChange={(e) => setusername(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <span onClick={onLogin} className="enter-button">{enterModeText[enterMode]}</span>
+            <Box sx={{ maxWidth: 400, mx: "auto", mt: 4 }}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* Conditionally Render Email Field */}
+                    {isRegisterMode && (
+                        <Controller
+                            name="email"
+                            control={control}
+                            rules={{
+                                required: "Email is required",
+                                pattern: {
+                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                    message: "Invalid email address",
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Email"
+                                    variant="outlined"
+                                    fullWidth
+                                    margin="normal"
+                                    error={!!errors.email}
+                                    helperText={errors.email?.message}
+                                />
+                            )}
+                        />
+                    )}
+
+                    <Controller
+                        name="username"
+                        control={control}
+                        rules={{
+                            required: "username is required",
+                            minLength: {
+                                value: 4,
+                                message: "Password must be at least 6 characters",
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="username"
+                                type="username"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                error={!!errors.username}
+                                helperText={errors.username?.message}
+                            />
+                        )}
+                    />
+
+                    {/* Password Field */}
+                    <Controller
+                        name="password"
+                        control={control}
+                        rules={{
+                            required: "Password is required",
+                            minLength: {
+                                value: 6,
+                                message: "Password must be at least 6 characters",
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Password"
+                                type="password"
+                                variant="outlined"
+                                fullWidth
+                                margin="normal"
+                                error={!!errors.password}
+                                helperText={errors.password?.message}
+                            />
+                        )}
+                    />
+
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        fullWidth
+                        sx={{ mt: 2, py: 1.5 }}
+                    >
+                        {isRegisterMode ? "Register" : "Sign In"}
+                    </Button>
+                </form>
+            </Box>
         </div>
 
         <div className="footer">
@@ -62,14 +157,21 @@ export const LoginCard: React.FC<IProp> = ({ onSubmit, enterMode, setEnterMode }
 const LoginContainer: React.FC = () => {
     const { setUserData } = useUser();
     const [enterMode, setEnterMode] = useState<EneterModes>(EneterModes.LOGIN);
-    console.log(enterMode, 'daiek')
-    const navigate = useNavigate();
-    const activeFetchByType = useMemo(() => fetchByType[enterMode], [enterMode])
 
-    const onSubmit = useCallback(async (username: string, password: string) => {
+    const navigate = useNavigate();
+
+    const onLogin = useCallback(async (username: string, password: string) => {
+        await onSubmit(loginUser, username, password)
+    }, [loginUser]);
+
+    const onRegister = useCallback(async (email: string, username: string, password: string) => {
+        await onSubmit(registerUser, email, username, password)
+    }, [loginUser])
+
+    const onSubmit = useCallback(async (enterModeFunction: Function, ...args: any[]) => {
 
         try {
-            await activeFetchByType(username, password);
+            await enterModeFunction(...args)
             navigate('/');
             showToast(`successfully ${enterModeText[enterMode]}`, "success")
 
@@ -78,9 +180,9 @@ const LoginContainer: React.FC = () => {
             showToast(`failed to ${enterModeText[enterMode]}`, "error")
         }
     }
-        , [navigate, setUserData, activeFetchByType, enterMode]);
+        , [navigate, setUserData, enterMode]);
 
-    return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onSubmit={onSubmit} />
+    return <LoginCard enterMode={enterMode} setEnterMode={setEnterMode} onLogin={onLogin} onRegister={onRegister} />
 }
 
 export const LoginScreen: React.FC = () => {

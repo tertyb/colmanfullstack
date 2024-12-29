@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import CommentModel from './comment.model';
+import CommentModel, { IComment } from './comment.model';
 
 export interface IPost extends Document {
   userId: mongoose.Types.ObjectId;
@@ -7,6 +7,10 @@ export interface IPost extends Document {
   date: Date;
   image: string;
   likes: mongoose.Types.ObjectId[];
+}
+
+export interface IPostWithComments extends IPost {
+  comments: IComment[]
 }
 
 const PostSchema = new Schema<IPost>({

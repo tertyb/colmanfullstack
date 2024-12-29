@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { IPost } from '../models/post.model';
+import { IPost, IPostWithComments } from '../models/post.model';
 import { IUser } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { exractUserIdFromToken } from '../utils/user.util';
@@ -26,7 +26,7 @@ export class UserController extends BaseController<IUser, UserService> {
     try {
       if (req?.params?.userid) {
         const userid = req.params.userid;
-        const posts: IPost[] = await this.service.getUserPosts(userid);
+        const posts: IPostWithComments[] = await this.service.getUserPosts(userid);
 
         res.json(posts);
 
@@ -52,15 +52,18 @@ export class UserController extends BaseController<IUser, UserService> {
   async updateUser(req: Request, res: Response) {
     try {
       const userId = exractUserIdFromToken(req);
-      const { username, image } = req.body;
+      const { username, file, description } = req.body;
+      const fileMetadata = req.file;
 
-      if (!username && !image) {
-        throw new Error('no username or image provided');
+      if (!username ) {
+        throw new Error('no username provided');
       }
 
-      const updateData: { username?: string, image?: string } = {};
+      const updateData: { username?: string, image?: string, description?: string
+      } = {};
       if (username) updateData.username = username;
-      if (image) updateData.image = image;
+      updateData.image = fileMetadata?.filename ?? file;
+      updateData.description = description;
 
       const message = await this.service.update(updateData, userId);
 

@@ -1,20 +1,26 @@
 import axios from 'axios';
 import useSWR from 'swr'; // Replace with your Axios instance setup
 import { showToast } from '../consts/toast';
-import { IGenericResponse, IUser, IUserResponse } from '../interfaces/user';
+import { IGenericResponse, IUser } from '../interfaces/user';
+import { getAuthTokenByName, refreshTokenName, removeAuthTokens, updateTokens } from '../utils/functions/localstorage';
 import { AxiosInstence } from './axios/AxiosInstance';
-import { updateTokens } from '../utils/functions/localstorage';
 
 export interface ILoginResponse {
-  token: string;
+  accessToken: string;
   refreshToken: string;
+}
+
+export interface IRegisterResponse {
+  _id: string;
+  username: string;
+  password: string;
 }
 
 export const userDataKey = 'user-data'
 
 const fetchUserData = async () => {
-  const res = await AxiosInstence.get<IUserResponse>('/user/data');
-  return res.data.userData;
+  const res = await AxiosInstence.get<IUser>('/user/data');
+  return res.data;
 }
 
 export const useGetUserData = (userid: string | null) =>
@@ -34,15 +40,31 @@ export const loginUser = async (username: string, password: string) => {
   updateTokens(data)
 };
 
-export const registerUser = async (username: string, password: string) => {
+export const registerUser = async (email: string, username: string, password: string) => {
 
-  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/register', {
+  (await axios.post<IRegisterResponse>('http://localhost:5000/api/auth/register', {
+    email,
     username,
     password
-  })).data;
-  
-  updateTokens(data);
+  }));
+
+  await loginUser(username, password);
 };
+
+export const logout = async () => {
+  try {
+    const refreshToken = getAuthTokenByName(refreshTokenName);
+    (await axios.post<IRegisterResponse>('http://localhost:5000/api/auth/logout', {}, {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`
+      }
+    }));
+    removeAuthTokens()
+  } catch {
+    showToast('failed to logout', "error");
+
+  }
+ };
 
 export const getLogin = async (username: string, password: string) => {
   try {
@@ -52,28 +74,17 @@ export const getLogin = async (username: string, password: string) => {
     return true;
   } catch (error) {
     showToast('failed to login', "error");
-    return 
+    return
   }
 }
 
-export const getRegister = async (username: string, password: string) => {
-  try {
-    await registerUser(username, password);
-    showToast('register successfully', "success");
 
+export const editProfile = async (userId: string, editedProfile: FormData) => {
+  try {
+    (await AxiosInstence.put<IGenericResponse>(`user/update`, editedProfile)).data
+    showToast('successfully update profile', "success")
   } catch (error) {
-    showToast('failed to register', "error")
-  }
-}
-
-export const editProfile = async (userId: string, editedProfile: Partial<IUser>) => {
-  try {
-      const responseStatus = (await AxiosInstence.put<IGenericResponse>(`user/update`, {
-          ...editedProfile,
-      })).data
-      showToast(responseStatus.message, "success")
-    } catch (error) {
-      showToast('failed to edit post', "error")
+    showToast('failed to edit post', "error")
   }
 }
 

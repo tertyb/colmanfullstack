@@ -19,6 +19,7 @@ export const LoginWrapper: React.FC<IProp> = ({ children }: IProp) => {
             navigate('/login')
         }
         else if (data) {
+            console.log('d',data)
             setUserData(data)
         }
     }, [data, authtoken, user, navigate, setUserData]);

@@ -1,10 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
-import { removeAuthTokens, updateTokens } from "../../utils/functions/localstorage";
+import { refreshTokenName, removeAuthTokens, updateTokens } from "../../utils/functions/localstorage";
 
+export const baseURL = 'http://localhost:5000'
 // Create an Axios instance
 export const AxiosInstence = axios.create({
-    baseURL: "http://localhost:5000/api", // Replace with your API base URL
+    baseURL: `${baseURL}/api`, // Replace with your API base URL
 });
 // Attach tokens to requests
 AxiosInstence.interceptors.request.use((request) => {
@@ -25,10 +26,12 @@ AxiosInstence.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
-            const refreshToken = localStorage.getItem("refreshToken");
+            const refreshToken = localStorage.getItem(refreshTokenName);
             try {
-                const { data } = await axios.post("http://localhost:5000/api/auth/refresh", {
-                    refreshToken,
+                const { data } = await axios.post("http://localhost:5000/api/auth/refresh", {}, {
+                    headers: {
+                        Authorization: `Bearer ${refreshToken}`
+                    }
                 });
 
                 // Update tokens
@@ -40,7 +43,7 @@ AxiosInstence.interceptors.response.use(
             } catch (refreshError) {
                 // Handle refresh token failure (e.g., log out user)
                 removeAuthTokens()
-                redirect('/login');
+                // redirect('/login');
                 throw refreshError;
             }
         }

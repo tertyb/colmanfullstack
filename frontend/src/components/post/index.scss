@@ -7,13 +7,12 @@
 .post-contnet-container {
   height: 100%;
   width: 100%;
-
+  
   .post-contnet {
     height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2%;
   align-items: flex-start;
   width: 100%;
   }
@@ -103,7 +102,7 @@
   flex-direction: row;
   justify-content: space-between;
   width: 100%;
-  margin-top: 1.5%;
+  margin-top: 2%;
 
 
   .left-side {
@@ -120,6 +119,9 @@
   .right-side {
     display: flex;
     gap: 5px;
+    .button {
+      height: 32px;
+    }
   }
 }
 
