@@ -3,11 +3,9 @@ import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): any  => {
-  console.log('req.originalUrl', req.originalUrl);
   if(req.originalUrl.includes('api/auth') || req.originalUrl.includes('api/user/create')) {
     return next();
   } 
-  console.log('passed');
   const token = req.headers['authorization']?.split(' ')[1] ;
   if (!token) return res.status(401).json({ message: 'No token provided' });
 

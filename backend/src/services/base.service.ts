@@ -15,8 +15,7 @@ export class BaseService<T> {
 
     async createWithStatus(entity: any, userId: string) {
         try {
-            await this.create(entity, userId);
-            return 'create entity sucssfully'
+            return await this.create(entity, userId);
         } catch (error) {
             throw new Error('falid to save entity')
         }
@@ -33,9 +32,9 @@ export class BaseService<T> {
         return (await this.model.find(filter).lean<T>().exec()) as T[];
     }
 
-    async getOneByFilter(filter: RootFilterQuery<T> = {}) {
+    async getModelByFilter(filter: RootFilterQuery<T> = {}) {
 
-        return (await this.model.findOne(filter).lean<T>().exec()) as T;
+        return (await this.model.findOne(filter)) as T;
     }
 
     async deleteById(id: string) {
@@ -49,7 +48,7 @@ export class BaseService<T> {
         const entity = await this.getById(entityId);
         if (!entity) {
             throw new Error('Entity not found');
-          }
+        }
 
         return entity[idFieldName] == userId || false;
     }
@@ -80,14 +79,15 @@ export class BaseService<T> {
         } catch (error) {
             throw new Error('failed to update entity')
         }
-        return 'updated entity sucssfully';
+        return updatedEntityResult;
     }
 
 
-    async customizedUpdate(id: string, updateQueryConfig: UpdateQuery<T>, options: QueryOptions<T> | null ) {
+    async customizedUpdate(id: string, updateQueryConfig: UpdateQuery<T>, options: QueryOptions<T> | null) {
+        let updatedEntityResult;
         try {
 
-            const updatedEntityResult = await this.model.findByIdAndUpdate(id, updateQueryConfig, options);
+            updatedEntityResult = await this.model.findByIdAndUpdate(id, updateQueryConfig, options);
 
             if (!updatedEntityResult) {
                 throw new Error('entity not found');
@@ -96,7 +96,8 @@ export class BaseService<T> {
         } catch (error) {
             throw new Error('failed to update entity')
         }
-        return 'updated entity sucssfully';
+
+        return updatedEntityResult;
     }
 
 }

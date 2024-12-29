@@ -12,19 +12,6 @@ export class PostService extends BaseService<IPost> {
         const findByIdAndUpdateOptions = { new: true, runValidators: true };
         return await this.customizedUpdate(postId, findByIdAndUpdateConfig, findByIdAndUpdateOptions);
     }
-
-    async getPostOwner(postId: string) {
-        const postInfo = await this.getById(postId);
-        if (postInfo) {
-            return postInfo?.userId;
-        } else {
-            throw new Error('post owner not found')
-        }
-    }
-
-    async getPosts() {
-        return await this.getByFilter();
-    }
 }
 
 

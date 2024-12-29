@@ -3,14 +3,15 @@
       "target": "ES6",
       "module": "CommonJS",
       "strict": true,
+      "resolveJsonModule": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "outDir": "./dist",
       "typeRoots": ["./node_modules/@types", "./src/types"],
-      "types": ["node", "express"]
+      "types": ["node", "express","jest"]
     },
-    "include": ["src/**/*.ts", "src/types/**/*.ts"],
+    "include": ["src/**/*.ts", "src/types/**/*.ts", "text.ts"],
     "exclude": ["node_modules"]
   }
   

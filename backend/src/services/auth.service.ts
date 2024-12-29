@@ -5,8 +5,7 @@ import { config } from '../config/config';
 import { IAuthTokens } from '../interfaces/auth';
 import { BaseService } from './base.service';
 import { UserService } from './user.service';
-
-
+import TokenInfo from '../types/token';
 
 
 export class AuthService extends BaseService<IUser> {
@@ -16,42 +15,82 @@ export class AuthService extends BaseService<IUser> {
     this.userService = new UserService()
   }
 
-  async registerUser(userdata: IBaseUser) {
-    const newUser = await this.userService.saveUser(userdata);
-    return this.generateAuthKeys(newUser.username, newUser._id);
+  async registerUser(userdata: {
+    password: string;
+    username: string;
+    email: string;
+  }) {
+    const newUser = await this.userService.saveUser({ ...userdata, tokens: [] });
+    return newUser;
 
   }
 
   async loginUser(username: string, password: string) {
-    const user = await this.getUserDataByUserName(username);
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) throw new Error('Invalid password');
+    const user = await this.getUserModelByUserName(username);
 
-    return this.generateAuthKeys(user.username, user._id);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) throw new Error('bad username or password');
+
+
+    const { accessToken, refreshToken } = this.generateAuthKeys(user._id);
+
+    if (user.tokens === null) {
+      user.tokens = [refreshToken]
+    }
+    else {
+      user.tokens.push(refreshToken)
+    }
+    
+    await user.save();
+
+    return { accessToken: accessToken, refreshToken: refreshToken };
   }
 
-  async refreshUserToken(refreshToken: string) {
-    let userData: any
-    try {
-      userData = jwt.verify(refreshToken, config.JWT_SECRET);
-    } catch (error) {
-      throw new Error('invalid refresh token')
+  async logout(token: string) {
+    const userId = <TokenInfo>jwt.verify(token, config.REFRESH_SECRET)
+    const user = await this.invalidateUserToken(userId?._id, token)
+    user.tokens.splice(user.tokens.indexOf(token), 1);
+    await user.save();
+  }
+
+   async invalidateUserToken(userId: string, token: string) {
+    
+    const user = await UserModel.findOne({_id: userId});
+    if (user == null) throw new Error('invalid request');
+
+    if (!user.tokens.includes(token)) {
+      user.tokens = []; // invalidate all user tokens
+      await user.save();
+      throw new Error('invalid request');
     }
 
-    const user = await this.getUserDataByUserName(userData.username);
-    return this.generateAuthKeys(user.username, user._id)
+    return user
   }
 
-  async getUserDataByUserName(username: string) {
-    const user = await this.userService.getOneByFilter({ username });
+  async refreshUserToken(token: string) {
+
+    const userId = <TokenInfo>jwt.verify(token, config.REFRESH_SECRET)
+    if (!userId?._id) throw new Error('invalid token')
+
+      const user = await this.invalidateUserToken(userId?._id, token);
+
+    const { accessToken, refreshToken } = this.generateAuthKeys(user._id);
+
+    user.tokens[user.tokens.indexOf(token)] = refreshToken;
+    await user.save();
+    return { accessToken: accessToken, refreshToken: refreshToken };
+  }
+
+  async getUserModelByUserName(username: string) {
+    const user = await this.userService.getModelByFilter({ username });
     if (!user) throw new Error('User not found');
     return user;
   }
 
-  generateAuthKeys(username: string, userId: any): IAuthTokens {
-    const token = jwt.sign({ userId }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION });
-    const refreshToken = jwt.sign({ username }, config.JWT_SECRET, { expiresIn: '7d' });
+  generateAuthKeys(userId: any): IAuthTokens {
+    const accessToken = jwt.sign({ _id: userId }, config.JWT_SECRET, { expiresIn: config.JWT_EXPIRATION });
+    const refreshToken = jwt.sign({ _id: userId }, config.REFRESH_SECRET, { expiresIn: config.JWT_EXPIRATION });
 
-    return { token, refreshToken }
+    return { accessToken, refreshToken }
   }
 }

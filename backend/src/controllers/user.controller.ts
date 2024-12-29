@@ -28,7 +28,7 @@ export class UserController extends BaseController<IUser, UserService> {
         const userid = req.params.userid;
         const posts: IPost[] = await this.service.getUserPosts(userid);
 
-        res.json({ posts });
+        res.json(posts);
 
       } else {
         throw new Error('userid not provided')
@@ -41,9 +41,9 @@ export class UserController extends BaseController<IUser, UserService> {
   async userData(req: Request, res: Response) {
     try {
       const user = (req as express.Request & { user?: any }).user;
-      const userData = await this.service.getById(user.userId);
+      const userData = await this.service.getById(user._id);
 
-      res.json({ userData });
+      res.json( userData );
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
@@ -64,7 +64,7 @@ export class UserController extends BaseController<IUser, UserService> {
 
       const message = await this.service.update(updateData, userId);
 
-      res.json({ message });
+      res.json( message );
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });

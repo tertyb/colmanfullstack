@@ -1,6 +1,10 @@
 # Node modules
 node_modules/
 
+coverage
+
+.testenv
+
 # TypeScript compiled files
 dist/
 *.tsbuildinfo
