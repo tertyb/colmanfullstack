@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { showToast } from "../consts/toast";
 import { IPost, IPostWithUser } from "../interfaces/post";
 import { IGenericResponse } from "../interfaces/user";
-import { AxiosInstence } from "./axios/AxiosInstance";
+import { appBaseURL, AxiosInstence } from "./axios/AxiosInstance";
 
 export const userPostKey =  `user-posts`;
 export const feedPostKey =  `feed-posts`;

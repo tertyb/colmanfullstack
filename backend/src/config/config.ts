@@ -9,6 +9,8 @@ export const config: IConfig = {
     MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/socialnet2',
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
     GOOGLE_CLIENT_SECRECT: process.env.GOOGLE_CLIENT_SECRECT || '',
+    MONGO_USER: process.env.MONGO_USER || '',
+    MONGO_PASSWORD: process.env.MONGO_PASSWORD || '',
     PORT: parseInt(process.env.PORT || '5000'),
 }
 interface IConfig {
@@ -19,4 +21,6 @@ interface IConfig {
     PORT: number;
     GOOGLE_CLIENT_ID: string;
     GOOGLE_CLIENT_SECRECT: string; 
+    MONGO_USER:string;
+    MONGO_PASSWORD:string;
 }

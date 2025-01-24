@@ -3,7 +3,7 @@ import useSWR from 'swr'; // Replace with your Axios instance setup
 import { showToast } from '../consts/toast';
 import { IGenericResponse, IUser } from '../interfaces/user';
 import { getAuthTokenByName, refreshTokenName, removeAuthTokens, updateTokens } from '../utils/functions/localstorage';
-import { AxiosInstence } from './axios/AxiosInstance';
+import { AxiosInstence, appBaseURL } from './axios/AxiosInstance';
 
 export interface ILoginResponse {
   accessToken: string;
@@ -43,7 +43,7 @@ export const useGetUserData = (userid: string | null) =>
 
 export const loginUser = async (username: string, password: string) => {
 
-  const data = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login', {
+  const data = (await axios.post<ILoginResponse>(`/api/auth/login`, {
     username,
     password
   })).data;
@@ -53,7 +53,7 @@ export const loginUser = async (username: string, password: string) => {
 
 export const registerUser = async (email: string, username: string, password: string) => {
 
-  (await axios.post<IRegisterResponse>('http://localhost:5000/api/auth/register', {
+  (await axios.post<IRegisterResponse>(`/api/auth/register`, {
     email,
     username,
     password
@@ -65,7 +65,7 @@ export const registerUser = async (email: string, username: string, password: st
 export const logout = async () => {
   try {
     const refreshToken = getAuthTokenByName(refreshTokenName);
-    (await axios.post<IRegisterResponse>('http://localhost:5000/api/auth/logout', {}, {
+    (await axios.post<IRegisterResponse>(`/api/auth/logout`, {}, {
       headers: {
         Authorization: `Bearer ${refreshToken}`
       }
@@ -102,7 +102,7 @@ export const editProfile = async (userId: string, editedProfile: FormData) => {
 
 export const googleSignin = async (credential?: string) => {
 
-  const tokens = (await axios.post<ILoginResponse>('http://localhost:5000/api/auth/login/google', {
+  const tokens = (await axios.post<ILoginResponse>(`/api/auth/login/google`, {
     credential,
   })).data;
 

@@ -3,7 +3,7 @@ import { CommentModel } from "../../../interfaces/post";
 import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
 import { formatDate } from "../../../utils/functions/date";
-import { baseURL } from "../../../services/axios/AxiosInstance";
+import { appBaseURL } from "../../../services/axios/AxiosInstance";
 import { useProfile } from "../../../contexts/profileContext";
 import { useNavigate } from "react-router-dom";
 

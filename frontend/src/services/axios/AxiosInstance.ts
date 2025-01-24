@@ -2,11 +2,12 @@ import axios, { AxiosResponse } from "axios";
 import useSWR from "swr";
 import { refreshTokenName, removeAuthTokens, updateTokens } from "../../utils/functions/localstorage";
 
-export const baseURL = 'http://localhost:5000'
 // Create an Axios instance
+export const appBaseURL = process.env.REACT_APP_BACK_URL || 'node51.cs.colman.ac.il';
 export const AxiosInstence = axios.create({
-    baseURL: `${baseURL}/api`, // Replace with your API base URL
+    baseURL: `/api`, 
 });
+
 // Attach tokens to requests
 AxiosInstence.interceptors.request.use((request) => {
     const token = localStorage.getItem("accessToken");
@@ -16,8 +17,8 @@ AxiosInstence.interceptors.request.use((request) => {
     }
     return request;
 });
-
 // Handle token refresh
+
 AxiosInstence.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error) => {
@@ -28,7 +29,7 @@ AxiosInstence.interceptors.response.use(
 
             const refreshToken = localStorage.getItem(refreshTokenName);
             try {
-                const { data } = await axios.post("http://localhost:5000/api/auth/refresh", {}, {
+                const { data } = await axios.post(`/api/auth/refresh`, {}, {
                     headers: {
                         Authorization: `Bearer ${refreshToken}`
                     }

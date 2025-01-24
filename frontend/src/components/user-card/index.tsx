@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import EditProfileModal from '../edit-profile-modal';
 import { UserPosts } from '../user-posts';
 import './index.scss'; // Import the CSS styles for the navbar
-import { baseURL } from '../../services/axios/AxiosInstance';
+import { appBaseURL } from '../../services/axios/AxiosInstance';
 import { ProfilePhoto } from '../profile-photo';
 import { useUser } from '../../contexts/userContext';
 import { useProfile } from '../../contexts/profileContext';

@@ -40,7 +40,12 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
     app.use('/api/post', postRouter);
 
     try {
-        await mongoose.connect(config.MONGO_URI as string);
+        if(process.env.NODE_ENV === 'production') {
+		console.log(config.MONGO_PASSWORD);
+            await mongoose.connect(config.MONGO_URI as string, {user:config.MONGO_USER, pass:config.MONGO_PASSWORD});
+        } else {
+            await mongoose.connect(config.MONGO_URI as string);
+        }
         console.log('MongoDB connected');
       } catch (err) {
         console.error('MongoDB connection failed:', err);
