@@ -18,6 +18,17 @@ export interface IRegisterResponse {
 
 export const userDataKey = 'user-data'
 
+const fetchUserDataById = async (id: string) => {
+  const res = await AxiosInstence.get<IUser>(`/user/details/${id}`);
+  return res.data;
+}
+
+export const useGetUserDataById = (userid: string | null) =>
+  useSWR<IUser>(
+    userid ? userid : null,  
+    fetchUserDataById
+  );
+
 const fetchUserData = async () => {
   const res = await AxiosInstence.get<IUser>('/user/data');
   return res.data;
@@ -64,7 +75,7 @@ export const logout = async () => {
     showToast('failed to logout', "error");
 
   }
- };
+};
 
 export const getLogin = async (username: string, password: string) => {
   try {
@@ -96,5 +107,5 @@ export const googleSignin = async (credential?: string) => {
   })).data;
 
   updateTokens(tokens)
-  console.log('after server valid',tokens);
+  console.log('after server valid', tokens);
 };

@@ -4,6 +4,7 @@ import { useUser } from "../../contexts/userContext";
 import { useGetUserData } from "../../services/userService";
 import { CircularProgress } from "@mui/material";
 
+
 interface IProp {
     children: React.ReactNode;
 }
@@ -19,8 +20,9 @@ export const LoginWrapper: React.FC<IProp> = ({ children }: IProp) => {
             navigate('/login')
         }
         else if (data) {
-            console.log('d',data)
+
             setUserData(data)
+
         }
     }, [data, authtoken, user, navigate, setUserData]);
 

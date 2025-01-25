@@ -7,6 +7,8 @@ import { UserPosts } from '../user-posts';
 import './index.scss'; // Import the CSS styles for the navbar
 import { baseURL } from '../../services/axios/AxiosInstance';
 import { ProfilePhoto } from '../profile-photo';
+import { useUser } from '../../contexts/userContext';
+
 
 type UserProps = {
   userProfileImage?: string;
@@ -19,6 +21,11 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
 
+  const { setUserData, user } = useUser();
+
+  const displayEdit = () => userid === user?._id
+
+
   const toggleEditPopUp = useCallback(() => setIsEditOpen((prevState) => !prevState), [setIsEditOpen])
 
   return (
@@ -26,7 +33,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
       <CardContent className='card-contnet'>
         <div className='card-header'>
           <div className='header-left'>
-          <ProfilePhoto userImage={userProfileImage} width={135} height={135} />
+            <ProfilePhoto userImage={userProfileImage} width={135} height={135} />
 
             <div className='titles'>
               <Typography variant="h4" component="div">
@@ -37,9 +44,11 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
               </Typography>
             </div>
           </div>
-          <div className='header-right'>
-            <Button variant="contained" className='edit-button' onClick={toggleEditPopUp}> Edit Profile</Button>
-          </div>
+          {displayEdit() &&
+            <div className='header-right'>
+              <Button variant="contained" className='edit-button' onClick={toggleEditPopUp}> Edit Profile</Button>
+            </div>
+          }
 
         </div>
 
@@ -51,9 +60,10 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
 
         <div className='posts-tab'>
           <Typography className='myposts' variant="h5" >
-            My Posts
+            Posts
           </Typography>
-          <UserPosts userid={userid} username={username} userProfileImage={userProfileImage} />
+
+          <UserPosts isOwner={displayEdit()} userid={userid} username={username} userProfileImage={userProfileImage} />
         </div>
 
         <EditProfileModal userid={userid} defaultValues={{ username, description: userDescription, file: userProfileImage }} isOpen={isEditOpen} toggleIsOpen={toggleEditPopUp}>
