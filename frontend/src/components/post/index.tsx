@@ -26,15 +26,16 @@ type PostProps = {
   imgUrl: string;
   userImage?: string;
   userName: string;
-  userId: string;
+  userId?: string;
   date: string;
   likes: string[];
   comments: CommentModel[];
   onPostChange: () => void
-  isOwner: boolean
+  isOwner: boolean;
+  isAiGenerated: boolean
 };
 
-const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, userName, date, likes, comments, onPostChange, isOwner }) => {
+const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, userId, date, likes, comments, onPostChange, isOwner, isAiGenerated = false }) => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState<boolean>(false);
   const [isCommentViewOpen, setIsCommentViewOpen] = useState<boolean>(false);
   const [showAnimation, setShowAnimation] = useState(false);
@@ -54,14 +55,14 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
   const userPhotoClick = useCallback(async () => {
-
-    const params = new URLSearchParams();
-    params.set('id', userId); // 
-
-    navigate(`/profile?${params.toString()}`);
+    if(userId) {
+      const params = new URLSearchParams();
+      params.set('id', userId); // 
+  
+      navigate(`/profile?${params.toString()}`);
+    }
 
   }, [setShowAnimation, isLiked, postId, onPostChange])
-
 
 
   const formatedDate = useMemo(() => formatDate(new Date(date)), [date]);
@@ -84,7 +85,7 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
         <div className="post-contnet">
           <div className='top-bar'>
             <div className='right-side'>
-              <ProfilePhoto classnames='profile' onClick={userPhotoClick} userImage={userImage} width={35} height={35} />
+              <ProfilePhoto userImage={userImage} onClick={userPhotoClick} isAiGenerated={isAiGenerated} width={35} height={35} />
               <div className='sub-info'>
                 <p>{userName}</p>
                 <p className='sub-name'>@{userName.replace(/\s+/g, "")}</p>
@@ -102,9 +103,9 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
           <div className='bottom-row'>
             <div className='left-side'>
               <span>{comments.length}</span>
-              <span onClick={toggleCommentsPopUp}><CommentIcon /></span>
+              <span onClick={toggleCommentsPopUp}><CommentIcon className='button' /></span>
               <span>{likes.length}</span>
-              <span onClick={onClickLike}><FavoriteIcon className={classNames({ 'liked-icon': isLiked })} /></span>
+              <span onClick={onClickLike}><FavoriteIcon className={classNames('button', { 'liked-icon': isLiked })} /></span>
             </div>
             {
               isOwner && <div className='right-side'>
@@ -116,7 +117,6 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userId, us
 
           </div>
           <CommentsView postId={postId} isOpen={isCommentViewOpen} onSubmitComments={onPostChange} comments={comments} toggleIsOpen={toggleCommentsPopUp} />
-          {/* <EditPostModal onSubmit={onEdit} isOpen={isEditPopupOpen} setIsOpen={setIsEditPopupOpen} defaultValues={{ text, image: imgUrl }} /> */}
           <UpsertPost postId={postId} onSave={onEdit} post={{ text, image: imgUrl }} toggleIsOpen={toggleEditPopUp} isOpen={isEditPopupOpen} />
         </div>
       </CardContent>

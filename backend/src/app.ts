@@ -2,16 +2,17 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
+import path from "path";
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
+import { uploadMiddleware } from './config/multer';
 import { authMiddleware } from './middlewares/authMiddleware';
 import { authRouter } from './routes/auth.route';
 import { commentRouter } from './routes/comment.route';
 import { postRouter } from './routes/post.route';
 import { userRouter } from './routes/user.route';
-import path from "path";
-import { uploadMiddleware } from './config/multer';
+import './cron-jobs/generateAiPosts'
 
 
 const appPromise: Promise<Application> = new Promise( async (resolve, reject) => {
@@ -64,7 +65,6 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     resolve(app)
-
 
 })
 

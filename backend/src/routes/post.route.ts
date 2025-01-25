@@ -115,6 +115,8 @@ postRouter.delete('/:id', postController.deleteById.bind(postController));
  *         description: problem creating post 
  */
 postRouter.post('/create', postController.create.bind(postController));
+postRouter.post('/create/ai', postController.createPostGeneratedByAI.bind(postController));
+
   
 /**
  * @swagger

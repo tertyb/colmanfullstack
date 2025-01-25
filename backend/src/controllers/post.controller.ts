@@ -18,6 +18,17 @@ export class PostController extends BaseController<IPost, PostService> {
     this.changeLikeMode(req, res, false)
   }
 
+  async createPostGeneratedByAI(req: Request, res: Response) {
+    try {
+
+      const aiPost = await this.service.createPostGeneratedByAI();
+      res.json(aiPost)
+
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  }
+
   private async changeLikeMode(req: Request, res: Response, isLiked: boolean) {
     try {
       if (req?.params?.postid) {
@@ -42,7 +53,7 @@ export class PostController extends BaseController<IPost, PostService> {
     try {
 
       const posts = await this.service.getAllPosts();
-      res.json(posts);
+       res.json(posts);
 
     } catch (error: any) {
       res.status(400).json({ message: error.message });
