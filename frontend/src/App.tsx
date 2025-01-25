@@ -7,7 +7,6 @@ import Navbar from './components/navbar';
 import './index.scss';
 import { LoginScreen } from './views/Login';
 import Profile from './views/Profile';
-import { useProfile } from './contexts/profileContext';
 
 const App: React.FC = () => {
 

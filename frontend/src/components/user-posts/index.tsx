@@ -1,9 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import userpost from '../../assets/userBack.jpg';
-import { IPost } from "../../interfaces/post";
+import { IPost, IPostWithUser } from "../../interfaces/post";
 import { useGetUserPosts } from "../../services/postService";
 import Post from "../post";
 import './index.scss';
+import { Posts } from "../posts";
+import { CircularProgress } from "@mui/material";
 
 interface IProp {
     userid: string;
@@ -18,9 +20,15 @@ export const UserPosts: React.FC<IProp> = ({ userid, userProfileImage, username,
         mutate();
     }, [mutate])
 
-    if (isLoading) return <></>
-    return (<div className='posts'>
-        {data?.map((post: IPost) => <Post isOwner ={isOwner} key={post._id} postId={post._id} text={post.text} imgUrl={post.image} userId={userid} userImage={userProfileImage} onPostChange={onChangePost} userName={username} date={post.date} likes={post.likes} comments={post.comments}></Post>)}
-    </div>
+    const posts: IPostWithUser[] | undefined = useMemo(() => data?.map((post) => {
+        return {
+            ...post,
+            postUsername: username,
+            postUserImage: userProfileImage
+        }
+    }),[data])
+
+    if (isLoading  || !posts) return <CircularProgress/>
+    return ( <Posts userid={userid} onPostChange={onChangePost} posts={posts}/>
     )
 } 

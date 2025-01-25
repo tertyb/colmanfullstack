@@ -5,23 +5,26 @@ import { IPostWithUser } from "../../interfaces/post";
 import { useGetFeedPosts } from "../../services/postService";
 import Post from "../post";
 import './index.scss'
+import { Posts } from "../posts";
 
 
-export const SocialPosts:React.FC = () => {
-    
-    const {data, isLoading, mutate} = useGetFeedPosts();
-    const {user} = useUser()
+export const SocialPosts: React.FC = () => {
+
+    const { data, isLoading, mutate } = useGetFeedPosts();
+    const { user } = useUser()
     const onPostChange = useCallback(() => {
         mutate();
-    },[mutate])
+    }, [mutate])
 
-    if(isLoading) return <CircularProgress/>
+    if (isLoading || !data) return <CircularProgress />
 
     return (
-        <div className="feed-posts">
+        <div className="feed-posts-container">
             {
-                data?.map(((post: IPostWithUser) => <Post key={post._id} postId={post._id} isOwner={user?._id === post.userId} text={post.text} userId={post.userId} imgUrl={post.image} userImage={post.postUserImage} onPostChange={onPostChange} userName={post.postUsername} date={post.date} likes={post.likes} comments={post.comments}></Post>)) 
+                // data?.map(((post: IPostWithUser) => <Post key={post._id} postId={post._id} isOwner={user?._id === post.userId} text={post.text} imgUrl={post.image} userImage={post.postUserImage} onPostChange={onPostChange} userName={post.postUsername} date={post.date} likes={post.likes} comments={post.comments}></Post>)) 
+               user?._id && <Posts userid={user!._id} onPostChange={onPostChange} posts={data} classname="feed-posts" />
             }
+
         </div>
     )
 }

@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUser extends Document, IBaseUser {
-  image: string;
+  image?: string;
 }
 
 export interface IBaseUser {

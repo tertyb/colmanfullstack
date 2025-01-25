@@ -74,6 +74,12 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN
     "image": "did.png"
 }
 
+
+###
+
+POST http://localhost:5000/api/post/create/ai
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN2ZmODExMTQ1MDBlNjFkYjgiLCJpYXQiOjE3MzUzMDE5MjcsImV4cCI6MTczNTMwNTUyN30.fnZAT6G49RlAgqT2YcsK3zpD6Zo3LW5QIkp6PwhL40I
 ###
 DELETE  http://localhost:5000/api/post/6752f7a9c552b48bd9710dd2
 content-type: application/json
@@ -92,7 +98,7 @@ authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzUyY
 ###
 GET  http://localhost:5000/api/post/all
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzZlOWIyN2ZmODExMTQ1MDBlNjFkYjgiLCJpYXQiOjE3MzU0MTI5OTIsImV4cCI6MTczNTQxNjU5Mn0.1i-gSsALwyzQKgwkTJew-6J-1WXBG45_Z-oj-sprQvg
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzcxMzliYTcxNzE5YTI1ZTc3ZTBiNjUiLCJpYXQiOjE3MzU2MzE4MzcsImV4cCI6MTczNTYzNTQzN30.7oZButNpBEKpDKFA6dZFSCZuJbFl4y2MaEaT58uIPOs
 
 
 ###
