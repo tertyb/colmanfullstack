@@ -33,7 +33,7 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
         fs.mkdirSync(uploadsPath, { recursive: true });
     }
 
-    app.use("/uploads", express.static(uploadsPath));
+    app.use("/api/uploads", express.static(uploadsPath));
     
     app.use(uploadMiddleware);
     // Middleware
