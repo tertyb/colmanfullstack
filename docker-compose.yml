@@ -29,6 +29,7 @@ services:
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - MONGO_USER=${MONGO_USER}
       - MONGO_PASSWORD=${MONGO_PASSWORD}
+      - OPEN_AI_KEY=${OPEN_AI_KEY}
     depends_on:
       - mongodb
     networks:

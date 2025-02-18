@@ -4,7 +4,6 @@ import './index.scss'
 import { ProfilePhoto } from "../../profile-photo";
 import { formatDate } from "../../../utils/functions/date";
 import { appBaseURL } from "../../../services/axios/AxiosInstance";
-import { useProfile } from "../../../contexts/profileContext";
 import { useNavigate } from "react-router-dom";
 
 interface IProp {
