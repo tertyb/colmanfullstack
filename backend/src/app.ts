@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express, { Application } from 'express';
 import mongoose from 'mongoose';
 import path from "path";
+import fs from 'fs';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { config } from './config/config';
@@ -27,8 +28,13 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
         dotenv.config()
     }
 
+    const uploadsPath = path.join(__dirname, "config/uploads");
+    if (!fs.existsSync(uploadsPath)) {
+        fs.mkdirSync(uploadsPath, { recursive: true });
+    }
 
-    app.use("/uploads", express.static(path.join(__dirname, "config/uploads")));
+    app.use("/uploads", express.static(uploadsPath));
+    
     app.use(uploadMiddleware);
     // Middleware
     app.use(cors());
@@ -37,7 +43,7 @@ const appPromise: Promise<Application> = new Promise( async (resolve, reject) =>
 
     app.use('/api/auth', authRouter);
     app.use('/api/user', userRouter);
-    app.use('/api/comment', commentRouter);
+    app.use('/api/comment', commentRouter); 
     app.use('/api/post', postRouter);
 
     try {

@@ -45,10 +45,6 @@ module.exports = {
     ],
   },
   devtool: 'source-map', // Enable source maps
-  devServer: {
-    static: path.join(__dirname, 'dist'),
-    port: 3000,
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },

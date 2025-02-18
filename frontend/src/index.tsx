@@ -1,10 +1,9 @@
-import React from 'react';
+import '@fontsource/heebo';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import '@fontsource/heebo';
 import App from './App';
 import { UserProvider } from './contexts/userContext';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 ;
 
 ReactDOM.render(
