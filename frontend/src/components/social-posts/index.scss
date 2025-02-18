@@ -1,8 +1,12 @@
-.feed-posts {
-    display: flex;
+.feed-posts-container {
+    // display: flex;
     width: 70%;
     margin: auto;
-    gap: 15px;
-    flex-direction: column;
-    justify-content: center;
+    // flex-direction: column;
+    // justify-content: center;
+
+    .feed-posts {
+        gap: 15px;
+        padding-bottom: 40px;
+    }
 }

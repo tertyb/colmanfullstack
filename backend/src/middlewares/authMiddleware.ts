@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): any  => {
-  if(req.originalUrl.includes('api/auth') || req.originalUrl.includes('api/user/create')) {
+  if(req.originalUrl.includes('api/auth') || req.originalUrl.includes('api/user/create')|| req.originalUrl.includes('/create/ai') || req.originalUrl.includes('/all')) {
     return next();
   } 
   const token = req.headers['authorization']?.split(' ')[1] ;

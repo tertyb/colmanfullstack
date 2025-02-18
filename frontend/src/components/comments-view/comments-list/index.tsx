@@ -29,11 +29,13 @@ interface ICommentRowProp {
 const CommentRow: React.FC<ICommentRowProp> = ({ comment }: ICommentRowProp) => {
     const formatedDate = useMemo(() => formatDate(new Date(comment.date)), [comment])
     const navigate = useNavigate();
-    const { setProfileData, userProfile } = useProfile();
 
     const userPhotoClick = async () => {
-        setProfileData(comment.userId)
-        navigate('/profile')
+
+        const params = new URLSearchParams();
+        params.set('id', comment.userId); // 
+  
+        navigate(`/profile?${params.toString()}`);
     }
 
     return <div className="comment">

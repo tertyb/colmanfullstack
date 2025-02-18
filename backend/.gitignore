@@ -3,6 +3,8 @@ node_modules/
 
 coverage
 
+src/config/uploads/
+
 .testenv
 
 # TypeScript compiled files

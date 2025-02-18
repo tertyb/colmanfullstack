@@ -2,11 +2,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 import CommentModel, { IComment } from './comment.model';
 
 export interface IPost extends Document {
-  userId: mongoose.Types.ObjectId;
   text: string;
   date: Date;
   image: string;
   likes: mongoose.Types.ObjectId[];
+  generatedByAI: boolean
+  userId?: mongoose.Types.ObjectId;
 }
 
 export interface IPostWithComments extends IPost {
@@ -14,10 +15,11 @@ export interface IPostWithComments extends IPost {
 }
 
 const PostSchema = new Schema<IPost>({
-  userId: { type: Schema.Types.ObjectId, required: true },
+  userId: { type: Schema.Types.ObjectId, required: false },
   text: { type: String, required: true },
   date: { type: Date, required: true },
   image: { type: String, required: false },
+  generatedByAI: {type: Boolean, default: false},
   likes: {
     type: [Schema.Types.ObjectId],
     required: false,
