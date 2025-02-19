@@ -13,7 +13,7 @@ export const PostPhoto: React.FC<IProp> = ({ userImage, classnames, ObjectUrl = 
     const imageSrc = useMemo(() => {
         if (!userImage) return defaultPost;
         if (ObjectUrl) return userImage;
-        return `${baseURL}/api/uploads/${userImage}`
+        return `/api/uploads/${userImage}`
     }, [ObjectUrl, userImage])
     
     return <div className={`post-photo-container ${classnames}`}>

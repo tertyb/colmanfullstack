@@ -19,7 +19,7 @@ export const ProfilePhoto: React.FC<IProp> = ({ width, height, userImage, classn
         if (isAiGenerated) return ChatGPTLogo;
         if (!userImage) return defaultUser;
         if (ObjectUrl) return userImage;
-        return `${baseURL}/api/uploads/${userImage}`
+        return `/api/uploads/${userImage}`
     }, [ObjectUrl, userImage])
 
     const handleClick = () => {
