@@ -118,7 +118,7 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
                                 rules={{ required: "File is required" }}
                                 render={({ field }) => (
                                     <Box>
-                                        <Button color={!!errors.file ? 'error' : 'primary'} style={{ marginBottom: '0px' }}
+                                        <Button color={!!errors.file ? 'error' : 'primary'} style={{ marginBottom: '0px', padding: '0px', borderStyle: 'none' }}
                                             variant="outlined"
                                             component="label"
                                             fullWidth
