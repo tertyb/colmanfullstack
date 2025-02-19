@@ -105,9 +105,9 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
             </div>
             <p className='date'>{formatedDate} </p>
           </div>
-           {!!location && <div className='location'>
+          {<div className='location'>
             <LocationIcon onClick={toggleMap} className='location-icon'></LocationIcon>
-            <h5> {location}</h5>
+            <span className='location-name'> {location}</span>
           </div>}
           <h4>{text}</h4>
           <div className="post-img-wrapper">
