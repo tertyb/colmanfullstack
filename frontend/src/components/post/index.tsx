@@ -1,7 +1,8 @@
 import CommentIcon from '@mui/icons-material/Comment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import LocationIcon from '@mui/icons-material/LocationOn';
+import LocationIconOn from '@mui/icons-material/LocationOn';
+import LocationIconOff from '@mui/icons-material/LocationOff';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -105,10 +106,9 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
             </div>
             <p className='date'>{formatedDate} </p>
           </div>
-          {<div className='location'>
-            <LocationIcon onClick={toggleMap} className='location-icon'></LocationIcon>
-            <span className='location-name'> {location}</span>
-          </div>}
+          <div className='location'>
+            {!!location ? <><LocationIconOn onClick={toggleMap} className='location-icon'></LocationIconOn><span className='location-name'> {location}</span></> : <LocationIconOff color='disabled' className='location-icon'></LocationIconOff>}
+          </div>
           <h4>{text}</h4>
           <div className="post-img-wrapper">
             <PostPhoto classnames='post-img' userImage={imgUrl} />
