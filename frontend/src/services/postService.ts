@@ -10,7 +10,7 @@ export const feedPostKey =  `feed-posts`;
 
 export const useGetUserPosts = (userid?: string) =>
     useSWR<IPost[]>(
-        userid ? `/user/${userid}/posts` : null, 
+        userid ? userPostKey : null, 
         async () => {
             const res = await AxiosInstence.get<IPost[]>(`/user/${userid}/posts`);
             return res.data;
