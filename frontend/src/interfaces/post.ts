@@ -14,7 +14,9 @@ export interface IPost extends IPostMainData {
   export interface IPostMainData {
     text: string;
     image: string;
-    
+    location?: string;
+    locationX?: number;
+    locationY?: number;
   }
 
   export interface CommentModel {

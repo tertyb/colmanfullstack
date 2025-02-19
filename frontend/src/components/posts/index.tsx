@@ -25,7 +25,7 @@ export const Posts: React.FC<IProp> = ({ userid, onPostChange, posts, classname 
 
     return (
         <div className={`posts ${classname ? classname : ''}`}>
-            {currentPosts?.map((post: IPostWithUser) => <Post isAiGenerated={!post.userId} isOwner={post.userId === userid} key={post._id} postId={post._id} text={post.text} imgUrl={post.image} userImage={post.postUserImage} onPostChange={onPostChange} userName={post.postUsername ?? 'Ai-Generated'} date={post.date} userId={post.userId} likes={post.likes} comments={post.comments}></Post>)}
+            {currentPosts?.map((post: IPostWithUser) => <Post isAiGenerated={!post.userId} isOwner={post.userId === userid} key={post._id} postId={post._id} text={post.text} imgUrl={post.image} location={post.location} locationX={post.locationX} locationY={post.locationY} userImage={post.postUserImage} onPostChange={onPostChange} userName={post.postUsername ?? 'Ai-Generated'} date={post.date} userId={post.userId} likes={post.likes} comments={post.comments}></Post>)}
             <Pagination
                 count={Math.ceil(posts.length / POST_PER_PAGE)}
                 page={currentPage}

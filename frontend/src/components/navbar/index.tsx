@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import './index.scss'; // Import the CSS styles for the navbar
 import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../../contexts/userContext';
+import appLogo from '../../assets/site-logo.png';
 
 import { unlikePost, likePost } from '../../services/postService';
 
@@ -24,7 +25,8 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <span className="navbar-logo">SocialNet</span>
+        <img src={appLogo} alt="TripsNet Logo" className="navbar-logo-img" />
+        <span className="navbar-logo">TripsNet</span>
       </div>
       <div className="navbar-center">
         <Link to="/" className="navbar-link">Feed</Link>
