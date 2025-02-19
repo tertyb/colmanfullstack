@@ -2,12 +2,13 @@ import { Button, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import React, { useCallback, useState } from 'react';
+import { useUser } from '../../contexts/userContext';
 import EditProfileModal from '../edit-profile-modal';
+import { ProfilePhoto } from '../profile-photo';
 import { UserPosts } from '../user-posts';
 import './index.scss'; // Import the CSS styles for the navbar
 import { appBaseURL } from '../../services/axios/AxiosInstance';
-import { ProfilePhoto } from '../profile-photo';
-import { useUser } from '../../contexts/userContext';
+
 
 
 type UserProps = {
@@ -15,9 +16,10 @@ type UserProps = {
   username: string;
   userDescription?: string;
   userid: string;
+  onEdit?: () => void;
 };
 
-const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescription, userid }) => {
+const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescription, userid, onEdit }) => {
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
 
@@ -66,7 +68,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
           <UserPosts isOwner={displayEdit()} userid={userid} username={username} userProfileImage={userProfileImage} />
         </div>
 
-        <EditProfileModal userid={userid} defaultValues={{ username, description: userDescription, file: userProfileImage }} isOpen={isEditOpen} toggleIsOpen={toggleEditPopUp}>
+        <EditProfileModal onEdit={onEdit} userid={userid} defaultValues={{ username, description: userDescription, file: userProfileImage }} isOpen={isEditOpen} toggleIsOpen={toggleEditPopUp}>
 
         </EditProfileModal>
 

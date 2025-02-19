@@ -1,9 +1,11 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { IPost, IPostMainData } from "../../interfaces/post";
 import { PostPhoto } from "../post-photo";
 import './index.scss';
+import MapComponent from "../map";
+import L from "leaflet";
 
 interface IProp {
     isOpen: boolean;
@@ -16,12 +18,14 @@ interface IProp {
 
 type FormInputs = {
     description?: string;
-    file?: File | string | undefined
+    file?: File | string | undefined,
+    location: string
 };
 
 type FormOutput = {
     description: string;
     file: File | string
+    location: string
 }
 
 const style = {
@@ -38,7 +42,7 @@ const style = {
 
 export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave, postId }: IProp) => {
 
-    const isEditMode = useMemo(() => !!post,[post])
+    const isEditMode = useMemo(() => !!post, [post])
     const {
         control, // Used to control Material-UI inputs
         handleSubmit,
@@ -46,19 +50,30 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
         watch,
         formState: { errors, isValid },
     } = useForm<FormInputs>({
-        defaultValues: { file: post?.image, description: post?.text },
+        defaultValues: { file: post?.image, description: post?.text, location: "Location Not Updated" },
         mode: 'onChange'
     });
+
+    const [locationName, setLocationName] = useState('');
+    const [locationY, setLocationX] = useState(0);
+    const [locationX, setLocationY] = useState(0);
+
+
 
     const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
         const formData = new FormData();
         if (data.description) formData.append("text", data.description);
+
         formData.append("file", data.file ?? "");
         if (postId) formData.append("id", postId)
 
+        formData.append("location", locationName);
+        formData.append("locationX", locationX.toString());
+        formData.append("locationY", locationY.toString());
+
         await onSave(formData);
         toggleIsOpen();
-    }, [onSave, postId, toggleIsOpen])
+    }, [onSave, postId, toggleIsOpen, locationName])
 
     const updatedFile = useMemo(() => watch("file"), [watch("file")]);
 
@@ -82,7 +97,7 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
                 <Box sx={style} onSubmit={handleSubmit(onSubmit)} component="form">
                     <div className='box-content'>
                         <div className='headLines'>
-                            <h3> {isEditMode ? 'edit' : 'new' }  post</h3>
+                            <h3> {isEditMode ? 'edit' : 'new'}  post</h3>
                             <p className='sub-comment'> Make changes to your post here.</p>
                         </div>
                         <Controller
@@ -130,6 +145,14 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
                                 </Typography>
                             )}
                         </div>
+
+                        <MapComponent
+                            locationNameChange={setLocationName}
+                            setLocationX={setLocationX}
+                            setLocationY={setLocationY}
+                            savedLocation={post?.location !== 'Location Not Updated' ? { position: [post?.locationX ?? 1.0464363474, post?.locationY ?? 3.0464363474] } : { position: [1.0464363474, 3.0464363474] }}
+                            edit={true}
+                        />
 
 
                         <div className='footer'>

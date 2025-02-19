@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { CommentModel } from "../../../interfaces/post";
-import './index.scss'
-import { ProfilePhoto } from "../../profile-photo";
 import { formatDate } from "../../../utils/functions/date";
 import { appBaseURL } from "../../../services/axios/AxiosInstance";
-import { useNavigate } from "react-router-dom";
+import { ProfilePhoto } from "../../profile-photo";
+import './index.scss';
 
 interface IProp {
     comments: CommentModel[];

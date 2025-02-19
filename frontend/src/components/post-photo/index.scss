@@ -1,9 +1,11 @@
 .post-photo-container {
     align-content: center;
 
+
     .post-photo {
-        width: 500px;
-        height: 250px;
+        width: auto;
+        max-width: 100%;
+        height: 300px;
         justify-self: flex-start;
       }
 } 

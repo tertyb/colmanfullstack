@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const { data, error, isLoading } = useGetUserDataById( queryParams.get('id') || null);
+    const { data, error, isLoading, mutate } = useGetUserDataById( queryParams.get('id') || null);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -36,6 +36,7 @@ const Profile: React.FC = () => {
                         username={data!.username} 
                         userDescription={data.description} 
                         userProfileImage={data.image}
+                        onEdit={mutate}
                     />
                 )}
             </div>
