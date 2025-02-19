@@ -2,7 +2,6 @@ import React, { useCallback, useMemo } from "react";
 import userpost from '../../assets/userBack.jpg';
 import { IPost, IPostWithUser } from "../../interfaces/post";
 import { useGetUserPosts } from "../../services/postService";
-import Post from "../post";
 import './index.scss';
 import { Posts } from "../posts";
 import { CircularProgress } from "@mui/material";

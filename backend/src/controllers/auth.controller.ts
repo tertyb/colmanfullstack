@@ -52,6 +52,7 @@ export class AuthController extends BaseController<IUser, AuthService> {
     } else {
       try {
      await this.service.logout(token);
+     
         res.status(200).send();
       } catch (error:any) {
         res.status(403).json({ message: error.message });

@@ -1,9 +1,7 @@
 import { CircularProgress } from "@mui/material";
 import React, { useCallback } from "react";
 import { useUser } from "../../contexts/userContext";
-import { IPostWithUser } from "../../interfaces/post";
 import { useGetFeedPosts } from "../../services/postService";
-import Post from "../post";
 import './index.scss'
 import { Posts } from "../posts";
 

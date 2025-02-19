@@ -5,6 +5,9 @@ export interface IPost extends Document {
   text: string;
   date: Date;
   image: string;
+  location: string;
+  locationX: number;
+  locationY: number;
   likes: mongoose.Types.ObjectId[];
   generatedByAI: boolean
   userId?: mongoose.Types.ObjectId;
@@ -19,12 +22,15 @@ const PostSchema = new Schema<IPost>({
   text: { type: String, required: true },
   date: { type: Date, required: true },
   image: { type: String, required: false },
-  generatedByAI: {type: Boolean, default: false},
+  location: { type: String, required: false },
+  locationX: { type: Number, required: false },
+  locationY: { type: Number, required: false },
+  generatedByAI: { type: Boolean, default: false },
   likes: {
     type: [Schema.Types.ObjectId],
     required: false,
     validate: {
-      validator:  (likes) => {
+      validator: (likes) => {
         return Array.isArray(likes) && likes.length === new Set(likes).size;
       },
       message: "Likes array must have unique values.",
@@ -36,8 +42,8 @@ PostSchema.pre('deleteOne', { document: false, query: true }, async function (ne
   const filter = this.getFilter();
   const postId = filter._id;
   if (postId) {
-   const result = await CommentModel.deleteMany({ postId });
-   console.log(`delete ${result.deletedCount} releted comments`)
+    const result = await CommentModel.deleteMany({ postId });
+    console.log(`delete ${result.deletedCount} releted comments`)
   }
   next();
 });

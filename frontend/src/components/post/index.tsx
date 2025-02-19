@@ -1,6 +1,7 @@
 import CommentIcon from '@mui/icons-material/Comment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import LocationIcon from '@mui/icons-material/LocationOn';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,6 +19,7 @@ import { ProfilePhoto } from '../profile-photo';
 import { UpsertPost } from '../upsert-post';
 import { PostPhoto } from '../post-photo';
 import { formatDate } from '../../utils/functions/date';
+import MapComponent from '../map';
 
 
 type PostProps = {
@@ -33,13 +35,20 @@ type PostProps = {
   onPostChange: () => void
   isOwner: boolean;
   isAiGenerated: boolean
+  location?: string;
+  locationX?: number;
+  locationY?: number;
 };
 
-const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, userId, date, likes, comments, onPostChange, isOwner, isAiGenerated = false }) => {
+const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, userId, date, likes, comments, onPostChange, isOwner, isAiGenerated = false, location, locationX, locationY }) => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState<boolean>(false);
   const [isCommentViewOpen, setIsCommentViewOpen] = useState<boolean>(false);
   const [showAnimation, setShowAnimation] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const setLocationName = (name: string) => {
+    console.log('Location name set to:', name);
+  };
   const { user } = useUser()
   const isLiked = useMemo(() => user?.username && likes.includes(user?._id), [user, likes]);
 
@@ -55,10 +64,10 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
   }, [setShowAnimation, isLiked, postId, onPostChange])
 
   const userPhotoClick = useCallback(async () => {
-    if(userId) {
+    if (userId) {
       const params = new URLSearchParams();
       params.set('id', userId); // 
-  
+
       navigate(`/profile?${params.toString()}`);
     }
 
@@ -68,6 +77,9 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
   const formatedDate = useMemo(() => formatDate(new Date(date)), [date]);
   const toggleEditPopUp = useCallback(() => setIsEditPopupOpen((prevState) => !prevState), [setIsEditPopupOpen]);
   const toggleCommentsPopUp = useCallback(() => setIsCommentViewOpen((prevState) => !prevState), [setIsCommentViewOpen]);
+
+  const toggleMap = useCallback(() => setIsMapOpen((prevState) => !prevState), [setIsMapOpen]);
+
 
   const onEdit = useCallback(async (updatedPost: FormData) => {
     await editPost(updatedPost);
@@ -93,9 +105,21 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
             </div>
             <p className='date'>{formatedDate} </p>
           </div>
+          <div className='location'>
+            <LocationIcon onClick={toggleMap} className='location-icon'></LocationIcon>
+            <h5> {location}</h5>
+          </div>
           <h4>{text}</h4>
           <div className="post-img-wrapper">
             <PostPhoto classnames='post-img' userImage={imgUrl} />
+            {isMapOpen && <MapComponent
+              savedLocation={location !== 'No Location Not Updated' ? { position: [locationX ?? 1.0464363474, locationY ?? 3.0464363474] } : { position: [1.0464363474, 3.0464363474] }}
+              locationNameChange={setLocationName}
+              setLocationX={(x: number) => {}}
+              setLocationY={(y: number) => {}}
+              edit={false}
+            />}
+
             {showAnimation && <div className="like-animation"><FavoriteIcon className='like-icon' /></div>}
           </div>
           <Divider className='divider' variant="inset" />
@@ -103,21 +127,21 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
           <div className='bottom-row'>
             <div className='left-side'>
               <span>{comments.length}</span>
-              <span onClick={toggleCommentsPopUp}><CommentIcon className='button' /></span>
+              <span onClick={toggleCommentsPopUp}><CommentIcon className='button comments-icons' /></span>
               <span>{likes.length}</span>
               <span onClick={onClickLike}><FavoriteIcon className={classNames('button', { 'liked-icon': isLiked })} /></span>
             </div>
             {
               isOwner && <div className='right-side'>
                 <EditIcon onClick={toggleEditPopUp} className='button edit-button' />
-                <DeleteIcon onClick={onDelete} className='button edit-button' />
+                <DeleteIcon onClick={onDelete} className='button delte-button' />
 
               </div>
             }
 
           </div>
           <CommentsView postId={postId} isOpen={isCommentViewOpen} onSubmitComments={onPostChange} comments={comments} toggleIsOpen={toggleCommentsPopUp} />
-          <UpsertPost postId={postId} onSave={onEdit} post={{ text, image: imgUrl }} toggleIsOpen={toggleEditPopUp} isOpen={isEditPopupOpen} />
+          <UpsertPost postId={postId} onSave={onEdit} post={{ text, image: imgUrl, location: (location ?? 'Location Not Updated'), locationX: (locationX ?? 0), locationY: (locationY ?? 0) }} toggleIsOpen={toggleEditPopUp} isOpen={isEditPopupOpen} />
         </div>
       </CardContent>
     </Card>

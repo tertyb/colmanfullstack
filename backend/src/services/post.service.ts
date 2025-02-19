@@ -87,6 +87,9 @@ export class PostService extends BaseService<IPost> {
           comments: 1,
           likes: 1,
           image: 1,
+          location: 1,
+          locationX: 1,
+          locationY: 1,
           postUserImage: {
             $cond: {
               if: {
