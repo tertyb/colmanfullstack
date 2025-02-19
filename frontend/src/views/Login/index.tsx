@@ -56,7 +56,7 @@ export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, set
     return <div className="login-card">
 
         <div className="header">
-            <span className="title">Welcome to SocialNet</span>
+            <span className="title">Welcome to TripNet</span>
             <span className="desc">Connect with friends and share your moments</span>
         </div>
 

@@ -16,6 +16,7 @@ type EditProfileModalProps = {
   toggleIsOpen: () => void;
   defaultValues: { username: string, description?: string, file?: string  };
   userid: string;
+  onEdit?: () => void;
 };
 
 type FormInputs = {
@@ -38,7 +39,7 @@ const style = {
 };
 
 
-const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpen, defaultValues, userid }) => {
+const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpen, defaultValues, userid, onEdit }) => {
 
   const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
 
@@ -48,7 +49,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, toggleIsOpe
     formData.append("file", data.file ?? "");
 
     await editProfile(userid, formData);
-    mutate(userDataKey);
+    onEdit? onEdit(): undefined;
     toggleIsOpen();
   }, [userid])
 
