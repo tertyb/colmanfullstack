@@ -9,9 +9,12 @@
 
     .image-upload-container {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: baseline;
-      min-width: 450px;
+
+      .image-upload, .map-container {
+        width: 375px;
+      }
     }
   
     h3,
