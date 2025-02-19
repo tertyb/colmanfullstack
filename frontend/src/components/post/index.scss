@@ -23,6 +23,11 @@
   gap: 5px;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
+
+  .location-name {
+    font-weight: 700;
+  }
 }
 
 .location-icon {
