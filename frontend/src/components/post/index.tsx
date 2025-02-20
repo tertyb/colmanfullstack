@@ -113,10 +113,11 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
           <div className="post-img-wrapper">
             <PostPhoto classnames='post-img' userImage={imgUrl} />
             {isMapOpen && <MapComponent
-              savedLocation={location !== 'No Location Not Updated' ? { position: [locationX ?? 1.0464363474, locationY ?? 3.0464363474] } : { position: [1.0464363474, 3.0464363474] }}
+              savedLocations={location !== 'No Location Not Updated' ? [{ position: [locationX ?? 1.0464363474, locationY ?? 3.0464363474] }] : [{ position: [1.0464363474, 3.0464363474] }]}
               locationNameChange={setLocationName}
               setLocationX={(x: number) => {}}
               setLocationY={(y: number) => {}}
+              large={false}
               edit={false}
             />}
 

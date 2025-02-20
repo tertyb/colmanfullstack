@@ -152,7 +152,8 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
                             locationNameChange={setLocationName}
                             setLocationX={setLocationX}
                             setLocationY={setLocationY}
-                            savedLocation={post?.location !== 'Location Not Updated' ? { position: [post?.locationX ?? 1.0464363474, post?.locationY ?? 3.0464363474] } : { position: [1.0464363474, 3.0464363474] }}
+                            savedLocations={post?.location !== 'Location Not Updated' ? [{ position: [post?.locationX ?? 1.0464363474, post?.locationY ?? 3.0464363474] }] : [{ position: [1.0464363474, 3.0464363474] }]}
+                            large={false}
                             edit={true}
                         />
                         </div>
