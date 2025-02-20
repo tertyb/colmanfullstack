@@ -7,6 +7,7 @@ import Navbar from './components/navbar';
 import './index.scss';
 import { LoginScreen } from './views/Login';
 import Profile from './views/Profile';
+import MapView from './views/Map';
 
 const App: React.FC = () => {
 
@@ -20,6 +21,7 @@ const App: React.FC = () => {
               <Route element={<MainLayout />}>
                 <Route path="/" element={<Feed />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/map" element={<MapView />} />
               </Route>
               {/* Add other routes here */}
             </Routes>

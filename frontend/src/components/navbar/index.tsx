@@ -18,6 +18,7 @@ const Navbar: React.FC = () => {
       </div>
       <div className="navbar-center">
         <Link to="/" className="navbar-link">Feed</Link>
+        <Link to="/map" className="navbar-link">Map</Link>
         <Link to={`/profile?id=${user?._id}`}  className="navbar-link">Profile</Link>
       </div>
       <div className="navbar-right">

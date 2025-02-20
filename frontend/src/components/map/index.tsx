@@ -17,7 +17,7 @@ interface LocationSelectorProps {
     setLocationY: (name: number) => void;
 }
 
-const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, setLocationX, setLocationY,setNewLocationNameSelector }) => {
+const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, setLocationX, setLocationY, setNewLocationNameSelector }) => {
     const [selectedPosition, setSelectedPosition] = useState<L.LatLng | null>(null);
 
 
@@ -49,23 +49,25 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, se
 };
 
 interface MapComponentProps {
-    savedLocation: { position: [number, number] };
+    savedLocations: { position: [number, number] }[];
     locationNameChange: (name: string) => void;
     setLocationX: (cord: number) => void;
     setLocationY: (name: number) => void;
-    edit: boolean
+    edit: boolean;
+    large: boolean;
+    wholeMapZoom?: boolean;
 
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLocationX, setLocationY, savedLocation, edit }) => {
+const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLocationX, setLocationY, savedLocations, edit, large, wholeMapZoom }) => {
 
-  const [newlocationName, setNewLocationName] = useState('');
+    const [newlocationName, setNewLocationName] = useState('');
 
     return (
         <MapContainer
-            center={!(savedLocation.position[0] === 1.0464363474 && savedLocation.position[1] === 3.0464363474) ? savedLocation.position : [51.505, -0.09]}
-            zoom={13}
-            style={{ width: '100%', height: '300px', zIndex: 1 }}
+            center={!(savedLocations[0].position[0] === 1.0464363474 && savedLocations[0].position[1] === 3.0464363474) ? savedLocations[0].position : [51.505, -0.09]}
+            zoom={wholeMapZoom ? 3 : 13}
+            style={{ width: '100%', height: large ? '100%' : '300px', zIndex: 1 }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -84,11 +86,15 @@ const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLoca
             {/* Render saved locations as markers.
           Since you’re storing only the location name in your DB, you’ll need to
           forward geocode the name to get coordinates for displaying markers. */}
-            {savedLocation && newlocationName == '' &&
+            {savedLocations && newlocationName == '' &&
 
-                < Marker position={savedLocation.position}>
-        </Marker>
-            }
+                savedLocations.map((loc, index) => (
+                    <Marker key={index} position={loc.position}>
+
+                    </Marker>
+                ))}
+
+
         </MapContainer >
     );
 };
