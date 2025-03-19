@@ -22,9 +22,7 @@ const MapView: React.FC = () => {
 
     const { data, isLoading, mutate } = useGetFeedPosts();
     const mappedData = useMemo(() => data?.map((post) => ({ position: [post.locationX , post.locationY ] }) )|| [] , [data]);
-    console.log('first', mappedData); 
     const filteredLocations = useMemo(() => mappedData.filter((location) => !!location.position[0] && !!location.position[1]) as Ilocation[]  , [mappedData]); 
-    console.log('second', filteredLocations); 
     
     if (isLoading || !data) return <CircularProgress />
     
