@@ -48,6 +48,7 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
         handleSubmit,
         setValue,
         watch,
+        reset,
         formState: { errors, isValid },
     } = useForm<FormInputs>({
         defaultValues: { file: post?.image, description: post?.text, location: "Location Not Updated" },
@@ -73,12 +74,16 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
 
         await onSave(formData);
         toggleIsOpen();
+        reset();
     }, [onSave, postId, toggleIsOpen, locationName])
 
     const updatedFile = useMemo(() => watch("file"), [watch("file")]);
 
     const isFile = useMemo(() => updatedFile instanceof File, [updatedFile])
     const stringFile = useMemo(() => typeof updatedFile === 'string' ? updatedFile : isFile ? URL.createObjectURL(updatedFile!) : undefined, [updatedFile, isFile])
+    const locationData = useMemo(() => (post?.location !== 'Location Not Updated' &&  post?.locationX &&  post?.locationY ?  [post?.locationX , post?.locationY ] as [number, number]  :undefined), [post?.location, post?.locationX, post?.locationY]);
+    const savedLocations = useMemo(() => locationData ? [{ position: locationData }] : [], [locationData]); 
+
 
     const setFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file: File | undefined = e.target.files ? e.target.files[0] : undefined
@@ -152,7 +157,8 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
                             locationNameChange={setLocationName}
                             setLocationX={setLocationX}
                             setLocationY={setLocationY}
-                            savedLocations={post?.location !== 'Location Not Updated' ? [{ position: [post?.locationX ?? 1.0464363474, post?.locationY ?? 3.0464363474] }] : [{ position: [1.0464363474, 3.0464363474] }]}
+                            defultLocation={locationData }
+                            savedLocations={savedLocations}
                             large={false}
                             edit={true}
                         />

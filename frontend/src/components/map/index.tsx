@@ -1,13 +1,21 @@
-
 import './index.scss';
 import 'leaflet/dist/leaflet.css';
-// MapComponent.jsx
 import React, { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
+// Import custom icon images
+import customIconUrl from '../../assets/markerIcon.png';
+import customIconRetinaUrl from './path/to/custom-icon@2x.png';
+import customIconShadowUrl from './path/to/custom-icon-shadow.png';
 
+// Define custom icon
+const customIcon = new L.Icon({
+    iconUrl: customIconUrl,
+    iconSize: [30, 30], // size of the icon
+    iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+});
 
 // This component handles clicks on the map.
 interface LocationSelectorProps {
@@ -20,7 +28,6 @@ interface LocationSelectorProps {
 const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, setLocationX, setLocationY, setNewLocationNameSelector }) => {
     const [selectedPosition, setSelectedPosition] = useState<L.LatLng | null>(null);
 
-
     useMapEvents({
         async click(e) {
             const { lat, lng } = e.latlng;
@@ -32,8 +39,8 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, se
                 const data = await response.json();
                 const name = data.display_name || 'Unknown location';
                 setSelectedPosition(e.latlng);
-                setLocationX(lng)
-                setLocationY(lat)
+                setLocationX(lng);
+                setLocationY(lat);
                 setLocationName(name);
                 setNewLocationNameSelector(name);
             } catch (error) {
@@ -43,7 +50,7 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, se
     });
 
     return selectedPosition ? (
-        <Marker position={selectedPosition}>
+        <Marker position={selectedPosition} icon={customIcon}>
         </Marker>
     ) : null;
 };
@@ -56,16 +63,15 @@ interface MapComponentProps {
     edit: boolean;
     large: boolean;
     wholeMapZoom?: boolean;
-
+    defultLocation?: [number, number];
 }
 
-const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLocationX, setLocationY, savedLocations, edit, large, wholeMapZoom }) => {
-
+const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLocationX, setLocationY, savedLocations, edit, large, wholeMapZoom, defultLocation = [32.081313267035924, 34.779796586846956] }) => {
     const [newlocationName, setNewLocationName] = useState('');
 
     return (
         <MapContainer
-            center={!(savedLocations[0].position[0] === 1.0464363474 && savedLocations[0].position[1] === 3.0464363474) ? savedLocations[0].position : [51.505, -0.09]}
+            center={defultLocation}
             zoom={wholeMapZoom ? 3 : 13}
             style={{ width: '100%', height: large ? '100%' : '300px', zIndex: 1 }}
         >
@@ -79,23 +85,16 @@ const MapComponent: React.FC<MapComponentProps> = ({ locationNameChange, setLoca
                     setNewLocationNameSelector={setNewLocationName}
                     setLocationX={setLocationX}
                     setLocationY={setLocationY}
-
                 />
             }
 
-            {/* Render saved locations as markers.
-          Since you’re storing only the location name in your DB, you’ll need to
-          forward geocode the name to get coordinates for displaying markers. */}
-            {savedLocations && newlocationName == '' &&
-
+            {savedLocations && newlocationName === '' &&
                 savedLocations.map((loc, index) => (
-                    <Marker key={index} position={loc.position}>
-
+                    <Marker key={index} position={loc.position} icon={customIcon}>
                     </Marker>
-                ))}
-
-
-        </MapContainer >
+                ))
+            }
+        </MapContainer>
     );
 };
 
