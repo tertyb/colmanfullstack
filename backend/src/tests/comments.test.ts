@@ -6,12 +6,15 @@ import UserModel from '../models/user.model';
 import PostModel from '../models/post.model';
 import CommentModel from '../models/comment.model';
 import testComments from "./data/test.comments.json";
+import fs from 'fs';
+import path from 'path';
 
 var app: Application;
 
-const username = 'testUser';
-const userPassword = '123456';
-const email = 'test@email.com';
+const prefix = 'comments';
+const username = `${prefix}_testUser`;
+const userPassword = `${prefix}_123456`;
+const email = `${prefix}_test@email.com`;
 let postText = "test text"
 let postImg = "img.png"
 let commentId: string;
@@ -35,14 +38,23 @@ beforeAll(async () => {
     newUserId = userResponse.body._id;
 
     await loginUser();
-    const postResponse = await request(app)
-        .post('/api/post/create')
-        .set({ authorization: 'Bearer ' + accessToken }).send({
-            "text": postText,
-            "image": postImg
-        });
+    try {
+        const filePath = path.resolve(__dirname, './data/ChatGPT_logo.png');
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`File not found: ${filePath}`);
+        }
 
-    postId = postResponse.body._id;
+        const postResponse = await request(app)
+            .post('/api/post/create')
+            .set({ authorization: 'Bearer ' + accessToken })
+            .field("text", postText)
+            .attach("file", filePath);
+
+        console.log("Response for create post:", postResponse.body);   
+        postId = postResponse.body._id;
+    } catch (error) {
+        console.log("Error while creating post:", error);   
+    }
 });
 
 const loginUser = async () => {
@@ -152,6 +164,9 @@ describe("Comment Tests", () => {
             .get(`/api/comment/post/${postId}`)
             .set({ authorization: 'Bearer ' + accessToken }).send();
 
+        console.log("Response status code:", response.statusCode);
+        console.log("Response body:", response.body);   
+        console.log("Request post id:", postId);   
         expect(response.statusCode).toEqual(200);
         expect(response.body.length).toEqual(0);
     });
