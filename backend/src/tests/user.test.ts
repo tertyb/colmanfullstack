@@ -5,12 +5,15 @@ import { Application } from 'express';
 import UserModel from '../models/user.model';
 import PostModel from '../models/post.model';
 import CommentModel from '../models/comment.model';
+import path from 'path';
+import fs from 'fs';
 
 var app: Application;
 
-let username = 'testUser1';
-const userPassword = '123456';
-const email = 'test@email.com';
+const prefix = 'user';
+let username = `${prefix}_testUser1`;
+const userPassword = `${prefix}_123456`;
+const email = `${prefix}_test@email.com`;
 let postText = "test text"
 let postImg = "img.png"
 let userUpdatedImg = "img2.png"
@@ -18,7 +21,6 @@ let newUserId: string;
 let accessToken: string;
 
 
-jest.setTimeout(40000);
 
 beforeAll(async () => {
     app = await appPromise;
@@ -34,12 +36,22 @@ beforeAll(async () => {
     newUserId = userResponse.body._id;
 
     await loginUser();
-    await request(app)
-        .post('/api/post/create')
-        .set({ authorization: 'Bearer ' + accessToken }).send({
-            "text": postText,
-            "image": postImg
-        });
+    try {
+            const filePath = path.resolve(__dirname, './data/ChatGPT_logo.png');
+            if (!fs.existsSync(filePath)) {
+                throw new Error(`File not found: ${filePath}`);
+            }
+    
+            const postResponse = await request(app)
+                .post('/api/post/create')
+                .set({ authorization: 'Bearer ' + accessToken })
+                .field("text", postText)
+                .attach("file", filePath);
+    
+            console.log("Response for create post:", postResponse.body);   
+        } catch (error) {
+            console.log("Error while creating post:", error);   
+        }
 });
 
 const loginUser = async () => {
@@ -71,12 +83,10 @@ describe("User Tests", () => {
         const response = await request(app)
             .put(`/api/user/update`)
             .set({ authorization: 'Bearer ' + accessToken }).send({
-                "image": userUpdatedImg,
                 "username": updatedUsername
             });
 
         expect(response.statusCode).toEqual(200);
-        expect(response.body.image).toEqual(userUpdatedImg);
         expect(response.body.username).toEqual(updatedUsername);
         username = updatedUsername
     });

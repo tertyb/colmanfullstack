@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.28% </span>
+                <span class="strong">85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/35</span>
+                <span class='fraction'>34/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/15</span>
+                <span class='fraction'>15/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.93% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>31/33</span>
+                <span class='fraction'>33/39</span>
             </div>
         
             
@@ -139,7 +139,21 @@
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
@@ -191,6 +205,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -199,6 +225,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -216,7 +244,7 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express, { Request, Response } from 'express';
-import { IPost } from '../models/post.model';
+import { IPost, IPostWithComments } from '../models/post.model';
 import { IUser } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { exractUserIdFromToken } from '../utils/user.util';
@@ -243,7 +271,7 @@ export class UserController extends BaseController&lt;IUser, UserService&gt; {
     try {
       if (req<span class="branch-0 cbranch-no" title="branch not covered" >?.p</span>arams<span class="branch-0 cbranch-no" title="branch not covered" >?.u</span>serid) {
         const userid = req.params.userid;
-        const posts: IPost[] = await this.service.getUserPosts(userid);
+        const posts: IPostWithComments[] = await this.service.getUserPosts(userid);
 &nbsp;
         res.json(posts);
 &nbsp;
@@ -266,18 +294,32 @@ export class UserController extends BaseController&lt;IUser, UserService&gt; {
     }
   }
 &nbsp;
+  async <span class="fstat-no" title="function not covered" >userDetials(</span>req: Request, res: Response) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+&nbsp;
+      const userData = <span class="cstat-no" title="statement not covered" >await this.service.getById(req.params.id);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      res.json( userData );</span>
+    } catch (error: any) {
+<span class="cstat-no" title="statement not covered" >      res.status(400).json({ message: error.message });</span>
+    }
+  }
+&nbsp;
   async updateUser(req: Request, res: Response) {
     try {
       const userId = exractUserIdFromToken(req);
-      const { username, image } = req.body;
+      const { username, file, description } = req.body;
+      const fileMetadata = req.file;
 &nbsp;
-      if (!username &amp;&amp; !image) {
-        throw new Error('no username or image provided');
+      if (!username ) {
+        throw new Error('no username provided');
       }
 &nbsp;
-      const updateData: { username?: string, image?: string } = {};
+      const updateData: { username?: string, image?: string, description?: string
+      } = {};
       if (username) updateData.username = username;
-      if (image) updateData.image = image;
+      updateData.image = <span class="branch-1 cbranch-no" title="branch not covered" >fileMetadata?.filename<span class="branch-0 cbranch-no" title="branch not covered" > </span>?? f</span>ile;
+      updateData.description = description;
 &nbsp;
       const message = await this.service.update(updateData, userId);
 &nbsp;
@@ -298,7 +340,7 @@ export const userController = new UserController();
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-12-20T19:54:37.349Z
+                at 2025-03-19T14:07:41.842Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
