@@ -7,8 +7,6 @@ import L from 'leaflet';
 
 // Import custom icon images
 import customIconUrl from '../../assets/markerIcon.png';
-import customIconRetinaUrl from './path/to/custom-icon@2x.png';
-import customIconShadowUrl from './path/to/custom-icon-shadow.png';
 
 // Define custom icon
 const customIcon = new L.Icon({
