@@ -80,7 +80,8 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
   const toggleCommentsPopUp = useCallback(() => setIsCommentViewOpen((prevState) => !prevState), [setIsCommentViewOpen]);
 
   const toggleMap = useCallback(() => setIsMapOpen((prevState) => !prevState), [setIsMapOpen]);
-
+  const locationData = useMemo(() => (location !== 'No Location Not Updated' && locationX && locationY ?  [locationX , locationY ] as [number, number]  :  undefined), [location, locationX, locationY]);
+  const savedLocations = useMemo(() => locationData ? [{ position: locationData }] : [], [locationData]); 
 
   const onEdit = useCallback(async (updatedPost: FormData) => {
     await editPost(updatedPost);
@@ -107,16 +108,17 @@ const Post: React.FC<PostProps> = ({ postId, text, imgUrl, userImage, userName, 
             <p className='date'>{formatedDate} </p>
           </div>
           <div className='location'>
-            {!!location ? <><LocationIconOn onClick={toggleMap} className='location-icon'></LocationIconOn><span className='location-name'> {location}</span></> : <LocationIconOff color='disabled' className='location-icon'></LocationIconOff>}
+            {!!location ? <><LocationIconOn onClick={toggleMap} className='location-icon enable'></LocationIconOn><span className='location-name'> {location}</span></> : <LocationIconOff color='disabled' className='location-icon disable'></LocationIconOff>}
           </div>
           <h4>{text}</h4>
           <div className="post-img-wrapper">
             <PostPhoto classnames='post-img' userImage={imgUrl} />
             {isMapOpen && <MapComponent
-              savedLocations={location !== 'No Location Not Updated' ? [{ position: [locationX ?? 1.0464363474, locationY ?? 3.0464363474] }] : [{ position: [1.0464363474, 3.0464363474] }]}
+              defultLocation={ locationData}
               locationNameChange={setLocationName}
               setLocationX={(x: number) => {}}
               setLocationY={(y: number) => {}}
+              savedLocations={savedLocations}
               large={false}
               edit={false}
             />}

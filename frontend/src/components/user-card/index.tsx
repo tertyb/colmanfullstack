@@ -54,7 +54,7 @@ const UserCard: React.FC<UserProps> = ({ userProfileImage, username, userDescrip
 
         <div>
           <Typography component="div" gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-            {userDescription ?? 'add a describe to your profile'}
+            {userDescription ?? 'add a description to your profile'}
           </Typography>
         </div>
 

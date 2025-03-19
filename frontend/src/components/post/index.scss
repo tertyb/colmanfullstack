@@ -28,17 +28,18 @@
   .location-name {
     font-weight: 700;
   }
+  .location-icon {
+    color: #8D77AB
+  }
+  
+  .enable:hover {
+    cursor: pointer;
+    scale: 1.1;
+    transition: 0.5s;
+  }
 }
 
-.location-icon {
-  color: #8D77AB
-}
 
-.location-icon:hover {
-  cursor: pointer;
-  scale: 1.1;
-  transition: 0.5s;
-}
 
 .comments-icons {
   color: #00879E
