@@ -59,7 +59,15 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
     const [locationY, setLocationX] = useState(0);
     const [locationX, setLocationY] = useState(0);
 
-
+    useEffect(() => {
+        if (post) {
+            reset({
+                file: post.image,
+                description: post.text,
+                location: post.location || "Location Not Updated"
+            });
+        }
+    }, [post, reset]);
 
     const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
         const formData = new FormData();
@@ -75,7 +83,7 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
         await onSave(formData);
         toggleIsOpen();
         reset();
-    }, [onSave, postId, toggleIsOpen, locationName])
+    }, [onSave, postId, toggleIsOpen, locationName, locationX, locationY, reset]);
 
     const updatedFile = useMemo(() => watch("file"), [watch("file")]);
 
@@ -176,4 +184,4 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
 
         </div >
     )
-} 
+}

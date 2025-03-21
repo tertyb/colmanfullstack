@@ -97,7 +97,7 @@ export const LoginCard: React.FC<IProp> = ({ onLogin, onRegister, enterMode, set
                             required: "username is required",
                             minLength: {
                                 value: 4,
-                                message: "Password must be at least 6 characters",
+                                message: "username must be at least 4 characters",
                             },
                         }}
                         render={({ field }) => (

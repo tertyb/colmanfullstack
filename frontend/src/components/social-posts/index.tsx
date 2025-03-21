@@ -20,7 +20,7 @@ export const SocialPosts: React.FC = () => {
         <div className="feed-posts-container">
             {
                 // data?.map(((post: IPostWithUser) => <Post key={post._id} postId={post._id} isOwner={user?._id === post.userId} text={post.text} imgUrl={post.image} userImage={post.postUserImage} onPostChange={onPostChange} userName={post.postUsername} date={post.date} likes={post.likes} comments={post.comments}></Post>)) 
-               user?._id && <Posts userid={user!._id} onPostChange={onPostChange} posts={data} classname="feed-posts" />
+               user?._id && <Posts onPostChange={onPostChange} posts={data} classname="feed-posts" />
             }
 
         </div>
