@@ -28,6 +28,6 @@ export const UserPosts: React.FC<IProp> = ({ userid, userProfileImage, username,
     }),[data])
 
     if (isLoading  || !posts) return <CircularProgress/>
-    return ( <Posts userid={userid} onPostChange={onChangePost} posts={posts}/>
+    return ( <Posts onPostChange={onChangePost} posts={posts}/>
     )
 } 
