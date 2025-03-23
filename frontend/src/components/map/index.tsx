@@ -37,8 +37,8 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ setLocationName, se
                 const data = await response.json();
                 const name = data.display_name || 'Unknown location';
                 setSelectedPosition(e.latlng);
-                setLocationX(lng);
-                setLocationY(lat);
+                setLocationX(lat);
+                setLocationY(lng);
                 setLocationName(name);
                 setNewLocationNameSelector(name);
             } catch (error) {

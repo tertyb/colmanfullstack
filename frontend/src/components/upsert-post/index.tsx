@@ -55,9 +55,9 @@ export const UpsertPost: React.FC<IProp> = ({ isOpen, toggleIsOpen, post, onSave
         mode: 'onChange'
     });
 
-    const [locationName, setLocationName] = useState('');
-    const [locationY, setLocationX] = useState(0);
-    const [locationX, setLocationY] = useState(0);
+    const [locationName, setLocationName] = useState(post?.location ?? "Location Not Updated");
+    const [locationX, setLocationX] = useState(post?.locationX ?? 0);
+    const [locationY, setLocationY] = useState(post?.locationY ?? 0);
 
     useEffect(() => {
         if (post) {
